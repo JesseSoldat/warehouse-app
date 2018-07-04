@@ -13,7 +13,7 @@ require("./routes/user")(app);
 
 app.use((err, req, res, next) => {
   console.log(err);
-  const { statusCode, msg } = err;
+  const { statusCode = 400, msg } = err;
   return res.status(statusCode).send(msg);
 });
 
