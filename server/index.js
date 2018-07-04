@@ -1,6 +1,9 @@
 require("./config/config");
 const express = require("express");
 const bodyParser = require("body-parser");
+const connectToDb = require("./db/mongoose");
+
+connectToDb();
 
 const app = express();
 
