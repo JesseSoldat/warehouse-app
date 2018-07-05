@@ -16,6 +16,7 @@ require("./routes/producer")(app);
 require("./routes/storage")(app);
 require("./routes/rack")(app);
 require("./routes/shelf")(app);
+require("./routes/shelfSpot")(app);
 
 app.use((err, req, res, next) => {
   const { statusCode = 400, msg = "Server Error" } = err;
