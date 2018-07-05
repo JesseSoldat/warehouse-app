@@ -5,6 +5,31 @@ const ShelfSpot = require("../models/shelfSpot");
 const { succRes, errRes, errMsg } = require("../utils/serverResponses");
 
 module.exports = app => {
+  // Get all of the racks
+  app.get("/api/rack", async (req, res, next) => {
+    try {
+      const racks = await Rack.find({}).populate("shelves");
+      succRes(res, racks);
+    } catch (err) {
+      next(errRes(errMsg("fetch", "racks")));
+    }
+  });
+  // Get a single rack
+  app.get("/api/rack/:rackId", async (req, res, next) => {
+    const { rackId } = req.params;
+    try {
+      const rack = await Rack.findById(rackId)
+        .populate({
+          path: "shelves",
+          populate: { path: "shelfSpots" }
+        })
+        .populate("storage");
+
+      succRes(res, rack);
+    } catch (err) {
+      next(errRes(errMsg("fetch", "rack")));
+    }
+  });
   // Create new rack inside storage and link the rack to storage
   app.post("/api/rack/:storageId", async (req, res, next) => {
     const { storageId } = req.params;
