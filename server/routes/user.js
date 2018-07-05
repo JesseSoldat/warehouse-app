@@ -17,12 +17,12 @@ module.exports = app => {
     }
   });
 
-  // register a user
+  // register a user and send verification email
   app.post("/api/register", async (req, res, next) => {
-    const { email, password } = req.body;
+    const { username, email, password } = req.body;
 
     try {
-      if (!email || !password) {
+      if (!username || !email || !password) {
         throw errRes("All form fields must be filled in.");
       }
 
@@ -62,6 +62,7 @@ module.exports = app => {
     }
   });
 
+  // verify user with sent email
   app.get("/api/confirmation/:token", async (req, res, next) => {
     const { token } = req.params;
     try {
@@ -84,7 +85,43 @@ module.exports = app => {
     }
   });
 
-  // login a user
+  // resend verification email
+  app.post("/api/resendVerification", async (req, res, next) => {
+    const { email } = req.body;
+    try {
+      if (!isEmail(email)) {
+        throw errRes(
+          "The email address you have entered is not a valid email."
+        );
+      }
+      const user = await User.findOne({ email });
+
+      if (!user) {
+        throw errRes("Unable to find a user with that email.");
+      }
+
+      if (user.isVerified) {
+        throw errRes("This account has already been verified. Please log in.");
+      }
+
+      // Create a verification token, save it, and send email
+      const verficationToken = crypto.randomBytes(16).toString("hex");
+      user["verificationToken"].token = verficationToken;
+      await user.save();
+
+      sendMail(req, user, verficationToken, (type = "confirm"));
+      succRes(res, {
+        msg: `A verification email has been sent to ${user.email}`
+      });
+    } catch (err) {
+      if (err.msg) {
+        return next(err);
+      }
+      next(errRes("An error occured while trying to verify the email"));
+    }
+  });
+
+  // login a user and create an auth token
   app.post("/api/login", async (req, res, next) => {
     const { email, password } = req.body;
     try {
@@ -105,6 +142,7 @@ module.exports = app => {
     }
   });
 
+  // logout and remove the auth token
   app.delete("/api/logout", isAuth, async (req, res, next) => {
     const { token, user } = req;
 
