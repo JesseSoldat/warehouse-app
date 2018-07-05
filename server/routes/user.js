@@ -3,6 +3,7 @@ const crypto = require("crypto");
 const User = require("../models/user");
 const { succRes, errRes } = require("../utils/serverResponses");
 const sendMail = require("../utils/sendMail");
+const isEmail = require("../utils/isEmail");
 
 module.exports = app => {
   // get all of the users of the app
@@ -11,7 +12,7 @@ module.exports = app => {
       const users = await User.find({});
       succRes(res, users);
     } catch (err) {
-      next(errRes("Bad request error"));
+      next(errRes("An error occured while trying to fetch the users"));
     }
   });
 
@@ -20,6 +21,16 @@ module.exports = app => {
     const { email, password } = req.body;
 
     try {
+      if (!isEmail(email)) {
+        throw errRes(
+          "The email address you have entered is not a valid email."
+        );
+      }
+
+      if (password.length < 6) {
+        throw errRes("The password must be at least 6 characters longs.");
+      }
+
       const haveUser = await User.findOne({ email });
       if (haveUser) {
         throw errRes(
@@ -39,6 +50,9 @@ module.exports = app => {
         msg: `A verification email has been sent to ${user.email}`
       });
     } catch (err) {
+      if (err.msg) {
+        next(err);
+      }
       next(errRes("An error occured while trying to register"));
     }
   });
@@ -79,7 +93,10 @@ module.exports = app => {
       const token = await user.generateAuthToken();
       res.header("x-auth", token).send(user);
     } catch (err) {
-      next(err);
+      if (err.msg) {
+        next(err);
+      }
+      errRes("An error occured while trying to login.");
     }
   });
 };
