@@ -5,6 +5,7 @@ const ShelfSpot = require("../models/shelfSpot");
 const { succRes, errRes, errMsg } = require("../utils/serverResponses");
 
 module.exports = app => {
+  // Create new rack inside storage and link the rack to storage
   app.post("/api/rack/:storageId", async (req, res, next) => {
     const { storageId } = req.params;
     const rack = new Rack();
@@ -28,7 +29,7 @@ module.exports = app => {
       if (err.msg) {
         return next(err);
       }
-      next(errRes(errMsg("saving", "rack")));
+      next(errRes(errMsg("save", "rack")));
     }
   });
 };

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+
 const { errRes } = require("../utils/serverResponses");
 
 const StorageSchema = new Schema(
@@ -10,7 +11,7 @@ const StorageSchema = new Schema(
       unique: true
     },
     description: { type: String },
-    rackLabelCounter: { type: Number, default: 0 },
+    rackLabelCounter: { type: Number, required: true },
     racks: [
       {
         type: Schema.Types.ObjectId,
