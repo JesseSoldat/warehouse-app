@@ -10,6 +10,7 @@ const app = express();
 app.use(bodyParser.json());
 
 require("./routes/user")(app);
+require("./routes/product")(app);
 
 app.use((err, req, res, next) => {
   const { statusCode = 400, msg = "Server Error" } = err;
