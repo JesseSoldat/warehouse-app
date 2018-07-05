@@ -11,6 +11,8 @@ app.use(bodyParser.json());
 
 require("./routes/user")(app);
 require("./routes/product")(app);
+require("./routes/customer")(app);
+require("./routes/producer")(app);
 
 app.use((err, req, res, next) => {
   const { statusCode = 400, msg = "Server Error" } = err;
