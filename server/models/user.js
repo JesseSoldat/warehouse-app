@@ -57,6 +57,20 @@ const UserSchema = new Schema(
   { timestamps: true }
 );
 
+UserSchema.methods.toJSON = function() {
+  const user = this;
+  const userObj = user.toObject();
+  const {
+    username,
+    email,
+    _id,
+    tokens,
+    verificationToken,
+    isVerified
+  } = userObj;
+  return { username, email, _id, tokens, verificationToken, isVerified };
+};
+
 UserSchema.pre("save", function(next) {
   const user = this;
 
@@ -117,6 +131,23 @@ UserSchema.methods.generateAuthToken = async function() {
     return token;
   } catch (err) {
     return err;
+  }
+};
+
+UserSchema.statics.findByToken = async function(token) {
+  const User = this;
+  let decodedToken;
+  try {
+    decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
+    return User.findOne({
+      _id: decodedToken._id,
+      "tokens.token": token,
+      "tokens.access": "auth"
+    });
+  } catch (err) {
+    return Promise.reject(
+      errRes("There was an error while authenticating the user")
+    );
   }
 };
 

@@ -4,6 +4,7 @@ const User = require("../models/user");
 const { succRes, errRes } = require("../utils/serverResponses");
 const sendMail = require("../utils/sendMail");
 const isEmail = require("../utils/isEmail");
+const isAuth = require("../middleware/isAuth");
 
 module.exports = app => {
   // get all of the users of the app
@@ -21,6 +22,10 @@ module.exports = app => {
     const { email, password } = req.body;
 
     try {
+      if (!email || !password) {
+        throw errRes("All form fields must be filled in.");
+      }
+
       if (!isEmail(email)) {
         throw errRes(
           "The email address you have entered is not a valid email."
@@ -51,7 +56,7 @@ module.exports = app => {
       });
     } catch (err) {
       if (err.msg) {
-        next(err);
+        return next(err);
       }
       next(errRes("An error occured while trying to register"));
     }
@@ -94,9 +99,24 @@ module.exports = app => {
       res.header("x-auth", token).send(user);
     } catch (err) {
       if (err.msg) {
-        next(err);
+        return next(err);
       }
       errRes("An error occured while trying to login.");
+    }
+  });
+
+  app.delete("/api/logout", isAuth, async (req, res, next) => {
+    const { token, user } = req;
+
+    try {
+      user.tokens = user.tokens.filter(tokenObj => tokenObj.token !== token);
+      await user.save();
+      succRes(res, user);
+    } catch (err) {
+      if (err.msg) {
+        return next(err);
+      }
+      next(errRes("An error occured while logging out"));
     }
   });
 };

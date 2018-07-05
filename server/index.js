@@ -12,8 +12,8 @@ app.use(bodyParser.json());
 require("./routes/user")(app);
 
 app.use((err, req, res, next) => {
-  console.log(err);
-  const { statusCode = 400, msg } = err;
+  const { statusCode = 400, msg = "Server Error" } = err;
+  console.log(msg);
   return res.status(statusCode).send(msg);
 });
 
