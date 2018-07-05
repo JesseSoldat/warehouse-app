@@ -5,6 +5,10 @@ const ShelfSpot = require("../models/shelfSpot");
 const { succRes, errRes, errMsg } = require("../utils/serverResponses");
 
 module.exports = app => {
+  //throw new error();
+  // Get all shelfSpots
+
+  // Get a single shelfSpot
   // Create a new shelfSpot and link it to its shelf
   app.post("/api/shelfSpot/:shelfId", async (req, res, next) => {
     const { shelfId } = req.params;
