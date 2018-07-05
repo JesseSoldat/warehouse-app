@@ -8,4 +8,7 @@ const errRes = (
   statusCode = 400
 ) => ({ msg, statusCode });
 
-module.exports = { succRes, errRes };
+const errMsg = (method, target) =>
+  `An error occured while trying to ${method} the ${target}.`;
+
+module.exports = { succRes, errRes, errMsg };
