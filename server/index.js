@@ -19,9 +19,15 @@ require("./routes/shelf")(app);
 require("./routes/shelfSpot")(app);
 
 app.use((err, req, res, next) => {
-  const { statusCode = 400, msg = "Server Error" } = err;
-  console.log(msg);
-  return res.status(statusCode).send(msg);
+  console.log(err);
+
+  const { msg, payload } = err;
+  console.error(msg);
+
+  return res.status(200).send({
+    payload,
+    msg
+  });
 });
 
 app.get("*", (req, res) => {

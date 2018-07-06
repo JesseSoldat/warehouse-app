@@ -34,6 +34,16 @@ class AuthForm extends Component {
         cb: null
       });
     }
+    // An error occured while trying to verfiy email
+    if (query.verifyErr) {
+      this.props.serverMsg({
+        type: "Server Error",
+        details:
+          "An error occured while trying to verify your account. Try to resend the email verification!",
+        color: "danger",
+        cb: null
+      });
+    }
   }
 
   componentWillUnmount() {

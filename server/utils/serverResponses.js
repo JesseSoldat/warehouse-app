@@ -1,11 +1,14 @@
-const succRes = (res, data) => res.status(200).send(data);
+const succRes = (res, msg, payload = null) =>
+  res.status(200).send({ msg, payload });
 
 const errRes = (
-  msg = "There was an unknown error on the server",
-  statusCode = 400
-) => ({ msg, statusCode });
+  err = "There was an unknown error on the server",
+  statusCode = 400,
+  payload = null
+) => ({ msg: { msg: err, statusCode }, payload });
 
-const errMsg = (method, target) =>
+const errMsg = (method, target) => {
   `An error occured while trying to ${method} the ${target}.`;
+};
 
 module.exports = { succRes, errRes, errMsg };

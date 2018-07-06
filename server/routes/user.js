@@ -11,6 +11,7 @@ module.exports = app => {
   app.get("/api/users", async (req, res, next) => {
     try {
       const users = await User.find({});
+      succRes(res, null, users);
       succRes(res, users);
     } catch (err) {
       next(errRes("An error occured while trying to fetch the users"));
@@ -52,15 +53,19 @@ module.exports = app => {
       const verificationToken = crypto.randomBytes(16).toString("hex");
       user["verificationToken"].token = verificationToken;
 
-      // await user.save();
-      // sendMail(req, user, verificationToken, (type = "confirm"));
+      await user.save();
+      sendMail(req, user, verificationToken, (type = "confirm"));
 
-      succRes(res, {
-        msg: `A verification email has been sent to ${
-          user.email
-        }. Please verify your email before you login.`,
-        statusCode: 200
-      });
+      succRes(
+        res,
+        {
+          msg: `A verification email has been sent to ${
+            user.email
+          }. Please verify your email before you login.`,
+          statusCode: 200
+        },
+        null
+      );
     } catch (err) {
       if (err.msg) {
         return next(err);
@@ -81,14 +86,9 @@ module.exports = app => {
       user.isVerified = true;
       user["verificationToken"] = null;
       await user.save();
-
-      succRes(res, "The accound has been verified. Please log in.");
+      return res.redirect("/login?verify=true");
     } catch (err) {
-      next(
-        errRes(
-          "Unable to find a valid token or user. Your token may have expired."
-        )
-      );
+      return res.redirect("/login?verifyErr=true");
     }
   });
 
@@ -131,21 +131,38 @@ module.exports = app => {
   // login a user and create an auth token
   app.post("/api/login", async (req, res, next) => {
     const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.send(errRes("All form fields must be filled in."));
+    }
+
+    if (!isEmail(email)) {
+      return res.send(
+        errRes("The email address you have entered is not a valid email.")
+      );
+    }
+
     try {
       const user = await User.findByCredentials(email, password);
 
       if (!user.isVerified) {
-        throw errRes(
-          "Please confirm your email first by following the link in the email."
+        return res.send(
+          errRes(
+            "Please confirm your email first by following the link in the email."
+          )
         );
       }
       const token = await user.generateAuthToken();
-      res.header("x-auth", token).send(user);
+      const msg = {
+        msg: "Login was successful.",
+        statusCode: 200
+      };
+      res.header("x-auth", token).send({ user, msg });
     } catch (err) {
       if (err.msg) {
         return next(err);
       }
-      errRes("An error occured while trying to login.");
+      errRes("An unknown error occured while trying to login.");
     }
   });
 
