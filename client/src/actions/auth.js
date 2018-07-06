@@ -65,3 +65,22 @@ export const startLogin = (user, history) => async dispatch => {
     );
   }
 };
+
+export const startResendVerification = () => async dispatch => {
+  try {
+    const res = await axios.post("/api/resendVerification");
+    const { msg } = res.data;
+
+    if (msg.statusCode === 201) {
+      return dispatch(serverMsg(buildServerMsg(msg)));
+    }
+
+    if (msg.statusCode === 400) {
+      dispatch(serverMsg(buildServerMsg(msg)));
+    } else {
+      dispatch(serverMsg(buildServerMsg(msg)));
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};

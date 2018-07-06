@@ -19,8 +19,8 @@ require("./routes/shelf")(app);
 require("./routes/shelfSpot")(app);
 
 app.use((err, req, res, next) => {
-  const { msg, payload } = err;
   console.error(err);
+  const { msg = null, payload = null } = err;
 
   return res.status(200).send({
     payload,

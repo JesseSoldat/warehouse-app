@@ -13,7 +13,7 @@ module.exports = app => {
       const users = await User.find({});
       succRes(res, null, users);
     } catch (err) {
-      next(errRes("An error occured while trying to fetch the users"));
+      next(errRes("An error occured while trying to fetch the users."));
     }
   });
 
@@ -69,7 +69,7 @@ module.exports = app => {
       if (err.msg) {
         return next(err);
       }
-      next(errRes("An error occured while trying to register", 500));
+      next(errRes("An error occured while trying to register."));
     }
   });
 
@@ -96,18 +96,21 @@ module.exports = app => {
     const { email } = req.body;
     try {
       if (!isEmail(email)) {
-        throw errRes(
-          "The email address you have entered is not a valid email."
+        return res.send(
+          errRes("The email address you have entered is not a valid email.")
         );
       }
       const user = await User.findOne({ email });
 
       if (!user) {
-        throw errRes("Unable to find a user with that email.");
+        return res.send(errRes("Unable to find a user with that email."));
       }
 
+      // Info
       if (user.isVerified) {
-        throw errRes("This account has already been verified. Please log in.");
+        return res.send(
+          errRes("This account has already been verified. Please log in.", 201)
+        );
       }
 
       // Create a verification token, save it, and send email
@@ -116,14 +119,16 @@ module.exports = app => {
       await user.save();
 
       sendMail(req, user, verficationToken, (type = "confirm"));
-      succRes(res, {
-        msg: `A verification email has been sent to ${user.email}`
-      });
+
+      succRes(
+        res,
+        {
+          msg: `A verification email has been sent to ${user.email}`
+        },
+        null
+      );
     } catch (err) {
-      if (err.msg) {
-        return next(err);
-      }
-      next(errRes("An error occured while trying to verify the email"));
+      next(errRes("An error occured while trying to verify the email."));
     }
   });
 

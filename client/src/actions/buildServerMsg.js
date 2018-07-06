@@ -10,6 +10,9 @@ const buildServerMsg = ({ msg, statusCode }) => {
     case 200:
       return generateMsgObj("Success Info", msg, "success");
 
+    case 201:
+      return generateMsgObj("Server Info", msg, "info");
+
     case 400:
       return generateMsgObj("Server Error", msg, "danger");
 
