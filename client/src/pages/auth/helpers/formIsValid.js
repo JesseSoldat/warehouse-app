@@ -1,7 +1,7 @@
 import { registerErrMsg, loginErrMsg } from "./authErrMsg";
 import isEmail from "../../../utils/isEmail";
 
-const formIsValid = form => {
+const formIsValid = (form, parent) => {
   const { username, email, password, confirmPassword } = form;
   let isValid = true;
   const errObj = {};
@@ -14,7 +14,8 @@ const formIsValid = form => {
     password.length < 6
   ) {
     isValid = false;
-    if (!username) errObj["usernameErr"] = registerErrMsg.usernameErr;
+
+    // Login & Register
     if (!email) errObj["emailErr"] = registerErrMsg.emailErr;
     if (email && !isEmail(email))
       errObj["emailErr"] = registerErrMsg.validEmailErr;
@@ -22,14 +23,19 @@ const formIsValid = form => {
       errObj["passwordErr"] = registerErrMsg.passwordLength;
     if (!password) errObj["passwordErr"] = registerErrMsg.passwordErr;
 
-    if (password === confirmPassword) {
-      if (!confirmPassword) {
-        errObj["confirmPasswordErr"] = registerErrMsg.confirmPasswordErr;
+    // Register only
+    if (parent === "register") {
+      if (!username) errObj["usernameErr"] = registerErrMsg.usernameErr;
+
+      if (password === confirmPassword) {
+        if (!confirmPassword) {
+          errObj["confirmPasswordErr"] = registerErrMsg.confirmPasswordErr;
+        } else {
+          errObj["confirmPasswordErr"] = null;
+        }
       } else {
-        errObj["confirmPasswordErr"] = null;
+        errObj["confirmPasswordErr"] = registerErrMsg.confirmPasswordErr;
       }
-    } else {
-      errObj["confirmPasswordErr"] = registerErrMsg.confirmPasswordErr;
     }
   }
 

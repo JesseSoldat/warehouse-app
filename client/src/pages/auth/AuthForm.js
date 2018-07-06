@@ -59,7 +59,8 @@ class AuthForm extends Component {
   onSubmit = e => {
     e.preventDefault();
     this.refs.submitBtn.setAttribute("disabled", "disabled");
-    const { isValid, errObj } = formIsValid(this.state);
+    const { isValid, errObj } = formIsValid(this.state, this.props.parent);
+
     if (!isValid) {
       this.refs.submitBtn.removeAttribute("disabled");
       // this.setState(() => ({ ...errObj }));
