@@ -6,11 +6,11 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-  const { type, loading, msg } = action;
+  const { type, _id, token } = action;
   switch (type) {
     case AUTH_LOGIN:
       console.log("AUTH_LOGIN", action);
-      return { ...state };
+      return { ...state, _id, token };
 
     default:
       return { ...state };

@@ -1,12 +1,18 @@
 import { registerErrMsg, loginErrMsg } from "./authErrMsg";
-import isEmail from "../../utils/isEmail";
+import isEmail from "../../../utils/isEmail";
 
 const formIsValid = form => {
   const { username, email, password, confirmPassword } = form;
   let isValid = true;
   const errObj = {};
 
-  if (!username || !email || !isEmail(email) || !password) {
+  if (
+    !username ||
+    !email ||
+    !isEmail(email) ||
+    !password ||
+    password.length < 6
+  ) {
     isValid = false;
     if (!username) errObj["usernameErr"] = registerErrMsg.usernameErr;
     if (!email) errObj["emailErr"] = registerErrMsg.emailErr;

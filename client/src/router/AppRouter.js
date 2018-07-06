@@ -4,6 +4,7 @@ import createHistory from "history/createBrowserHistory";
 
 import PublicRoute from "./PublicRoute";
 import AuthRoutes from "./auth/routes";
+import GeneralRoutes from "./general/routes";
 export const history = createHistory();
 const h = () => "hello world";
 
@@ -12,6 +13,7 @@ const AppRouter = () => (
     <Switch>
       <PublicRoute path="/" exact component={h} />
       {AuthRoutes}
+      {GeneralRoutes}
     </Switch>
   </Router>
 );

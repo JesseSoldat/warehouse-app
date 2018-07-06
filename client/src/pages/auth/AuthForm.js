@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { parse } from "qs";
 
 import TextInput from "../../components/inputs/TextInput";
 import Spinner from "../../components/Spinner";
 import Message from "../../components/Message";
 import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
-import formIsValid from "./formIsValid";
-import { startRegister } from "../../actions/auth";
+import formIsValid from "./helpers/formIsValid";
+import { startRegister, startLogin } from "../../actions/auth";
+import { serverMsg } from "../../actions/ui";
 
 class AuthForm extends Component {
   state = {
@@ -20,6 +22,19 @@ class AuthForm extends Component {
     confirmPassword: "",
     confirmPasswordErr: null
   };
+
+  componentDidMount() {
+    // When a user verifies their email show a message
+    const query = parse(this.props.location.search.substr(1));
+    if (query.verify) {
+      this.props.serverMsg({
+        type: "Server Info",
+        details: "Your account has been verified. Please login!",
+        color: "info",
+        cb: null
+      });
+    }
+  }
 
   componentWillUnmount() {
     // this.props.serverMsg(null);
@@ -36,15 +51,20 @@ class AuthForm extends Component {
     this.props.startRegister({ username, email, password }, this.props.history);
   };
 
-  loginFlow = () => {};
+  loginFlow = () => {
+    const { email, password } = this.state;
+    this.props.startLogin({ email, password }, this.props.history);
+  };
 
   onSubmit = e => {
     e.preventDefault();
+    this.refs.submitBtn.setAttribute("disabled", "disabled");
     const { isValid, errObj } = formIsValid(this.state);
-    // if (!isValid) {
-    //   this.setState(() => ({ ...errObj }));
-    //   return;
-    // }
+    if (!isValid) {
+      this.refs.submitBtn.removeAttribute("disabled");
+      // this.setState(() => ({ ...errObj }));
+      // return;
+    }
 
     switch (this.props.parent) {
       case "register":
@@ -132,7 +152,9 @@ class AuthForm extends Component {
               value={confirmPassword}
             />
           )}
-          <button className="btn btn-info btn-block mt-4">Submit</button>
+          <button ref="submitBtn" className="btn btn-info btn-block mt-4">
+            Submit
+          </button>
         </form>
       );
     }
@@ -156,5 +178,5 @@ const mapStateToProps = ({ ui, auth }) => ({
 
 export default connect(
   mapStateToProps,
-  { startRegister }
+  { startRegister, startLogin, serverMsg }
 )(withRouter(AuthForm));
