@@ -8,8 +8,13 @@ import Spinner from "../../components/Spinner";
 import Message from "../../components/Message";
 import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
 import formIsValid from "./helpers/formIsValid";
-import { startRegister, startLogin } from "../../actions/auth";
+import {
+  startRegister,
+  startLogin,
+  startResendVerification
+} from "../../actions/auth";
 import { serverMsg } from "../../actions/ui";
+import isEmail from "../../utils/isEmail";
 
 class AuthForm extends Component {
   state = {
@@ -87,6 +92,10 @@ class AuthForm extends Component {
     }
   };
 
+  resendEmail = () => {
+    this.props.startResendVerification(this.state.email);
+  };
+
   render() {
     const { loading, msg, parent } = this.props;
 
@@ -119,50 +128,100 @@ class AuthForm extends Component {
       content = <Spinner />;
     } else {
       content = (
-        <form onSubmit={this.onSubmit} noValidate>
-          {parent === "register" && (
+        <div>
+          <form onSubmit={this.onSubmit} noValidate>
+            {parent === "register" && (
+              <TextInput
+                label="Username"
+                placeholder="Username"
+                name="username"
+                onChange={this.onChange}
+                error={usernameErr}
+                value={username}
+              />
+            )}
             <TextInput
-              label="Username"
-              placeholder="Username"
-              name="username"
+              label="Email"
+              placeholder="Email"
+              name="email"
+              type="email"
               onChange={this.onChange}
-              error={usernameErr}
-              value={username}
+              error={emailErr}
+              value={email}
             />
-          )}
-          <TextInput
-            label="Email"
-            placeholder="Email"
-            name="email"
-            type="email"
-            onChange={this.onChange}
-            error={emailErr}
-            value={email}
-          />
-          <TextInput
-            label="Password"
-            placeholder="Password"
-            name="password"
-            type="password"
-            onChange={this.onChange}
-            error={passwordErr}
-            value={password}
-          />
-          {parent === "register" && (
             <TextInput
-              label="Confirm Password"
-              placeholder="Confirm Password"
-              name="confirmPassword"
+              label="Password"
+              placeholder="Password"
+              name="password"
               type="password"
               onChange={this.onChange}
-              error={confirmPasswordErr}
-              value={confirmPassword}
+              error={passwordErr}
+              value={password}
             />
-          )}
-          <button ref="submitBtn" className="btn btn-info btn-block mt-4">
-            Submit
-          </button>
-        </form>
+            {parent === "register" && (
+              <TextInput
+                label="Confirm Password"
+                placeholder="Confirm Password"
+                name="confirmPassword"
+                type="password"
+                onChange={this.onChange}
+                error={confirmPasswordErr}
+                value={confirmPassword}
+              />
+            )}
+            <button ref="submitBtn" className="btn btn-info btn-block mt-4">
+              Submit
+            </button>
+          </form>
+          <div className="row">
+            <div className="col-12 mt-4">
+              <div id="accordion">
+                <div className="card">
+                  <div className="card-header text-center" id="headingOne">
+                    <h5 className="mb-0">
+                      <button
+                        className="btn btn-outline-dark btn-block"
+                        data-toggle="collapse"
+                        data-target="#collapseOne"
+                        aria-expanded="true"
+                        aria-controls="collapseOne"
+                      >
+                        Mangage Your Account
+                      </button>
+                    </h5>
+                  </div>
+
+                  <div
+                    id="collapseOne"
+                    className="collapse"
+                    aria-labelledby="headingOne"
+                    data-parent="#accordion"
+                  >
+                    <div className="card-body">
+                      <small className="form-text text-muted mb-3">
+                        * Fill in your email in the input shown above and click
+                        either button to get started.
+                      </small>
+                      <button
+                        className="btn btn-outline-dark btn-sm btn-block"
+                        onClick={this.resendEmail}
+                        disabled={isEmail(email) ? false : true}
+                      >
+                        Resend verification Email
+                      </button>
+                      <button
+                        className="btn btn-outline-dark btn-sm btn-block"
+                        disabled={isEmail(email) ? false : true}
+                      >
+                        Reset your Password
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       );
     }
 
@@ -185,5 +244,5 @@ const mapStateToProps = ({ ui, auth }) => ({
 
 export default connect(
   mapStateToProps,
-  { startRegister, startLogin, serverMsg }
+  { startRegister, startLogin, serverMsg, startResendVerification }
 )(withRouter(AuthForm));

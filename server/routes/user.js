@@ -94,6 +94,7 @@ module.exports = app => {
   // resend verification email
   app.post("/api/resendVerification", async (req, res, next) => {
     const { email } = req.body;
+
     try {
       if (!isEmail(email)) {
         return res.send(

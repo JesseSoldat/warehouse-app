@@ -66,9 +66,9 @@ export const startLogin = (user, history) => async dispatch => {
   }
 };
 
-export const startResendVerification = () => async dispatch => {
+export const startResendVerification = email => async dispatch => {
   try {
-    const res = await axios.post("/api/resendVerification");
+    const res = await axios.post("/api/resendVerification", { email });
     const { msg } = res.data;
 
     if (msg.statusCode === 201) {
