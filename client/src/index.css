@@ -1,5 +1,24 @@
+/* site wide styles */
+
 body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+}
+
+/* navbar */
+.navbar .nav-item a {
+  color: white;
+  cursor: pointer;
+  margin-right: 5px;
+  text-decoration: none;
+}
+
+.navbar .fa-sign-out-alt,
+.fa-sign-in-alt {
+  color: white;
+}
+
+.navbar-toggler:focus {
+  outline-color: white;
 }
