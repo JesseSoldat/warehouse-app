@@ -18,7 +18,6 @@ module.exports = app => {
       next(errRes(errMsg("fetch", "storages")));
     }
   });
-
   // Get a single storage by storageId
   app.get("/api/storage/:storageId", async (req, res, next) => {
     const { storageId } = req.params;
@@ -37,7 +36,6 @@ module.exports = app => {
       next(errRes(errMsg("fetch", "storage")));
     }
   });
-
   // Create new warehouse storage
   app.post("/api/storage", async (req, res, next) => {
     const storage = new Storage(req.body);
@@ -48,7 +46,6 @@ module.exports = app => {
       next(errRes(errMsg("save", "storage")));
     }
   });
-
   // Update a storage
   app.patch("/api/storage/:storageId", async (req, res, next) => {
     const { storageId } = req.params;
@@ -63,4 +60,5 @@ module.exports = app => {
       next(errRes(errMsg("update", "storage")));
     }
   });
+  // Delete storage
 };
