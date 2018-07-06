@@ -5,6 +5,11 @@ import buildServerMsg from "./buildServerMsg";
 
 export const GET_ALL_USERS = "GET_ALL_USERS";
 
+export const getAllUsers = payload => ({
+  type: GET_ALL_USERS,
+  allUsers: payload
+});
+
 export const startGetAllUsers = () => async dispatch => {
   dispatch({ type: LOADING, loading: true });
   try {
@@ -16,6 +21,7 @@ export const startGetAllUsers = () => async dispatch => {
       return;
     }
     dispatch({ type: LOADING, loading: false });
+    dispatch(getAllUsers(payload));
   } catch (err) {
     console.log(err);
   }
