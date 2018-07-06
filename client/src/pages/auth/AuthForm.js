@@ -21,6 +21,10 @@ class AuthForm extends Component {
     confirmPasswordErr: null
   };
 
+  componentWillUnmount() {
+    // this.props.serverMsg(null);
+  }
+
   onChange = e => {
     const { name, value } = e.target;
     const error = name + "Err"; // reset any errors on target input
@@ -37,9 +41,10 @@ class AuthForm extends Component {
   onSubmit = e => {
     e.preventDefault();
     const { isValid, errObj } = formIsValid(this.state);
-    if (!isValid) {
-      this.setState(() => ({ ...errObj }));
-    }
+    // if (!isValid) {
+    //   this.setState(() => ({ ...errObj }));
+    //   return;
+    // }
 
     switch (this.props.parent) {
       case "register":
@@ -72,8 +77,16 @@ class AuthForm extends Component {
     let content, uiMsg;
 
     if (msg) {
-      const { type, details, color, cb } = msg;
-      uiMsg = <Message type={type} details={details} color={color} cb={cb} />;
+      const { type, details, color, cb, action } = msg;
+      uiMsg = (
+        <Message
+          type={type}
+          details={details}
+          color={color}
+          cb={cb}
+          action={action}
+        />
+      );
     }
     if (loading && !uiMsg) {
       content = <Spinner />;
@@ -136,9 +149,9 @@ class AuthForm extends Component {
   }
 }
 
-const mapStateToProps = ({ auth }) => ({
-  loading: auth.loading,
-  msg: auth.msg
+const mapStateToProps = ({ ui, auth }) => ({
+  loading: ui.loading,
+  msg: ui.msg
 });
 
 export default connect(

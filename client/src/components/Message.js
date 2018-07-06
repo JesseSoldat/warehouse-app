@@ -1,6 +1,13 @@
 import React from "react";
+import { connect } from "react-redux";
 
-const Message = ({ type, details, color, cb }) => {
+import { serverMsg } from "../actions/ui";
+
+const Message = ({ type, details, color, cb, serverMsg }) => {
+  const closeMessage = () => {
+    serverMsg(null);
+  };
+
   return (
     <div className="mt-3">
       <div
@@ -9,6 +16,7 @@ const Message = ({ type, details, color, cb }) => {
       >
         <strong>{type}: </strong> {details}
         <button
+          onClick={closeMessage}
           type="button"
           className="close"
           data-dismiss="alert"
@@ -26,4 +34,7 @@ const Message = ({ type, details, color, cb }) => {
   );
 };
 
-export default Message;
+export default connect(
+  null,
+  { serverMsg }
+)(Message);

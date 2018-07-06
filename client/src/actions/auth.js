@@ -1,39 +1,30 @@
 import axios from "axios";
 
 import setAxiosHeader from "../utils/setAxiosHeader";
-
-export const AUTH_MSG = "AUTH_MSG";
-export const AUTH_LOADING = "AUTH_LOADING";
-
-export const serverMsg = ({ type, details, color, cb = null }) => ({
-  type,
-  details,
-  color,
-  cb,
-  loading: false
-});
+import buildServerMsg from "./buildServerMsg";
+import { serverMsg, LOADING } from "./ui";
+export const AUTH_LOGIN = "AUTH_LOGIN";
 
 export const startRegister = (user, history) => async dispatch => {
-  dispatch({ type: AUTH_LOADING });
+  dispatch({ type: LOADING, loading: true });
   try {
     const res = await axios.post("/api/register", user);
-    console.log(res.data);
-    const msg = {
-      type: "Server Info",
-      details: "You have succesfully registered",
-      color: "info",
-      cb: null
-    };
-    dispatch(serverMsg(msg));
-  } catch (err) {
-    console.log(err);
 
-    const msg = {
-      type: "Server Error",
-      details: "An error occured while trying to register",
-      color: "danger",
-      cb: null
-    };
-    dispatch(serverMsg(msg));
+    if (res.data && res.data.msg) {
+      dispatch(serverMsg(buildServerMsg(res.data)));
+      if (res.data.statusCode === 200) {
+        history.push("/login");
+      }
+      return;
+    }
+  } catch (err) {
+    dispatch(
+      serverMsg(
+        buildServerMsg({
+          msg: "Something went wrong while posting the data",
+          statusCode: 500
+        })
+      )
+    );
   }
 };

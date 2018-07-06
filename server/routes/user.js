@@ -20,27 +20,30 @@ module.exports = app => {
   // register a user and send verification email
   app.post("/api/register", async (req, res, next) => {
     const { username, email, password } = req.body;
-    console.log(username, email, password);
 
     try {
       if (!username || !email || !password) {
-        throw errRes("All form fields must be filled in.");
+        return res.send(errRes("All form fields must be filled in."));
       }
 
       if (!isEmail(email)) {
-        throw errRes(
-          "The email address you have entered is not a valid email."
+        return res.send(
+          errRes("The email address you have entered is not a valid email.")
         );
       }
 
       if (password.length < 6) {
-        throw errRes("The password must be at least 6 characters longs.");
+        return res.send(
+          errRes("The password must be at least 6 characters longs.")
+        );
       }
 
       const haveUser = await User.findOne({ email });
       if (haveUser) {
-        throw errRes(
-          "The email address you have entered is already associated with another account."
+        return res.send(
+          errRes(
+            "The email address you have entered is already associated with another account."
+          )
         );
       }
       const user = new User({ username, email, password });
@@ -49,17 +52,20 @@ module.exports = app => {
       const verificationToken = crypto.randomBytes(16).toString("hex");
       user["verificationToken"].token = verificationToken;
 
-      await user.save();
-      sendMail(req, user, verificationToken, (type = "confirm"));
+      // await user.save();
+      // sendMail(req, user, verificationToken, (type = "confirm"));
 
       succRes(res, {
-        msg: `A verification email has been sent to ${user.email}`
+        msg: `A verification email has been sent to ${
+          user.email
+        }. Please verify your email before you login.`,
+        statusCode: 200
       });
     } catch (err) {
       if (err.msg) {
         return next(err);
       }
-      next(errRes("An error occured while trying to register"));
+      next(errRes("An error occured while trying to register", 500));
     }
   });
 
