@@ -3,6 +3,7 @@ const Rack = require("../models/rack");
 const Shelf = require("../models/shelf");
 const ShelfSpot = require("../models/shelfSpot");
 const { succRes, errRes, errMsg } = require("../utils/serverResponses");
+const mergeObjFields = require("../utils/mergeObjFields");
 
 module.exports = app => {
   // Get all storages
@@ -45,6 +46,21 @@ module.exports = app => {
       succRes(res, storage);
     } catch (err) {
       next(errRes(errMsg("save", "storage")));
+    }
+  });
+
+  // Update a storage
+  app.patch("/api/storage/:storageId", async (req, res, next) => {
+    const { storageId } = req.params;
+    try {
+      const storage = await Storage.findByIdAndUpdate(
+        storageId,
+        mergeObjFields("", req.body),
+        { new: true }
+      );
+      succRes(res, storage);
+    } catch (err) {
+      next(errRes(errMsg("update", "storage")));
     }
   });
 };

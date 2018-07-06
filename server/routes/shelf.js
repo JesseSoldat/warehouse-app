@@ -3,6 +3,7 @@ const Rack = require("../models/rack");
 const Shelf = require("../models/shelf");
 const ShelfSpot = require("../models/shelfSpot");
 const { succRes, errRes, errMsg } = require("../utils/serverResponses");
+const mergeObjFields = require("../utils/mergeObjFields");
 
 module.exports = app => {
   // Get all shelves
@@ -61,6 +62,20 @@ module.exports = app => {
         return next(err);
       }
       next(errRes(errMsg("save", "shelf")));
+    }
+  });
+  // Update a shelf
+  app.patch("/api/shelf/:shelfId", async (req, res, next) => {
+    const { shelfId } = req.params;
+    try {
+      const shelf = await Shelf.findByIdAndUpdate(
+        shelfId,
+        mergeObjFields("", req.body),
+        { new: true }
+      );
+      succRes(res, shelf);
+    } catch (err) {
+      next(errRes(errMsg("update", "shelf")));
     }
   });
 };
