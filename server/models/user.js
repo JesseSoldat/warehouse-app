@@ -11,6 +11,12 @@ const verificationExpirationTime = 43200; // 12 hours
 
 const UserSchema = new Schema(
   {
+    username: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 1
+    },
     email: {
       type: String,
       required: true,

@@ -7,6 +7,7 @@ import Spinner from "../../components/Spinner";
 import Message from "../../components/Message";
 import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
 import formIsValid from "./formIsValid";
+import { startRegister } from "../../actions/auth";
 
 class AuthForm extends Component {
   state = {
@@ -26,7 +27,10 @@ class AuthForm extends Component {
     this.setState(() => ({ [name]: value, [error]: null }));
   };
 
-  registerFlow = () => {};
+  registerFlow = () => {
+    const { username, email, password } = this.state;
+    this.props.startRegister({ username, email, password }, this.props.history);
+  };
 
   loginFlow = () => {};
 
@@ -54,14 +58,6 @@ class AuthForm extends Component {
   render() {
     const { loading, msg, parent } = this.props;
 
-    const tempMsg = {
-      type: "Post Error",
-      details:
-        "There was an problem while trying to post the auth-data. Please try again.",
-      color: "danger",
-      cb: null
-    };
-
     const {
       username,
       usernameErr,
@@ -76,7 +72,7 @@ class AuthForm extends Component {
     let content, uiMsg;
 
     if (msg) {
-      const { type, details, color, cb } = tempMsg;
+      const { type, details, color, cb } = msg;
       uiMsg = <Message type={type} details={details} color={color} cb={cb} />;
     }
     if (loading && !uiMsg) {
@@ -145,4 +141,7 @@ const mapStateToProps = ({ auth }) => ({
   msg: auth.msg
 });
 
-export default connect(mapStateToProps)(withRouter(AuthForm));
+export default connect(
+  mapStateToProps,
+  { startRegister }
+)(withRouter(AuthForm));

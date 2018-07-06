@@ -20,6 +20,7 @@ module.exports = app => {
   // register a user and send verification email
   app.post("/api/register", async (req, res, next) => {
     const { username, email, password } = req.body;
+    console.log(username, email, password);
 
     try {
       if (!username || !email || !password) {
@@ -42,7 +43,7 @@ module.exports = app => {
           "The email address you have entered is already associated with another account."
         );
       }
-      const user = new User({ email, password });
+      const user = new User({ username, email, password });
 
       // Email verification token
       const verificationToken = crypto.randomBytes(16).toString("hex");
