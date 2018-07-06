@@ -1,5 +1,5 @@
-const generateMsgObj = (type, details, color, cb = null) => ({
-  type,
+const generateMsgObj = (heading, details, color, cb = null) => ({
+  heading,
   details,
   color,
   cb

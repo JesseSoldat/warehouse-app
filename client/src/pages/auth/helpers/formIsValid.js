@@ -15,13 +15,14 @@ const formIsValid = (form, parent) => {
   ) {
     isValid = false;
 
+    const authErrMsg = parent === "register" ? registerErrMsg : loginErrMsg;
+
     // Login & Register
-    if (!email) errObj["emailErr"] = registerErrMsg.emailErr;
-    if (email && !isEmail(email))
-      errObj["emailErr"] = registerErrMsg.validEmailErr;
+    if (!email) errObj["emailErr"] = authErrMsg.emailErr;
+    if (email && !isEmail(email)) errObj["emailErr"] = authErrMsg.validEmailErr;
     if (password && password.length < 6)
-      errObj["passwordErr"] = registerErrMsg.passwordLength;
-    if (!password) errObj["passwordErr"] = registerErrMsg.passwordErr;
+      errObj["passwordErr"] = authErrMsg.passwordLength;
+    if (!password) errObj["passwordErr"] = authErrMsg.passwordErr;
 
     // Register only
     if (parent === "register") {

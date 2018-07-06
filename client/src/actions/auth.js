@@ -41,17 +41,18 @@ export const startLogin = (user, history) => async dispatch => {
   try {
     const res = await axios.post("/api/login", user);
 
-    const { _id, tokens, msg, statusCode } = res.data;
+    const { msg, payload } = res.data;
 
-    if (_id && tokens) {
+    if (payload) {
+      const { _id, tokens } = payload;
       const token = tokens[0].token;
-      dispatch(serverMsg(buildServerMsg(res.data)));
+      dispatch(serverMsg(buildServerMsg(msg)));
       dispatch(login(_id, token));
       return history.push("/dashboard");
     }
 
-    if (statusCode === 400) {
-      return dispatch(serverMsg(buildServerMsg(res.data)));
+    if (msg.statusCode === 400) {
+      return dispatch(serverMsg(buildServerMsg(msg)));
     }
   } catch (err) {
     dispatch(

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { serverMsg } from "../actions/ui";
 
-const Message = ({ type, details, color, cb, serverMsg }) => {
+const Message = ({ heading, details, color, cb, serverMsg }) => {
   const closeMessage = () => {
     serverMsg(null);
   };
@@ -14,7 +14,7 @@ const Message = ({ type, details, color, cb, serverMsg }) => {
         className={`alert alert-${color} alert-dismissible fade show`}
         role="alert"
       >
-        <strong>{type}: </strong> {details}
+        <strong>{heading}: </strong> {details}
         <button
           onClick={closeMessage}
           type="button"

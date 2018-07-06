@@ -14,9 +14,7 @@ const PublicRoute = ({ isAuth, component: Component, ...restOfProps }) => {
         ) : (
           <div className="rootContainer">
             <NavBar />
-            <div className="container mt-3">
-              <Component {...props} />
-            </div>
+            <Component {...props} />
           </div>
         )
       }

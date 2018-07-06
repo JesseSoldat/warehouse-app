@@ -10,9 +10,9 @@ module.exports = app => {
   // get all of the users of the app
   app.get("/api/users", async (req, res, next) => {
     try {
+      throw error;
       const users = await User.find({});
       succRes(res, null, users);
-      succRes(res, users);
     } catch (err) {
       next(errRes("An error occured while trying to fetch the users"));
     }

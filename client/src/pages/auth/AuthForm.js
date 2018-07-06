@@ -28,7 +28,7 @@ class AuthForm extends Component {
     const query = parse(this.props.location.search.substr(1));
     if (query.verify) {
       this.props.serverMsg({
-        type: "Server Info",
+        heading: "Server Info",
         details: "Your account has been verified. Please login!",
         color: "info",
         cb: null
@@ -37,17 +37,13 @@ class AuthForm extends Component {
     // An error occured while trying to verfiy email
     if (query.verifyErr) {
       this.props.serverMsg({
-        type: "Server Error",
+        heading: "Server Error",
         details:
           "An error occured while trying to verify your account. Try to resend the email verification!",
         color: "danger",
         cb: null
       });
     }
-  }
-
-  componentWillUnmount() {
-    // this.props.serverMsg(null);
   }
 
   onChange = e => {
@@ -108,10 +104,10 @@ class AuthForm extends Component {
     let content, uiMsg;
 
     if (msg) {
-      const { type, details, color, cb, action } = msg;
+      const { heading, details, color, cb, action } = msg;
       uiMsg = (
         <Message
-          type={type}
+          heading={heading}
           details={details}
           color={color}
           cb={cb}
