@@ -7,7 +7,7 @@ export const serverMsg = (msg = null) => ({
   loading: false
 });
 
-export const loading = isLoading => ({
+export const loading = loading => ({
   type: LOADING,
-  isLoading
+  loading
 });

@@ -11,7 +11,7 @@ module.exports = app => {
     limit = parseInt(limit, 10);
 
     try {
-      throw error;
+      // throw error;
       const [products, count] = await Promise.all([
         Product.find({})
           .skip(skip)

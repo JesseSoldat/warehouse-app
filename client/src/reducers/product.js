@@ -11,12 +11,11 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-  const { type } = action;
+  const { type, products, count, limit, skip } = action;
   switch (type) {
     case PRODUCTS_FETCH_ALL:
-      console.log("PRODUCTS_FETCH_ALL");
-
-      return { ...state };
+      console.log("PRODUCTS_FETCH_ALL", products);
+      return { ...state, products, count, limit, skip };
 
     default:
       return { ...state };

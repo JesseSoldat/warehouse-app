@@ -2,13 +2,13 @@ import axios from "axios";
 
 import setAxiosHeader from "../utils/setAxiosHeader";
 import buildServerMsg from "./buildServerMsg";
-import { serverMsg, LOADING } from "./ui";
+import { serverMsg } from "./ui";
 export const AUTH_LOGIN = "AUTH_LOGIN";
 
 export const startRegister = (user, history) => async dispatch => {
   try {
     const res = await axios.post("/api/register", user);
-    const { msg, payload } = res.data;
+    const { msg } = res.data;
 
     if (res.data && res.data.msg) {
       // All Messages (error & success)
