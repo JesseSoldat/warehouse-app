@@ -11,7 +11,7 @@ const NavBar = ({ isAuth }) => {
   );
   const publicRoutes = (
     <ul className="navbar-nav ml-auto">
-      <li className="nav-item mr-2 pb-sm-3 pt-sm-3 pt-md-0 pb-md-0">
+      <li className="nav-item mr-3 pb-sm-3 pt-sm-3 pt-md-0 pb-md-0">
         <Link to="/login">
           <i className="fa fa-sign-in-alt mr-2" />
           Login
@@ -25,7 +25,28 @@ const NavBar = ({ isAuth }) => {
       </li>
     </ul>
   );
-  const privateRoutes = <ul className="navbar-nav ml-auto" />;
+  const privateRoutes = (
+    <ul className="navbar-nav ml-auto">
+      <li className="nav-item dropdown mr-3 pb-sm-3 pt-sm-3 pt-md-0 pb-md-0">
+        <Link
+          className="dropdown-toggle"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          to="/search"
+        >
+          <i className="fas fa-search mr-2" />
+          Search
+        </Link>
+        <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+          <Link className="dropdown-item" to="/products">
+            Products
+          </Link>
+        </div>
+      </li>
+    </ul>
+  );
 
   return (
     <nav className="navbar navbar-expand-md navbar-dark bg-dark">

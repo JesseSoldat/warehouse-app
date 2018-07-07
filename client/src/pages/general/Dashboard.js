@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import Heading from "../../components/Heading";
+
 const Dashboard = () => {
   return (
-    <div className="container my-3">
+    <div className="container">
       <div className="row">
-        <div className="col-12">
-          <h1 className="display-4 text-center pb-2">Dashboard</h1>
-        </div>
+        <Heading title="Dashboard" />
         <div className="col-12 d-flex flex-wrap justify-content-between my-4">
           <div
             className="card mr-1 ml-1 mb-3 col-xs-12 col-md-5 col-lg-3"
@@ -18,7 +18,7 @@ const Dashboard = () => {
                 Search & Edit Products
               </h5>
               <p className="card-text">Search and edit products here</p>
-              <Link to="/products/search">Go!</Link>
+              <Link to="/products">Go!</Link>
             </div>
           </div>
         </div>

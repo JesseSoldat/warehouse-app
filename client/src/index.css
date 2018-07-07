@@ -3,7 +3,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 /* navbar */
@@ -21,6 +21,13 @@ body {
 
 .navbar-toggler:focus {
   outline-color: white;
+}
+
+.dropdown-menu {
+  left: -60px;
+}
+.navbar .nav-item .dropdown-menu > .dropdown-item {
+  color: black;
 }
 
 /* welcomepage */

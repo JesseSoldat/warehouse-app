@@ -4,16 +4,16 @@ import { Provider } from "react-redux";
 import registerServiceWorker from "./registerServiceWorker";
 
 import "./index.css";
-import configureStore from "./store/configureStore";
 import AppRouter from "./router/AppRouter";
-// import { AUTH_LOGIN } from "./actions/auth"; // TODO not updating state BUG
+import configureStore from "./store/configureStore";
 import setAxiosHeader from "./utils/setAxiosHeader";
+import { AUTH_LOGIN } from "./actions/auth";
 
-const store = configureStore();
 const Loading = () => "loading..";
+const store = configureStore();
 
 const jsx = (
-  <Provider store={configureStore()}>
+  <Provider store={store}>
     <AppRouter />
   </Provider>
 );
@@ -34,15 +34,11 @@ const user = JSON.parse(localStorage.getItem("user"));
 
 if (user) {
   const { _id, token } = user;
-  // console.log("localStorage", _id);
-
-  // TODO this is not updating the state BUG
-  // store.dispatch({
-  //   type: AUTH_LOGIN,
-  //   _id,
-  //   token
-  // });
-
+  store.dispatch({
+    type: AUTH_LOGIN,
+    _id,
+    token
+  });
   setAxiosHeader(token);
   renderApp();
 } else {

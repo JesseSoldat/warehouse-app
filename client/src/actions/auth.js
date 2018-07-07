@@ -37,10 +37,6 @@ export const login = (_id, token) => ({
   token
 });
 
-export const initialLogin = (_id, token) => dispatch => {
-  dispatch(login(_id, token));
-};
-
 export const startLogin = (user, history) => async dispatch => {
   try {
     const res = await axios.post("/api/login", user);
