@@ -98,15 +98,18 @@ UserSchema.statics.findByCredentials = async function(email, password) {
   try {
     const user = await User.findOne({ email });
 
-    if (!user) throw new Error();
+    if (!user) return null;
 
-    return new Promise((resolve, reject) => {
+    const match = await new Promise((resolve, reject) => {
       bcrypt.compare(password, user.password, (err, matched) => {
-        matched ? resolve(user) : reject(errRes("The passwords did not match"));
+        matched ? resolve(user) : resolve(null);
       });
     });
+    console.log(match);
+
+    return match;
   } catch (err) {
-    return Promise.reject(errRes("The user was not found"));
+    return null;
   }
 };
 

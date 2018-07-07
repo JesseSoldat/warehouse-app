@@ -19,10 +19,16 @@ require("./routes/shelf")(app);
 require("./routes/shelfSpot")(app);
 
 app.use((err, req, res, next) => {
+  console.log(
+    "-------------- Error Handling Middleware ----------------------------"
+  );
   console.error(err);
-  const { msg = null, payload = null } = err;
+  console.log("-----------------------------------------------------------");
 
-  return res.status(200).send({
+  const { msg = null, payload = null } = err;
+  const statusCode = msg.statusCode || 500;
+
+  return res.status(statusCode).send({
     payload,
     msg
   });

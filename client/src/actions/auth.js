@@ -49,9 +49,7 @@ export const startLogin = (user, history) => async dispatch => {
       dispatch(serverMsg(buildServerMsg(msg)));
       dispatch(login(_id, token));
       return history.push("/dashboard");
-    }
-
-    if (msg.statusCode === 400) {
+    } else {
       return dispatch(serverMsg(buildServerMsg(msg)));
     }
   } catch (err) {

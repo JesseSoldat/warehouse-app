@@ -137,27 +137,43 @@ module.exports = app => {
   app.post("/api/login", async (req, res, next) => {
     const { email, password } = req.body;
 
-    if (!email || !password) {
-      return res.send(errRes("All form fields must be filled in."));
-    }
-
-    if (!isEmail(email)) {
-      return res.send(
-        errRes("The email address you have entered is not a valid email.")
-      );
-    }
-
     try {
+      if (!email || !password) {
+        return res
+          .status(202)
+          .send(errRes("All form fields must be filled in.", 202));
+      }
+
+      if (!isEmail(email)) {
+        return res
+          .status(202)
+          .send(
+            errRes(
+              "The email address you have entered is not a valid email.",
+              202
+            )
+          );
+      }
+
       const user = await User.findByCredentials(email, password);
+
+      if (!user) {
+        return res
+          .status(202)
+          .send(errRes("No user for this email and password.", 400));
+      }
 
       if (!user.isVerified) {
         return res.send(
           errRes(
-            "Please confirm your email first by following the link in the email."
+            "Please confirm your email first by following the link in the email.",
+            201
           )
         );
       }
+
       const token = await user.generateAuthToken();
+
       const msg = {
         msg: "Login was successful.",
         statusCode: 200
@@ -167,7 +183,7 @@ module.exports = app => {
       if (err.msg) {
         return next(err);
       }
-      errRes("An unknown error occured while trying to login.");
+      next(errRes("An unknown error occured while trying to login.", 500));
     }
   });
 
