@@ -1,7 +1,7 @@
 import React from "react";
 
 import TextInput from "../../../components/inputs/TextInput";
-import textInputFields from "./textInputFields";
+import textInputFields from "./helpers/textInputFields";
 
 const TextInputList = ({ state, cb }) => {
   return textInputFields.map((obj, i) => {

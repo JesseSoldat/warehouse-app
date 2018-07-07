@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import moment from "moment";
 
 import TextInputList from "./TextInputList";
-import resetRequiredFieldsErr from "./resetRequiredFieldsErr";
-import validateOnSubmit from "./validateOnSubmit";
+import ObjInputList from "./ObjInputList";
+import resetRequiredFieldsErr from "./helpers/resetRequiredFieldsErr";
+import validateOnSubmit from "./helpers/validateOnSubmit";
+import formatFieldValues from "./helpers/formatFieldValues";
 
 class ProductForm extends Component {
   state = {
@@ -22,21 +24,39 @@ class ProductForm extends Component {
     price: 0,
     amountOfPieces: 0,
     quantity: 1,
-    weight: 0
+    weight: 0,
+    //Array of Strings
+    productMaterial: "",
+    comments: "",
+    //Obj
+    productMeasurements: {},
+    prodHeight: 0,
+    prodWidth: 0,
+    prodLength: 0,
+    packagingMeasurements: {},
+    packHeight: 0,
+    packWidth: 0,
+    packLength: 0
   };
 
   onSubmit = e => {
     e.preventDefault();
-    const errObj = validateOnSubmit(this.state);
-    this.setState(() => errObj);
+    const { isValid, errObj } = validateOnSubmit(this.state);
+    this.setState(() => ({ ...errObj }));
+
+    if (!isValid) return;
+
+    formatFieldValues(this.state);
   };
 
   onChange = e => {
     const { name, value } = e.target;
+    console.log(name, value);
+
     const requiredField = resetRequiredFieldsErr(name);
 
     if (requiredField) {
-      return this.setState(() => ({ [name]: value, requiredFieldErr: "" }));
+      return this.setState(() => ({ [name]: value, [requiredField]: "" }));
     }
     this.setState(() => ({ [name]: value }));
   };
@@ -45,6 +65,7 @@ class ProductForm extends Component {
     return (
       <form onSubmit={this.onSubmit}>
         <TextInputList state={this.state} cb={this.onChange} />
+        <ObjInputList state={this.state} cb={this.onChange} />
         <input
           type="submit"
           className="btn btn-info btn-block mt-4"
