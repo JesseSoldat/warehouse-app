@@ -113,16 +113,7 @@ class AuthForm extends Component {
     let content, uiMsg;
 
     if (msg) {
-      const { heading, details, color, cb, action } = msg;
-      uiMsg = (
-        <Message
-          heading={heading}
-          details={details}
-          color={color}
-          cb={cb}
-          action={action}
-        />
-      );
+      uiMsg = <Message msg={msg} />;
     }
     if (loading && !uiMsg) {
       content = <Spinner />;

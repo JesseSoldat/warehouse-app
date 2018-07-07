@@ -23,7 +23,7 @@ export const startRegister = (user, history) => async dispatch => {
     dispatch(
       serverMsg(
         buildServerMsg({
-          msg: "Something went wrong while posting the data",
+          msg: "Something went wrong while trying to register.",
           statusCode: 500
         })
       )
@@ -85,6 +85,13 @@ export const startResendVerification = email => async dispatch => {
       dispatch(serverMsg(buildServerMsg(msg)));
     }
   } catch (err) {
-    console.log(err);
+    dispatch(
+      serverMsg(
+        buildServerMsg({
+          msg: "Something went wrong while resending the verification.",
+          statusCode: 500
+        })
+      )
+    );
   }
 };

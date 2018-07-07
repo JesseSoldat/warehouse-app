@@ -11,13 +11,14 @@ module.exports = app => {
     limit = parseInt(limit, 10);
 
     try {
+      throw error;
       const [products, count] = await Promise.all([
         Product.find({})
           .skip(skip)
           .limit(limit),
-        Product.find().count()
+        Product.find().countDocuments()
       ]);
-      succRes(res, { products, count, skip, limit });
+      succRes(res, null, { products, count, skip, limit });
     } catch (err) {
       next(errRes(errMsg("fetch", "products")));
     }
