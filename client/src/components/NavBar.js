@@ -45,6 +45,25 @@ const NavBar = ({ isAuth }) => {
           </Link>
         </div>
       </li>
+
+      <li className="nav-item dropdown mr-3 pb-sm-3 pb-md-0">
+        <Link
+          className="dropdown-toggle"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          to="/create"
+        >
+          <i className="fas fa-plus mr-2" />
+          Create
+        </Link>
+        <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+          <Link className="dropdown-item" to="/products/create">
+            New Product
+          </Link>
+        </div>
+      </li>
     </ul>
   );
 

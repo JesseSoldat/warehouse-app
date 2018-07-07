@@ -1,7 +1,20 @@
 import React from "react";
 
-const Paginator = ({ skip, limit, count }) => {
-  const navigate = direction => {};
+const Paginator = ({ page, skip, limit, count, getProductsQuery }) => {
+  const goBack = () => {
+    if (skip === 0) return;
+    const newPage = page - 1;
+    // load previous page from server
+    getProductsQuery();
+  };
+
+  const goFoward = () => {
+    if (skip + limit > count) return;
+    const newPage = page + 1;
+    // load previous page from server
+    getProductsQuery();
+  };
+
   const renderBtn = direction => {
     const text = direction === "left" ? "Previous" : "Next";
     const symbol =
@@ -20,7 +33,7 @@ const Paginator = ({ skip, limit, count }) => {
         <a
           className="page-link"
           aria-label={text}
-          onClick={() => navigate(direction)}
+          onClick={direction === "left" ? goBack : goFoward}
         >
           <span aria-hidden="true">{symbol}</span>
           <span className="sr-only">{text}</span>
@@ -42,7 +55,7 @@ const Paginator = ({ skip, limit, count }) => {
           <ul className="pagination">
             {leftBtn}
             <li className="page-item">
-              <a className="page-link">{skip}</a>
+              <a className="page-link">{page}</a>
             </li>
             {rightBtn}
           </ul>

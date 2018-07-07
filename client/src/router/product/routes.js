@@ -3,9 +3,16 @@ import React from "react";
 import PrivateRoute from "../PrivateRoute";
 
 import Products from "../../pages/product/products/Products";
+import CreateProduct from "../../pages/product/form/CreateProduct";
 
 const ProductRoutes = [
-  <PrivateRoute key="products" path="/products" component={Products} exact />
+  <PrivateRoute key="products" path="/products" component={Products} exact />,
+  <PrivateRoute
+    key="create-product"
+    path="/products/create"
+    component={CreateProduct}
+    exact
+  />
 ];
 
 export default ProductRoutes;

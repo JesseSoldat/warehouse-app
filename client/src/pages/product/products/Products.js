@@ -11,10 +11,30 @@ import { startGetProducts } from "../../../actions/product";
 
 class Products extends Component {
   componentDidMount() {
-    this.props.startGetProducts();
+    this.getProducts();
   }
+
+  getProducts = () => {
+    const { skip, limit } = this.props;
+    this.props.startGetProducts(skip, limit);
+  };
+
+  getProductsQuery = () => {
+    console.log("query");
+  };
+
   render() {
-    const { msg, loading, products } = this.props;
+    const {
+      msg,
+      loading,
+      products,
+      page,
+      count,
+      filteredCount,
+      skip,
+      limit
+    } = this.props;
+
     let content, uiMsg;
 
     if (msg) {
@@ -33,7 +53,13 @@ class Products extends Component {
 
         <div className="row">
           <div className="col-12">
-            <Paginator page="1" skip="2" limit="10" count="13" />
+            <Paginator
+              page={page}
+              skip={skip}
+              limit={limit}
+              count={count}
+              getProductsQuery={this.getProductsQuery}
+            />
           </div>
         </div>
 
