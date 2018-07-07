@@ -6,8 +6,6 @@ const generateMsgObj = (heading, details, color, cb = null) => ({
 });
 
 const buildServerMsg = ({ msg, statusCode }) => {
-  console.log("buildServerMsg", msg, statusCode);
-
   switch (statusCode) {
     case 200:
       return generateMsgObj("Success Info", msg, "success");

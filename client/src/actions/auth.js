@@ -37,6 +37,10 @@ export const login = (_id, token) => ({
   token
 });
 
+export const initialLogin = (_id, token) => dispatch => {
+  dispatch(login(_id, token));
+};
+
 export const startLogin = (user, history) => async dispatch => {
   try {
     const res = await axios.post("/api/login", user);
@@ -46,6 +50,12 @@ export const startLogin = (user, history) => async dispatch => {
     if (payload) {
       const { _id, tokens } = payload;
       const token = tokens[0].token;
+
+      // axios headers
+      setAxiosHeader(token);
+      // set user to local storage
+      localStorage.setItem("user", JSON.stringify({ _id, token }));
+
       dispatch(serverMsg(buildServerMsg(msg)));
       dispatch(login(_id, token));
       return history.push("/dashboard");

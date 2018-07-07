@@ -105,7 +105,6 @@ UserSchema.statics.findByCredentials = async function(email, password) {
         matched ? resolve(user) : resolve(null);
       });
     });
-    console.log(match);
 
     return match;
   } catch (err) {

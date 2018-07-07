@@ -21,31 +21,41 @@ module.exports = app => {
   app.post("/api/register", async (req, res, next) => {
     const { username, email, password } = req.body;
 
+    if (!username || !email || !password) {
+      return res
+        .status(202)
+        .send(errRes("All form fields must be filled in.", 202));
+    }
+
+    if (!isEmail(email)) {
+      return res
+        .status(202)
+        .send(
+          errRes(
+            "The email address you have entered is not a valid email.",
+            202
+          )
+        );
+    }
+
+    if (password.length < 6) {
+      return res
+        .status(202)
+        .send(errRes("The password must be at least 6 characters longs.", 202));
+    }
+
     try {
-      if (!username || !email || !password) {
-        return res.send(errRes("All form fields must be filled in."));
-      }
-
-      if (!isEmail(email)) {
-        return res.send(
-          errRes("The email address you have entered is not a valid email.")
-        );
-      }
-
-      if (password.length < 6) {
-        return res.send(
-          errRes("The password must be at least 6 characters longs.")
-        );
-      }
-
       const haveUser = await User.findOne({ email });
+
       if (haveUser) {
         return res.send(
           errRes(
-            "The email address you have entered is already associated with another account."
+            "The email address you have entered is already associated with another account.",
+            400
           )
         );
       }
+
       const user = new User({ username, email, password });
 
       // Email verification token
@@ -69,7 +79,7 @@ module.exports = app => {
       if (err.msg) {
         return next(err);
       }
-      next(errRes("An error occured while trying to register."));
+      next(errRes("An error occured while trying to register.", 500));
     }
   });
 
@@ -78,6 +88,7 @@ module.exports = app => {
     const { token } = req.params;
     try {
       if (!token) throw new Error();
+
       const user = await User.findOne({ "verificationToken.token": token });
 
       if (!user) throw new Error();
@@ -95,16 +106,17 @@ module.exports = app => {
   app.post("/api/resendVerification", async (req, res, next) => {
     const { email } = req.body;
 
+    if (!isEmail(email)) {
+      return res.send(
+        errRes("The email address you have entered is not a valid email.", 202)
+      );
+    }
+
     try {
-      if (!isEmail(email)) {
-        return res.send(
-          errRes("The email address you have entered is not a valid email.")
-        );
-      }
       const user = await User.findOne({ email });
 
       if (!user) {
-        return res.send(errRes("Unable to find a user with that email."));
+        return res.send(errRes("Unable to find a user with that email.", 400));
       }
 
       // Info
@@ -137,24 +149,24 @@ module.exports = app => {
   app.post("/api/login", async (req, res, next) => {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+      return res
+        .status(202)
+        .send(errRes("All form fields must be filled in.", 202));
+    }
+
+    if (!isEmail(email)) {
+      return res
+        .status(202)
+        .send(
+          errRes(
+            "The email address you have entered is not a valid email.",
+            202
+          )
+        );
+    }
+
     try {
-      if (!email || !password) {
-        return res
-          .status(202)
-          .send(errRes("All form fields must be filled in.", 202));
-      }
-
-      if (!isEmail(email)) {
-        return res
-          .status(202)
-          .send(
-            errRes(
-              "The email address you have entered is not a valid email.",
-              202
-            )
-          );
-      }
-
       const user = await User.findByCredentials(email, password);
 
       if (!user) {
@@ -178,7 +190,7 @@ module.exports = app => {
         msg: "Login was successful.",
         statusCode: 200
       };
-      res.header("x-auth", token).send({ user, msg });
+      res.header("x-auth", token).send({ payload: user, msg });
     } catch (err) {
       if (err.msg) {
         return next(err);

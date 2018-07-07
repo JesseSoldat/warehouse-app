@@ -7,9 +7,10 @@ const initialState = {
 
 export default (state = initialState, action) => {
   const { type, _id, token } = action;
+
   switch (type) {
     case AUTH_LOGIN:
-      console.log("AUTH_LOGIN", action);
+      // console.log("AUTH_LOGIN reducer", _id);
       return { ...state, _id, token };
 
     default:

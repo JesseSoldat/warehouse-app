@@ -97,7 +97,7 @@ class AuthForm extends Component {
   };
 
   render() {
-    const { loading, msg, parent } = this.props;
+    const { loading, msg, parent, auth, ui } = this.props;
 
     const {
       username,
@@ -238,6 +238,8 @@ class AuthForm extends Component {
 }
 
 const mapStateToProps = ({ ui, auth }) => ({
+  auth: auth,
+  ui: ui,
   loading: ui.loading,
   msg: ui.msg
 });
