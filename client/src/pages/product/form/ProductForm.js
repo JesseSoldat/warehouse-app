@@ -40,6 +40,7 @@ class ProductForm extends Component {
     packLength: 0,
     //Ref
     producerId: "", //producer model id
+    selectedOption: "",
     customerIds: [] //customer model ids
   };
 
@@ -67,7 +68,9 @@ class ProductForm extends Component {
     this.setState(() => ({ [name]: value }));
   };
 
-  onSelect = e => {};
+  onSelect = selectedOption => {
+    this.setState(() => ({ selectedOption }));
+  };
 
   render() {
     const { customerOptions, producerOptions } = this.props;
@@ -82,14 +85,16 @@ class ProductForm extends Component {
     return (
       <form onSubmit={this.onSubmit}>
         <TextInputList state={this.state} cb={this.onChange} />
-        <ObjInputList state={this.state} cb={this.onChange} />
         <SelectField
           options={producerOptions}
           label="Producer"
           name="producerName"
-          selectedId={producerId}
+          selectedId={producerId} // edit flow start with this id
           cb={this.onSelect}
+          selectedOption={this.state.selectedOption}
         />
+        <ObjInputList state={this.state} cb={this.onChange} />
+
         <input
           type="submit"
           className="btn btn-info btn-block mt-4"

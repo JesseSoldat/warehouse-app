@@ -51,3 +51,22 @@ body {
 .dropTarget:hover {
   outline-style: dotted;
 }
+
+/* react-select  */
+.Select-control {
+  height: 45px;
+}
+.Select-placeholder {
+  line-height: 46px;
+}
+.Select-value {
+  line-height: 46px !important;
+}
+
+.Select-value-label {
+  line-height: 46px;
+}
+
+.Select-input {
+  height: 46px;
+}

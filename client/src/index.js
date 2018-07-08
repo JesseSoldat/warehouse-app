@@ -3,7 +3,9 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import registerServiceWorker from "./registerServiceWorker";
 
+import "react-select/dist/react-select.css";
 import "./index.css";
+
 import AppRouter from "./router/AppRouter";
 import configureStore from "./store/configureStore";
 import setAxiosHeader from "./utils/setAxiosHeader";
