@@ -3,16 +3,16 @@ import { connect } from "react-redux";
 
 import { serverMsg } from "../actions/ui";
 
-const Message = ({ uiMsg, cb = null, serverMsg }) => {
+const Message = ({ uiMsg, serverMsg, cb = null }) => {
   const closeMessage = () => {
     serverMsg(null);
   };
 
   const showMsgContainer = (
     <div
-      className="row mt-3"
+      className="row mt-1"
       id="showMsgContainer"
-      style={{ height: "60px" }}
+      style={{ height: "70px" }}
     />
   );
 
@@ -23,7 +23,7 @@ const Message = ({ uiMsg, cb = null, serverMsg }) => {
       const showMsg = (
         <div className="row">
           <div className="col-xs-12 col-md-8 mx-auto">
-            <div className="mt-3">
+            <div className="mt-1">
               <div
                 className={`alert alert-${color} alert-dismissible fade show`}
                 role="alert"

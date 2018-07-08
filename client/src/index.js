@@ -8,6 +8,8 @@ import AppRouter from "./router/AppRouter";
 import configureStore from "./store/configureStore";
 import setAxiosHeader from "./utils/setAxiosHeader";
 import { AUTH_LOGIN } from "./actions/auth";
+import decodeToken from "./utils/decodeToken";
+import dateToTimestamp from "./utils/dateToTimeStamp";
 
 const Loading = () => "loading..";
 const store = configureStore();
@@ -34,13 +36,28 @@ const user = JSON.parse(localStorage.getItem("user"));
 
 if (user) {
   const { _id, token } = user;
-  store.dispatch({
-    type: AUTH_LOGIN,
-    _id,
-    token
-  });
-  setAxiosHeader(token);
-  renderApp();
+
+  console.log(decodeToken(token));
+  const decodedToken = decodeToken(token);
+  const { expires } = decodedToken.payload;
+  const now = dateToTimestamp(new Date(), "obj");
+  const exp = dateToTimestamp(expires, "str");
+  console.log("now", now);
+  console.log("exp", exp);
+
+  if (exp < now) {
+    setAxiosHeader(null);
+    localStorage.removeItem("user");
+    renderApp();
+  } else {
+    store.dispatch({
+      type: AUTH_LOGIN,
+      _id,
+      token
+    });
+    setAxiosHeader(token);
+    renderApp();
+  }
 } else {
   setAxiosHeader(null);
   renderApp();

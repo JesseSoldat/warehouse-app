@@ -209,12 +209,10 @@ module.exports = app => {
       await user.save();
       succRes(res, null, null);
     } catch (err) {
-      console.log(err);
-
       if (err.msg) {
         return next(err);
       }
-      next(errRes("An error occured while logging out"));
+      next(errRes("An error occured while logging out."));
     }
   });
 };

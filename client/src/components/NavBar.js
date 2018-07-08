@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { startLogout } from "../actions/auth";
@@ -78,7 +78,7 @@ const NavBar = ({ isAuth, startLogout, history }) => {
 
   const onStartLogout = e => {
     e.preventDefault();
-    startLogout(history);
+    startLogout();
   };
 
   return (
@@ -108,4 +108,4 @@ const mapStateToProps = ({ auth }) => ({
 export default connect(
   mapStateToProps,
   { startLogout }
-)(withRouter(NavBar));
+)(NavBar);

@@ -64,7 +64,7 @@ class AuthForm extends Component {
 
   loginFlow = () => {
     const { email, password } = this.state;
-    this.props.startLogin({ email, password }, this.props.history);
+    this.props.startLogin({ email, password });
   };
 
   onSubmit = e => {

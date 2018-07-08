@@ -38,7 +38,7 @@ export const login = (_id, token) => ({
   token
 });
 
-export const startLogin = (user, history) => async dispatch => {
+export const startLogin = user => async dispatch => {
   try {
     const res = await axios.post("/api/login", user);
 
@@ -55,7 +55,6 @@ export const startLogin = (user, history) => async dispatch => {
 
       dispatch(serverMsg(buildServerMsg(msg)));
       dispatch(login(_id, token));
-      // return history.push("/dashboard");
     } else {
       return dispatch(serverMsg(buildServerMsg(msg)));
     }
@@ -97,12 +96,19 @@ export const startResendVerification = email => async dispatch => {
   }
 };
 
-export const startLogout = history => async dispatch => {
+export const startLogout = () => async dispatch => {
   try {
     await axios.delete("/api/logout");
     localStorage.removeItem("user");
     dispatch({ type: AUTH_LOGOUT, _id: null, token: null });
   } catch (err) {
-    console.log(err);
+    dispatch(
+      serverMsg(
+        buildServerMsg({
+          msg: "Something went wrong while login out.",
+          statusCode: 500
+        })
+      )
+    );
   }
 };

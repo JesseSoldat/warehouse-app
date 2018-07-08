@@ -1,8 +1,7 @@
-const generateMsgObj = (heading, details, color, cb = null) => ({
+const generateMsgObj = (heading, details, color) => ({
   heading,
   details,
-  color,
-  cb
+  color
 });
 
 const buildServerMsg = ({ msg, statusCode }) => {
