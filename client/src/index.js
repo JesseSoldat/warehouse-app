@@ -8,8 +8,8 @@ import AppRouter from "./router/AppRouter";
 import configureStore from "./store/configureStore";
 import setAxiosHeader from "./utils/setAxiosHeader";
 import { AUTH_LOGIN } from "./actions/auth";
-import decodeToken from "./utils/decodeToken";
-import dateToTimestamp from "./utils/dateToTimeStamp";
+import isTokenExp from "./utils/isTokenExp";
+import deleteExpToken from "./utils/deleteExpToken";
 
 const Loading = () => "loading..";
 const store = configureStore();
@@ -37,17 +37,13 @@ const user = JSON.parse(localStorage.getItem("user"));
 if (user) {
   const { _id, token } = user;
 
-  console.log(decodeToken(token));
-  const decodedToken = decodeToken(token);
-  const { expires } = decodedToken.payload;
-  const now = dateToTimestamp(new Date(), "obj");
-  const exp = dateToTimestamp(expires, "str");
-  console.log("now", now);
-  console.log("exp", exp);
-
-  if (exp < now) {
-    setAxiosHeader(null);
+  if (isTokenExp(token)) {
+    console.log("Token is expired");
     localStorage.removeItem("user");
+    setAxiosHeader(null);
+
+    deleteExpToken(_id, token);
+
     renderApp();
   } else {
     store.dispatch({

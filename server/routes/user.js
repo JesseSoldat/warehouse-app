@@ -215,4 +215,18 @@ module.exports = app => {
       next(errRes("An error occured while logging out."));
     }
   });
+
+  // delete an expired token
+  app.post("/api/token/:userId", async (req, res, next) => {
+    const { userId } = req.params;
+    const { token } = req.body;
+    try {
+      const user = await User.findByToken(token);
+      user.tokens = user.tokens.filter(tokenObj => tokenObj.token !== token);
+      await user.save();
+      succRes(res, null, null);
+    } catch (err) {
+      next(errRes("An error occured while deleting the token."));
+    }
+  });
 };
