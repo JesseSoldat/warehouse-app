@@ -1,16 +1,15 @@
 import decodeToken from "./decodeToken";
-import dateToTimestamp from "./dateToTimestamp";
 
 const isTokenExp = token => {
   let isTokenExp = false;
   const decodedToken = decodeToken(token);
   const { expires } = decodedToken.payload;
-  const now = dateToTimestamp(new Date(), "obj");
-  const exp = dateToTimestamp(expires, "str");
-  // console.log("now", now);
-  // console.log("exp", exp);
+  const now = new Date().getTime();
 
-  if (exp < now) isTokenExp = true;
+  // console.log("now", now);
+  // console.log("expires", expires);
+
+  if (expires < now) isTokenExp = true;
 
   return isTokenExp;
 };

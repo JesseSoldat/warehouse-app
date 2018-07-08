@@ -3,6 +3,7 @@ import moment from "moment";
 
 import TextInputList from "./TextInputList";
 import ObjInputList from "./ObjInputList";
+import SelectField from "./SelectField";
 import resetRequiredFieldsErr from "./helpers/resetRequiredFieldsErr";
 import validateOnSubmit from "./helpers/validateOnSubmit";
 import formatFieldValues from "./helpers/formatFieldValues";
@@ -36,7 +37,10 @@ class ProductForm extends Component {
     packagingMeasurements: {},
     packHeight: 0,
     packWidth: 0,
-    packLength: 0
+    packLength: 0,
+    //Ref
+    producerId: "", //producer model id
+    customerIds: [] //customer model ids
   };
 
   onSubmit = e => {
@@ -63,7 +67,11 @@ class ProductForm extends Component {
     this.setState(() => ({ [name]: value }));
   };
 
+  onSelect = e => {};
+
   render() {
+    const { customerOptions, producerOptions } = this.props;
+    const { producerId } = this.state;
     // when a message from the server arrives let the user resubmit the form
     if (this.props.msg) {
       if (this.refs && "submitBtn" in this.refs) {
@@ -75,6 +83,13 @@ class ProductForm extends Component {
       <form onSubmit={this.onSubmit}>
         <TextInputList state={this.state} cb={this.onChange} />
         <ObjInputList state={this.state} cb={this.onChange} />
+        <SelectField
+          options={producerOptions}
+          label="Producer"
+          name="producerName"
+          selectedId={producerId}
+          cb={this.onSelect}
+        />
         <input
           type="submit"
           className="btn btn-info btn-block mt-4"

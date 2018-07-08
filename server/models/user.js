@@ -5,9 +5,10 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 const { errRes } = require("../utils/serverResponses");
+const { milliFromNow, daysFromNow } = require("../utils/timeHelpers");
 
-// const tokenExpirationTime = 30 * 1000; // 30 seconds
-const tokenExpirationTime = 604800; // 7 days;
+const tokenExpirationTime = 30 * 1000; // 30 seconds TESTING
+const tokenExpirationDays = 7; // 7 days; USE this for real token
 const verificationExpirationTime = 43200; // 12 hours
 
 const UserSchema = new Schema(
@@ -120,11 +121,9 @@ UserSchema.methods.generateAuthToken = async function() {
 
   const access = "auth";
 
-  const timeFromNow = (date, mill) => {
-    return new Date(date.getTime() + mill);
-  };
-
-  const expires = timeFromNow(new Date(), tokenExpirationTime);
+  // -- Create an expiration time by milliseconds OR days for the token --
+  // const expires = milliFromNow(tokenExpirationTime);
+  const expires = daysFromNow(new Date(), tokenExpirationDays);
 
   const token = jwt
     .sign(
@@ -159,7 +158,7 @@ UserSchema.statics.findByToken = async function(token) {
   let decodedToken;
   try {
     decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
-    console.log("findByToken -- decodedToken", decodedToken);
+    // console.log("findByToken -- decodedToken", decodedToken);
 
     return User.findOne({
       _id: decodedToken._id,

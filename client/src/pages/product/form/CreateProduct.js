@@ -18,13 +18,19 @@ class CreateProduct extends Component {
   };
 
   render() {
-    const { msg, loading } = this.props;
+    const { msg, loading, customers, producers } = this.props;
     let content;
 
     if (loading) {
       content = <Spinner />;
     } else {
-      content = <ProductForm msg={msg} />;
+      content = (
+        <ProductForm
+          msg={msg}
+          customerOptions={customers}
+          producerOptions={producers}
+        />
+      );
     }
 
     return (
@@ -39,9 +45,11 @@ class CreateProduct extends Component {
   }
 }
 
-const mapStateToProps = ({ ui }) => ({
+const mapStateToProps = ({ ui, customer, producer }) => ({
   msg: ui.msg,
-  loading: ui.loading
+  loading: ui.loading,
+  producers: producer.producers, // select options
+  customers: customer.customers // select options
 });
 
 export default connect(
