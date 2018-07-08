@@ -7,7 +7,7 @@ const { succRes, errRes, errMsg } = require("../utils/serverResponses");
 const mergeObjFields = require("../utils/mergeObjFields");
 
 module.exports = app => {
-  app.get("/api/products", async (req, res, next) => {
+  app.get("/api/products", isAuth, async (req, res, next) => {
     let { skip = 0, limit = 20 } = req.query;
     skip = parseInt(skip, 10);
     limit = parseInt(limit, 10);
@@ -26,7 +26,7 @@ module.exports = app => {
     }
   });
 
-  app.get("/api/products/clients", async (req, res, next) => {
+  app.get("/api/products/clients", isAuth, async (req, res, next) => {
     try {
       const [customers, producers] = await Promise.all([
         Customer.find({}),
@@ -38,7 +38,7 @@ module.exports = app => {
     }
   });
 
-  app.get("/api/products/:productId", async (req, res, next) => {
+  app.get("/api/products/:productId", isAuth, async (req, res, next) => {
     const { productId } = req.params;
     try {
       const product = await Product.findById(productId).populate(
@@ -50,7 +50,7 @@ module.exports = app => {
     }
   });
 
-  app.post("/api/products", async (req, res, next) => {
+  app.post("/api/products", isAuth, async (req, res, next) => {
     const { producerId, customerIds } = req.body;
     const product = new Product(req.body);
 
@@ -74,7 +74,7 @@ module.exports = app => {
     }
   });
 
-  app.patch("/api/products/:productId", async (req, res, next) => {
+  app.patch("/api/products/:productId", isAuth, async (req, res, next) => {
     const { productId } = req.params;
     const { producerId, customerIds } = req.body;
     const product = req.body;

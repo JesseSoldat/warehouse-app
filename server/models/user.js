@@ -6,9 +6,8 @@ const bcrypt = require("bcryptjs");
 
 const { errRes } = require("../utils/serverResponses");
 
-// 30 seconds 30 * 1000
-const tokenExpirationTime = 30 * 1000;
-//const tokenExpirationTime = 604800; // 7 days;
+// const tokenExpirationTime = 30 * 1000; // 30 seconds
+const tokenExpirationTime = 604800; // 7 days;
 const verificationExpirationTime = 43200; // 12 hours
 
 const UserSchema = new Schema(
@@ -121,7 +120,6 @@ UserSchema.methods.generateAuthToken = async function() {
 
   const access = "auth";
 
-  //tokenExpirationTime
   const timeFromNow = (date, mill) => {
     return new Date(date.getTime() + mill);
   };
@@ -140,10 +138,10 @@ UserSchema.methods.generateAuthToken = async function() {
     .toString();
 
   // remove the first token
-  if (user.tokens.length > 5) {
+  if (tokens.length > 5) {
     user.tokens.shift();
   }
-  user.tokens.push({
+  tokens.push({
     access,
     token
   });
@@ -160,11 +158,8 @@ UserSchema.statics.findByToken = async function(token) {
   const User = this;
   let decodedToken;
   try {
-    console.log("findByToken-------------------------------");
-    // console.log(token);
-
     decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
-    console.log("decodedToken", decodedToken);
+    console.log("findByToken -- decodedToken", decodedToken);
 
     return User.findOne({
       _id: decodedToken._id,

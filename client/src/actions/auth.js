@@ -53,7 +53,6 @@ export const startLogin = user => async dispatch => {
       // set user to local storage
       localStorage.setItem("user", JSON.stringify({ _id, token }));
 
-      dispatch(serverMsg(buildServerMsg(msg)));
       dispatch(login(_id, token));
     } else {
       return dispatch(serverMsg(buildServerMsg(msg)));
@@ -105,7 +104,7 @@ export const startLogout = () => async dispatch => {
     dispatch(
       serverMsg(
         buildServerMsg({
-          msg: "Something went wrong while login out.",
+          msg: "Something went wrong while trying log out.",
           statusCode: 500
         })
       )

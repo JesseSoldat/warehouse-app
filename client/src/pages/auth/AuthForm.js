@@ -35,8 +35,7 @@ class AuthForm extends Component {
       this.props.serverMsg({
         heading: "Server Info",
         details: "Your account has been verified. Please login!",
-        color: "info",
-        cb: null
+        color: "info"
       });
     }
     // An error occured while trying to verfiy email
@@ -45,9 +44,15 @@ class AuthForm extends Component {
         heading: "Server Error",
         details:
           "An error occured while trying to verify your account. Try to resend the email verification!",
-        color: "danger",
-        cb: null
+        color: "danger"
       });
+    }
+  }
+
+  componentWillUnmount() {
+    const { parent, serverMsg } = this.props;
+    if (parent === "login") {
+      serverMsg(null);
     }
   }
 

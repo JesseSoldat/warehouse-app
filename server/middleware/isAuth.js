@@ -8,8 +8,6 @@ const isAuth = async (req, res, next) => {
     if (!token) throw errRes("A token is required for this route");
 
     const user = await User.findByToken(token);
-    console.log("isAuth middleware");
-    console.log("email", user && user.email);
 
     if (!user) throw errRes("A user with that token was not found");
 
@@ -17,6 +15,10 @@ const isAuth = async (req, res, next) => {
     req.token = token;
     next();
   } catch (err) {
+    console.log("isAuth middleware Error-----------------");
+    console.log(err);
+    console.log("-----------------------------------------");
+
     if (err.msg) {
       return next(err);
     }

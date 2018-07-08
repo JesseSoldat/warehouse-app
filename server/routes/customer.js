@@ -3,7 +3,7 @@ const isAuth = require("../middleware/isAuth");
 const { succRes, errRes } = require("../utils/serverResponses");
 
 module.exports = app => {
-  app.post("/api/customers", async (req, res, next) => {
+  app.post("/api/customers", isAuth, async (req, res, next) => {
     const customer = new Customer(req.body);
     try {
       await customer.save();

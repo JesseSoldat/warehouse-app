@@ -8,6 +8,8 @@ import AppRouter from "./router/AppRouter";
 import configureStore from "./store/configureStore";
 import setAxiosHeader from "./utils/setAxiosHeader";
 import { AUTH_LOGIN } from "./actions/auth";
+import { NEW_MSG } from "./actions/ui";
+import buildServerMsg from "./actions/buildServerMsg";
 import isTokenExp from "./utils/isTokenExp";
 import deleteExpToken from "./utils/deleteExpToken";
 
@@ -38,9 +40,16 @@ if (user) {
   const { _id, token } = user;
 
   if (isTokenExp(token)) {
-    console.log("Token is expired");
     localStorage.removeItem("user");
     setAxiosHeader(null);
+    store.dispatch({
+      type: NEW_MSG,
+      msg: buildServerMsg({
+        msg: "Your session expired please login again.",
+        statusCode: 201
+      }),
+      loading: false
+    });
 
     deleteExpToken(_id, token);
 
