@@ -41,7 +41,13 @@ export const startGetClients = () => async dispatch => {
     const { customers, producers } = res.data.payload;
     dispatch(getCustomers(customers));
     dispatch(getProducers(producers));
+    dispatch(loading(false));
   } catch (err) {
-    console.log(err);
+    serverMsg(
+      buildServerMsg({
+        msg: "Something went wrong while trying to get the form data",
+        statusCode: 500
+      })
+    );
   }
 };

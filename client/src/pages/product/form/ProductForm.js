@@ -41,18 +41,20 @@ class ProductForm extends Component {
 
   onSubmit = e => {
     e.preventDefault();
+    this.refs.submitBtn.setAttribute("disabled", "disabled");
     const { isValid, errObj } = validateOnSubmit(this.state);
     this.setState(() => ({ ...errObj }));
 
-    if (!isValid) return;
+    if (!isValid) {
+      this.refs.submitBtn.removeAttribute("disabled");
+      return;
+    }
 
     formatFieldValues(this.state);
   };
 
   onChange = e => {
     const { name, value } = e.target;
-    console.log(name, value);
-
     const requiredField = resetRequiredFieldsErr(name);
 
     if (requiredField) {
@@ -62,6 +64,13 @@ class ProductForm extends Component {
   };
 
   render() {
+    // when a message from the server arrives let the user resubmit the form
+    if (this.props.msg) {
+      if (this.refs && "submitBtn" in this.refs) {
+        this.refs.submitBtn.removeAttribute("disabled");
+      }
+    }
+
     return (
       <form onSubmit={this.onSubmit}>
         <TextInputList state={this.state} cb={this.onChange} />

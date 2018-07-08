@@ -2,7 +2,9 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
-const NavBar = ({ isAuth }) => {
+import { startLogout } from "../actions/auth";
+
+const NavBar = ({ isAuth, startLogout, history }) => {
   const brandRoute = isAuth ? "/dashboard" : "/";
   const brand = (
     <Link className="navbar-brand" to={brandRoute}>
@@ -64,8 +66,20 @@ const NavBar = ({ isAuth }) => {
           </Link>
         </div>
       </li>
+
+      <li className="nav-item mr-3 pb-sm-3 pb-md-0">
+        <a href="" onClick={e => onStartLogout(e)}>
+          <i className="fas fa-sign-out-alt mr-2" />
+          Logout
+        </a>
+      </li>
     </ul>
   );
+
+  const onStartLogout = e => {
+    e.preventDefault();
+    startLogout(history);
+  };
 
   return (
     <nav className="navbar navbar-expand-md navbar-dark bg-dark">
@@ -91,4 +105,7 @@ const mapStateToProps = ({ auth }) => ({
   isAuth: !!auth._id
 });
 
-export default connect(mapStateToProps)(withRouter(NavBar));
+export default connect(
+  mapStateToProps,
+  { startLogout }
+)(withRouter(NavBar));

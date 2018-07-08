@@ -19,21 +19,17 @@ class CreateProduct extends Component {
 
   render() {
     const { msg, loading } = this.props;
-    let content, uiMsg;
-
-    if (msg) {
-      uiMsg = <Message msg={msg} />;
-    }
+    let content;
 
     if (loading) {
       content = <Spinner />;
     } else {
-      content = <ProductForm />;
+      content = <ProductForm msg={msg} />;
     }
 
     return (
       <div className="container">
-        {uiMsg}
+        <Message />
         <Heading title="Create Product" />
         <div className="row">
           <div className="col-xs-12 col-md-8 mx-auto">{content}</div>

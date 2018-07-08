@@ -110,16 +110,13 @@ class AuthForm extends Component {
       confirmPasswordErr
     } = this.state;
 
-    let content, uiMsg;
+    let content;
 
-    if (msg) {
-      uiMsg = <Message msg={msg} />;
-    }
-    if (loading && !uiMsg) {
+    if (loading) {
       content = <Spinner />;
     } else {
       content = (
-        <div>
+        <div className="col-md-8 mx-auto">
           <form onSubmit={this.onSubmit} noValidate>
             {parent === "register" && (
               <TextInput
@@ -216,9 +213,16 @@ class AuthForm extends Component {
       );
     }
 
+    // when a message from the server arrives let the user resubmit the form
+    if (msg) {
+      if (this.refs && "submitBtn" in this.refs) {
+        this.refs.submitBtn.removeAttribute("disabled");
+      }
+    }
+
     return (
       <div>
-        {uiMsg}
+        <Message />
         <h2 className="text-center display-4">
           {capitalizeFirstLetter(parent)}
         </h2>

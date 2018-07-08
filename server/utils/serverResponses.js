@@ -1,4 +1,4 @@
-const succRes = (res, msg, payload = null) =>
+const succRes = (res, msg = null, payload = null) =>
   res.status(200).send({ msg, payload });
 
 const errRes = (

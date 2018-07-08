@@ -13,7 +13,8 @@ const registerErrMsg = {
 const loginErrMsg = {
   emailErr: generateMsg("email", "login"),
   validEmailErr: "Please enter a valid email",
-  passwordErr: generateMsg("password", "login")
+  passwordErr: generateMsg("password", "login"),
+  passwordLength: "Password length must be at least six characters"
 };
 
 export { registerErrMsg, loginErrMsg };

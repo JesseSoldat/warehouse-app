@@ -4,6 +4,7 @@ import setAxiosHeader from "../utils/setAxiosHeader";
 import buildServerMsg from "./buildServerMsg";
 import { serverMsg } from "./ui";
 export const AUTH_LOGIN = "AUTH_LOGIN";
+export const AUTH_LOGOUT = "AUTH_LOGOUT";
 
 export const startRegister = (user, history) => async dispatch => {
   try {
@@ -54,7 +55,7 @@ export const startLogin = (user, history) => async dispatch => {
 
       dispatch(serverMsg(buildServerMsg(msg)));
       dispatch(login(_id, token));
-      return history.push("/dashboard");
+      // return history.push("/dashboard");
     } else {
       return dispatch(serverMsg(buildServerMsg(msg)));
     }
@@ -93,5 +94,15 @@ export const startResendVerification = email => async dispatch => {
         })
       )
     );
+  }
+};
+
+export const startLogout = history => async dispatch => {
+  try {
+    await axios.delete("/api/logout");
+    localStorage.removeItem("user");
+    dispatch({ type: AUTH_LOGOUT, _id: null, token: null });
+  } catch (err) {
+    console.log(err);
   }
 };

@@ -201,13 +201,16 @@ module.exports = app => {
 
   // logout and remove the auth token
   app.delete("/api/logout", isAuth, async (req, res, next) => {
+    // isAuth middleware provides token and user
     const { token, user } = req;
 
     try {
       user.tokens = user.tokens.filter(tokenObj => tokenObj.token !== token);
       await user.save();
-      succRes(res, user);
+      succRes(res, null, null);
     } catch (err) {
+      console.log(err);
+
       if (err.msg) {
         return next(err);
       }

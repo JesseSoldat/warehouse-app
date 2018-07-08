@@ -146,16 +146,19 @@ UserSchema.statics.findByToken = async function(token) {
   const User = this;
   let decodedToken;
   try {
+    console.log("findByToken-------------------------------");
+    // console.log(token);
+
     decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
+    console.log("decodedToken", decodedToken);
+
     return User.findOne({
       _id: decodedToken._id,
       "tokens.token": token,
       "tokens.access": "auth"
     });
   } catch (err) {
-    return Promise.reject(
-      errRes("There was an error while authenticating the user")
-    );
+    return errRes("There was an error while authenticating the user");
   }
 };
 
