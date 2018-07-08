@@ -2,6 +2,8 @@ import axios from "axios";
 
 import { loading, serverMsg } from "./ui";
 import buildServerMsg from "./buildServerMsg";
+import { getProducers } from "./producer";
+import { getCustomers } from "./customer";
 
 export const PRODUCTS_FETCH_ALL = "PRODUCTS_FETCH_ALL";
 
@@ -29,5 +31,17 @@ export const startGetProducts = (skip = 0, limit = 20) => async dispatch => {
         })
       )
     );
+  }
+};
+
+export const startGetClients = () => async dispatch => {
+  dispatch(loading(true));
+  try {
+    const res = await axios.get("/api/products/clients");
+    const { customers, producers } = res.data.payload;
+    dispatch(getCustomers(customers));
+    dispatch(getProducers(producers));
+  } catch (err) {
+    console.log(err);
   }
 };

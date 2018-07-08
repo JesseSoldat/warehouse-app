@@ -5,6 +5,8 @@ import adminReducer from "../reducers/admin";
 import uiReducer from "../reducers/ui";
 import authReducer from "../reducers/auth";
 import productReducer from "../reducers/product";
+import customerReducer from "../reducers/customers";
+import producerReducer from "../reducers/producers";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -14,7 +16,9 @@ export default () => {
       admin: adminReducer,
       ui: uiReducer,
       auth: authReducer,
-      product: productReducer
+      product: productReducer,
+      customer: customerReducer,
+      producer: producerReducer
     }),
     {},
     composeEnhancers(applyMiddleware(thunk))

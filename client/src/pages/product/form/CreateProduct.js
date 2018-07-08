@@ -6,9 +6,12 @@ import Heading from "../../../components/Heading";
 import Message from "../../../components/Message";
 import Spinner from "../../../components/Spinner";
 import ProductForm from "./ProductForm";
+import { startGetClients } from "../../../actions/product";
 
 class CreateProduct extends Component {
-  componentDidMount() {}
+  componentDidMount() {
+    this.props.startGetClients();
+  }
 
   handleSubmit = form => {
     console.log("form", form);
@@ -45,4 +48,7 @@ const mapStateToProps = ({ ui }) => ({
   loading: ui.loading
 });
 
-export default connect(mapStateToProps)(withRouter(CreateProduct));
+export default connect(
+  mapStateToProps,
+  { startGetClients }
+)(withRouter(CreateProduct));

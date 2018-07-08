@@ -3,14 +3,14 @@ import React from "react";
 const Paginator = ({ page, skip, limit, count, getProductsQuery }) => {
   const goBack = () => {
     if (skip === 0) return;
-    const newPage = page - 1;
+    // const newPage = page - 1;
     // load previous page from server
     getProductsQuery();
   };
 
   const goFoward = () => {
     if (skip + limit > count) return;
-    const newPage = page + 1;
+    // const newPage = page + 1;
     // load previous page from server
     getProductsQuery();
   };

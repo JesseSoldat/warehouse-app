@@ -1,5 +1,7 @@
 const Product = require("../models/product");
 const Counter = require("../models/counter");
+const Customer = require("../models/customer");
+const Producer = require("../models/producer");
 const isAuth = require("../middleware/isAuth");
 const { succRes, errRes, errMsg } = require("../utils/serverResponses");
 const mergeObjFields = require("../utils/mergeObjFields");
@@ -21,6 +23,18 @@ module.exports = app => {
       succRes(res, null, { products, count, skip, limit });
     } catch (err) {
       next(errRes(errMsg("fetch", "products")));
+    }
+  });
+
+  app.get("/api/products/clients", async (req, res, next) => {
+    try {
+      const [customers, producers] = await Promise.all([
+        Customer.find({}),
+        Producer.find({})
+      ]);
+      succRes(res, null, { customers, producers });
+    } catch (err) {
+      next(errRes(errMsg("fetch", "form data")));
     }
   });
 

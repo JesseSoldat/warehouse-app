@@ -30,7 +30,7 @@ class Products extends Component {
       products,
       page,
       count,
-      filteredCount,
+      // filteredCount,
       skip,
       limit
     } = this.props;
