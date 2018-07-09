@@ -3,7 +3,7 @@ import moment from "moment";
 
 import TextInputList from "./TextInputList";
 import ObjInputList from "./ObjInputList";
-import SelectField from "./SelectField";
+import SelectInput from "../../../components/inputs/SelectInput";
 import resetRequiredFieldsErr from "./helpers/resetRequiredFieldsErr";
 import validateOnSubmit from "./helpers/validateOnSubmit";
 import formatFieldValues from "./helpers/formatFieldValues";
@@ -40,7 +40,6 @@ class ProductForm extends Component {
     packLength: 0,
     //Ref
     producerId: "", //producer model id
-    selectedOption: "",
     customerIds: [] //customer model ids
   };
 
@@ -69,7 +68,9 @@ class ProductForm extends Component {
   };
 
   onSelect = selectedOption => {
-    this.setState(() => ({ selectedOption }));
+    const stateName = "producerId";
+    const value = selectedOption ? selectedOption.value : "";
+    this.setState(() => ({ [stateName]: value }));
   };
 
   render() {
@@ -85,13 +86,12 @@ class ProductForm extends Component {
     return (
       <form onSubmit={this.onSubmit}>
         <TextInputList state={this.state} cb={this.onChange} />
-        <SelectField
+        <SelectInput
           options={producerOptions}
           label="Producer"
           name="producerName"
-          selectedId={producerId} // edit flow start with this id
           cb={this.onSelect}
-          selectedOption={this.state.selectedOption}
+          selectedOption={producerId}
         />
         <ObjInputList state={this.state} cb={this.onChange} />
 

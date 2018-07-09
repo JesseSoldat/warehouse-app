@@ -1,26 +1,11 @@
 import React from "react";
 import Select from "react-select";
 
-const SelectField = ({
-  options,
-  label,
-  name,
-  selectedId,
-  cb,
-  selectedOption
-}) => {
+const SelectInput = ({ options, label, name, cb, selectedOption }) => {
   const selectOptions = [];
 
   // populate select element with option elements
   options.forEach((option, i) => {
-    // Edit flow - check if an option was selected and saved before
-    if (selectedId && selectedId === option._id) {
-      return selectedOption.unshift({
-        value: option._id,
-        label: option[name]
-      });
-    }
-    // non selected options are added
     selectOptions.push({
       value: option._id,
       label: option[name]
@@ -44,4 +29,4 @@ const SelectField = ({
   return selectElement;
 };
 
-export default SelectField;
+export default SelectInput;
