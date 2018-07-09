@@ -3,7 +3,7 @@ const crypto = require("crypto");
 // models
 const User = require("../models/user");
 // helpers
-const { errMsg, serverRes } = require("../utils/serverResponses");
+const { errMsg, msgObj, serverRes } = require("../utils/serverResponses");
 // utils
 const sendMail = require("../utils/sendMail");
 const isEmail = require("../utils/isEmail");
@@ -16,10 +16,7 @@ module.exports = app => {
       const users = await User.find({});
       serverRes(res, 200, null, users);
     } catch (err) {
-      const msg = {
-        info: errMsg("fetch", "users"),
-        color: "red"
-      };
+      const msg = msgObj(errMsg("fetch", "users"), "red");
       serverRes(res, 400, msg, null);
     }
   });
@@ -29,27 +26,23 @@ module.exports = app => {
     const { username, email, password } = req.body;
 
     if (!username || !email || !password) {
-      const msg = {
-        info: "All form fields must be filled in.",
-        color: "red"
-      };
-      serverRes(res, 400, msg, null);
-      return;
+      const msg = msgObj("All form fields must be filled in.", "red");
+      return serverRes(res, 400, msg, null);
     }
 
     if (!isEmail(email)) {
-      const msg = {
-        info: "The email address you have entered is not a valid email.",
-        color: "red"
-      };
+      const msg = msgObj(
+        "The email address you have entered is not a valid email.",
+        "red"
+      );
       return serverRes(res, 400, msg, null);
     }
 
     if (password.length < 6) {
-      const msg = {
-        info: "The password must be at least 6 characters longs.",
-        color: "red"
-      };
+      const msg = msgObj(
+        "The password must be at least 6 characters long.",
+        "red"
+      );
       return serverRes(res, 400, msg, null);
     }
 
@@ -57,11 +50,10 @@ module.exports = app => {
       const haveUser = await User.findOne({ email });
 
       if (haveUser) {
-        const msg = {
-          info:
-            "The email address you have entered is already associated with another account.",
-          color: "yellow"
-        };
+        const msg = msgObj(
+          "The email address you have entered is already in use.",
+          "red"
+        );
         return serverRes(res, 400, msg, null);
       }
 
@@ -74,19 +66,13 @@ module.exports = app => {
       await user.save();
       sendMail(req, user, verificationToken, (type = "confirm"));
 
-      // Success ---------------
-      const msg = {
-        info: `A verification email has been sent to ${
-          user.email
-        }. Please verify your email before you login.`,
-        color: "blue"
-      };
+      const msg = msgObj(
+        `A verification email has been sent to ${user.email}.`,
+        "blue"
+      );
       return serverRes(res, 200, msg, null);
     } catch (err) {
-      const msg = {
-        info: "An error occured while trying to register.",
-        color: "red"
-      };
+      const msg = msgObj("An error occured while trying to register.", "red");
       return serverRes(res, 400, msg, null);
     }
   });
@@ -116,10 +102,10 @@ module.exports = app => {
     const { email } = req.body;
 
     if (!isEmail(email)) {
-      const msg = {
-        info: "The email address you have entered is not a valid email.",
-        color: "red"
-      };
+      const msg = msgObj(
+        "The email address you have entered is not a valid email.",
+        "red"
+      );
       return serverRes(res, 400, msg, null);
     }
 
@@ -127,18 +113,15 @@ module.exports = app => {
       const user = await User.findOne({ email });
 
       if (!user) {
-        const msg = {
-          info: "Unable to find a user with that email.",
-          color: "red"
-        };
+        const msg = msgObj("Unable to find a user with that email.", "red");
         return serverRes(res, 400, msg, null);
       }
 
       if (user.isVerified) {
-        const msg = {
-          info: "This account has already been verified. Please log in.",
-          color: "blue"
-        };
+        const msg = msgObj(
+          "This account has already been verified. Please log in.",
+          "blue"
+        );
         return serverRes(res, 400, msg, null);
       }
 
@@ -149,18 +132,18 @@ module.exports = app => {
 
       sendMail(req, user, verficationToken, (type = "confirm"));
 
-      const msg = {
-        info: `A verification email has been sent to ${user.email}.`,
-        color: "blue"
-      };
+      const msg = msgObj(
+        `A verification email has been sent to ${user.email}.`,
+        "blue"
+      );
       serverRes(res, 200, msg, null);
     } catch (err) {
-      const msg = {
-        info: `An error occured while trying to verify the following email ${
+      const msg = msgObj(
+        `An error occured while trying to verify the following email ${
           user.email
         }.`,
-        color: "red"
-      };
+        "red"
+      );
       serverRes(res, 400, msg, null);
     }
   });
@@ -170,61 +153,46 @@ module.exports = app => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      const msg = {
-        info: "All form fields must be filled in.",
-        color: "red"
-      };
-      serverRes(res, 400, msg, null);
-      return;
+      const msg = msgObj("All form fields must be filled in.", "red");
+      return serverRes(res, 400, msg, null);
     }
 
     if (!isEmail(email)) {
-      const msg = {
-        info: "The email address you have entered is not a valid email.",
-        color: "red"
-      };
-      serverRes(res, 400, msg, null);
-      return;
+      const msg = msgObj(
+        "The email address you have entered is not a valid email.",
+        "red"
+      );
+      return serverRes(res, 400, msg, null);
     }
 
     try {
       const user = await User.findByCredentials(email, password);
 
       if (!user) {
-        const msg = {
-          info: "No user for this email and password.",
-          color: "red"
-        };
-        serverRes(res, 400, msg, null);
-        return;
+        const msg = msgObj("No user for this email and password.", "red");
+        return serverRes(res, 400, msg, null);
       }
 
       if (!user.isVerified) {
-        const msg = {
-          info:
-            "Please confirm your email first by following the link in the email.",
-          color: "blue"
-        };
-        serverRes(res, 400, msg, null);
-        return;
+        const msg = msgObj(
+          "Please confirm your email first by following the link in the email.",
+          "blue"
+        );
+        return serverRes(res, 400, msg, null);
       }
 
       const token = await user.generateAuthToken();
 
-      // Success ---------------
-      const msg = {
-        info: `${user.email} has logged in successfully.`,
-        color: "green"
-      };
+      const msg = msgObj(`${user.email} has logged in successfully.`, "green");
       res
         .header("x-auth", token)
         .status(200)
         .send({ msg, payload: user });
     } catch (err) {
-      const msg = {
-        info: "An unknown error occured while trying to login.",
-        color: "red"
-      };
+      const msg = msgObj(
+        "An unknown error occured while trying to login.",
+        "red"
+      );
       serverRes(res, 400, msg, null);
       return;
     }
@@ -238,16 +206,11 @@ module.exports = app => {
     try {
       user.tokens = user.tokens.filter(tokenObj => tokenObj.token !== token);
       await user.save();
-      const msg = {
-        info: "You were successfully logged out.",
-        color: "blue"
-      };
+
+      const msg = msgObj("You were successfully logged out.", "blue");
       serverRes(res, 200, msg, null);
     } catch (err) {
-      const msg = {
-        info: "An error occured while trying to logout.",
-        color: "red"
-      };
+      const msg = msgObj("An error occured while trying to logout.", "red");
       return serverRes(res, 400, msg, null);
     }
   });
@@ -261,16 +224,10 @@ module.exports = app => {
       user.tokens = user.tokens.filter(tokenObj => tokenObj.token !== token);
       await user.save();
 
-      const msg = {
-        info: "The token was deleted.",
-        color: "info"
-      };
+      const msg = msgObj("The token was deleted.", "blue");
       serverRes(res, 200, msg, null);
     } catch (err) {
-      const msg = {
-        info: "An error occured while deleting the token.",
-        color: "red"
-      };
+      const msg = msgObj("An error occured while deleting the token.", "red");
       return serverRes(res, 400, msg, null);
     }
   });

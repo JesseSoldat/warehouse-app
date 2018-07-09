@@ -3,7 +3,7 @@ const Counter = require("../models/counter");
 const Customer = require("../models/customer");
 const Producer = require("../models/producer");
 const isAuth = require("../middleware/isAuth");
-const { errMsg, serverRes } = require("../utils/serverResponses");
+const { errMsg, msgObj, serverRes } = require("../utils/serverResponses");
 const mergeObjFields = require("../utils/mergeObjFields");
 
 module.exports = app => {
@@ -22,10 +22,7 @@ module.exports = app => {
 
       serverRes(res, 200, null, { products, count, skip, limit });
     } catch (err) {
-      const msg = {
-        info: errMsg("fetch", "products"),
-        color: "red"
-      };
+      const msg = msgObj(errMsg("fetch", "products"), "red");
       serverRes(res, 400, msg, null);
     }
   });
@@ -38,10 +35,7 @@ module.exports = app => {
       ]);
       serverRes(res, 200, null, { customers, producers });
     } catch (err) {
-      const msg = {
-        info: errMsg("fetch", "form data"),
-        color: "red"
-      };
+      const msg = msgObj(errMsg("fetch", "form data"), "red");
       serverRes(res, 400, msg, null);
     }
   });
@@ -55,10 +49,7 @@ module.exports = app => {
 
       serverRes(res, 200, null, product);
     } catch (err) {
-      const msg = {
-        info: errMsg("fetch", "product"),
-        color: "red"
-      };
+      const msg = msgObj(errMsg("fetch", "product"), "red");
       serverRes(res, 400, msg, null);
     }
   });
@@ -79,16 +70,10 @@ module.exports = app => {
       product["productLabel"] = await Counter.createProductLabel();
       await product.save();
 
-      const msg = {
-        info: "The product was created.",
-        color: "green"
-      };
+      const msg = msgObj("The product was saved.", "green");
       serverRes(res, 200, msg, product);
     } catch (err) {
-      const msg = {
-        info: errMsg("save", "product"),
-        color: "red"
-      };
+      const msg = msgObj(errMsg("save", "product"), "red");
       serverRes(res, 400, msg, null);
     }
   });
@@ -112,16 +97,11 @@ module.exports = app => {
         mergeObjFields("", product),
         { new: true }
       );
-      const msg = {
-        info: "The product was updated.",
-        color: "green"
-      };
+
+      const msg = msgObj("The producer was updated.", "green");
       serverRes(res, 200, msg, updatedProduct);
     } catch (err) {
-      const msg = {
-        info: errMsg("update", "product"),
-        color: "red"
-      };
+      const msg = msgObj(errMsg("update", "product"), "red");
       serverRes(res, 400, msg, null);
     }
   });

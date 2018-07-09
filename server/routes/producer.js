@@ -1,15 +1,18 @@
 const Producer = require("../models/producer");
 const isAuth = require("../middleware/isAuth");
-const { succRes, errRes } = require("../utils/serverResponses");
+const { serverRes, msgObj, errMsg } = require("../utils/serverResponses");
 
 module.exports = app => {
   app.post("/api/producers", isAuth, async (req, res, next) => {
     const producer = new Producer(req.body);
     try {
       await producer.save();
-      succRes(res, producer);
+
+      const msg = msgObj("The producer was saved.", "green");
+      serverRes(res, 200, msg, producer);
     } catch (err) {
-      next(errRes("An error occured while saving the producer"));
+      const msg = msgObj(errMsg("save", "producer"), "red");
+      serverRes(res, 400, msg, null);
     }
   });
 };
