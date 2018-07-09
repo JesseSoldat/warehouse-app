@@ -1,17 +1,7 @@
 import React from "react";
 import Select from "react-select";
 
-const SelectInput = ({ options, label, name, cb, selectedOption }) => {
-  const selectOptions = [];
-
-  // populate select element with option elements
-  options.forEach((option, i) => {
-    selectOptions.push({
-      value: option._id,
-      label: option[name]
-    });
-  });
-
+const SelectInput = ({ options, label, cb, selectedOption }) => {
   const selectElement = (
     <div className="form-group mt-3">
       <label>
@@ -21,7 +11,7 @@ const SelectInput = ({ options, label, name, cb, selectedOption }) => {
         name="form-field-name"
         value={selectedOption}
         onChange={cb}
-        options={selectOptions}
+        options={options.options}
       />
     </div>
   );

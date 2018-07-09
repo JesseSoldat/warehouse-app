@@ -7,6 +7,7 @@ import SelectInput from "../../../components/inputs/SelectInput";
 import resetRequiredFieldsErr from "./helpers/resetRequiredFieldsErr";
 import validateOnSubmit from "./helpers/validateOnSubmit";
 import formatFieldValues from "./helpers/formatFieldValues";
+import formatSelectInputData from "../../../components/inputs/helpers/formatSelectInputData";
 
 class ProductForm extends Component {
   state = {
@@ -74,8 +75,23 @@ class ProductForm extends Component {
   };
 
   render() {
-    const { customerOptions, producerOptions } = this.props;
+    const { producerOptions } = this.props; //customerOptions
     const { producerId } = this.state;
+
+    // Format Data to work with React-Select API
+    // array of obj - labelKey - valueKey
+    // const customerSelect = formatSelectInputData(
+    //   customerOptions,
+    //   "customerName",
+    //   "_id"
+    // );
+
+    const producerSelect = formatSelectInputData(
+      producerOptions,
+      "producerName",
+      "_id"
+    );
+
     // when a message from the server arrives let the user resubmit the form
     if (this.props.msg) {
       if (this.refs && "submitBtn" in this.refs) {
@@ -87,7 +103,7 @@ class ProductForm extends Component {
       <form onSubmit={this.onSubmit}>
         <TextInputList state={this.state} cb={this.onChange} />
         <SelectInput
-          options={producerOptions}
+          options={producerSelect}
           label="Producer"
           name="producerName"
           cb={this.onSelect}

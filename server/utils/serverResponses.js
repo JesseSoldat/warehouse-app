@@ -8,7 +8,14 @@ const errRes = (
 ) => ({ msg: { msg: err, statusCode }, payload });
 
 const errMsg = (method, target) => {
-  `An error occured while trying to ${method} the ${target}.`;
+  return `An error occured while trying to ${method} the ${target}.`;
 };
 
-module.exports = { succRes, errRes, errMsg };
+const serverRes = (res, status, msg = null, payload = null) => {
+  res.status(status).send({ msg, payload });
+};
+
+// res , status / msg / payload
+// serverRes(res, 201, { info: "it worked", color: "info" }, null);
+
+module.exports = { serverRes, succRes, errRes, errMsg };

@@ -17,8 +17,9 @@ const PublicRoute = ({
         isAuth ? (
           <Redirect to="/dashboard" />
         ) : (
-          <div className="rootContainer">
+          <div>
             <NavBar />
+
             <Component {...props} />
           </div>
         )

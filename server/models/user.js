@@ -122,7 +122,7 @@ UserSchema.methods.generateAuthToken = async function() {
   const access = "auth";
 
   // -- Create an expiration time by milliseconds OR days for the token --
-  // const expires = milliFromNow(tokenExpirationTime);
+  //const expires = milliFromNow(tokenExpirationTime); // TESTING TOKEN
   const expires = daysFromNow(new Date(), tokenExpirationDays);
 
   const token = jwt

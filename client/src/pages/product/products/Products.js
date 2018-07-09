@@ -25,7 +25,6 @@ class Products extends Component {
 
   render() {
     const {
-      msg,
       loading,
       products,
       page,
@@ -35,11 +34,8 @@ class Products extends Component {
       limit
     } = this.props;
 
-    let content, uiMsg;
+    let content;
 
-    if (msg) {
-      uiMsg = <Message msg={msg} />;
-    }
     if (loading) {
       content = <Spinner />;
     } else {
@@ -48,9 +44,8 @@ class Products extends Component {
 
     return (
       <div className="container">
-        {uiMsg}
+        <Message cb={this.getProducts} />
         <Heading title="Products" />
-
         <div className="row">
           <div className="col-12">
             <Paginator
@@ -64,7 +59,7 @@ class Products extends Component {
         </div>
 
         <div className="row">
-          <div className="col-11 d-flex justify-content-around flex-wrap m-auto">
+          <div className="col-11 mx-auto d-flex justify-content-around flex-wrap">
             {content}
           </div>
         </div>

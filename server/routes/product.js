@@ -3,7 +3,7 @@ const Counter = require("../models/counter");
 const Customer = require("../models/customer");
 const Producer = require("../models/producer");
 const isAuth = require("../middleware/isAuth");
-const { succRes, errRes, errMsg } = require("../utils/serverResponses");
+const { errMsg, serverRes } = require("../utils/serverResponses");
 const mergeObjFields = require("../utils/mergeObjFields");
 
 module.exports = app => {
@@ -13,16 +13,24 @@ module.exports = app => {
     limit = parseInt(limit, 10);
 
     try {
-      // throw error;
       const [products, count] = await Promise.all([
         Product.find({})
           .skip(skip)
           .limit(limit),
         Product.find().countDocuments()
       ]);
-      succRes(res, null, { products, count, skip, limit });
+
+      serverRes(res, 200, null, { products, count, skip, limit });
     } catch (err) {
-      next(errRes(errMsg("fetch", "products")));
+      serverRes(
+        res,
+        400,
+        {
+          info: errMsg("fetch", "products"),
+          color: "red"
+        },
+        null
+      );
     }
   });
 
@@ -32,9 +40,17 @@ module.exports = app => {
         Customer.find({}),
         Producer.find({})
       ]);
-      succRes(res, null, { customers, producers });
+      serverRes(res, 200, null, { customers, producers });
     } catch (err) {
-      next(errRes(errMsg("fetch", "form data")));
+      serverRes(
+        res,
+        400,
+        {
+          info: errMsg("fetch", "form data"),
+          color: "red"
+        },
+        null
+      );
     }
   });
 
@@ -44,9 +60,18 @@ module.exports = app => {
       const product = await Product.findById(productId).populate(
         "customer producer"
       );
-      succRes(res, product);
+
+      serverRes(res, 200, null, product);
     } catch (err) {
-      next(errRes(errMsg("fetch", "product")));
+      serverRes(
+        res,
+        400,
+        {
+          info: errMsg("fetch", "product"),
+          color: "red"
+        },
+        null
+      );
     }
   });
 
@@ -65,7 +90,16 @@ module.exports = app => {
     try {
       product["productLabel"] = await Counter.createProductLabel();
       await product.save();
-      succRes(res, product);
+
+      serverRes(
+        res,
+        200,
+        {
+          info: "The product was created.",
+          color: "green"
+        },
+        product
+      );
     } catch (err) {
       if (err.msg) {
         return next(err);
@@ -93,9 +127,25 @@ module.exports = app => {
         mergeObjFields("", product),
         { new: true }
       );
-      succRes(res, updatedProduct);
+      serverRes(
+        res,
+        200,
+        {
+          info: "The product was updated.",
+          color: "green"
+        },
+        updatedProduct
+      );
     } catch (err) {
-      next(errRes(errMsg("update", "product")));
+      serverRes(
+        res,
+        400,
+        {
+          info: errMsg("update", "product"),
+          color: "red"
+        },
+        null
+      );
     }
   });
 };

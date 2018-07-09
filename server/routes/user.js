@@ -48,12 +48,14 @@ module.exports = app => {
       const haveUser = await User.findOne({ email });
 
       if (haveUser) {
-        return res.send(
-          errRes(
-            "The email address you have entered is already associated with another account.",
-            400
-          )
-        );
+        return res
+          .status(202)
+          .send(
+            errRes(
+              "The email address you have entered is already associated with another account.",
+              400
+            )
+          );
       }
 
       const user = new User({ username, email, password });
@@ -86,6 +88,7 @@ module.exports = app => {
   // verify user with sent email
   app.get("/api/confirmation/:token", async (req, res, next) => {
     const { token } = req.params;
+    // is the token expired if so delete it from user model and redirect user
     try {
       if (!token) throw new Error();
 

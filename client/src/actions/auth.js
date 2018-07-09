@@ -98,6 +98,10 @@ export const startResendVerification = email => async dispatch => {
 export const startLogout = () => async dispatch => {
   try {
     await axios.delete("/api/logout");
+
+    // axios headers
+    setAxiosHeader(null);
+    // remove user to local storage
     localStorage.removeItem("user");
     dispatch({ type: AUTH_LOGOUT, _id: null, token: null });
   } catch (err) {

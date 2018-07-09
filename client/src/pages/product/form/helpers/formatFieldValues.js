@@ -1,5 +1,6 @@
 import textInputFields from "./textInputFields";
 
+// format an array of objs
 const formatFieldValues = state => {
   const formatedTextInputFields = textInputFields.map(obj => {
     const fieldName = obj.name;

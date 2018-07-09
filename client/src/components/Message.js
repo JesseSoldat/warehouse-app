@@ -28,7 +28,12 @@ const Message = ({ uiMsg, serverMsg, cb = null }) => {
                 className={`alert alert-${color} alert-dismissible fade show`}
                 role="alert"
               >
-                <strong>{heading}: </strong> {details}
+                <strong>{heading}: </strong>&nbsp; {details}
+                {cb && (
+                  <span className={`btn btn-link`} onClick={cb}>
+                    Try Again?
+                  </span>
+                )}
                 <button
                   onClick={closeMessage}
                   type="button"
@@ -38,16 +43,12 @@ const Message = ({ uiMsg, serverMsg, cb = null }) => {
                 >
                   <span aria-hidden="true">&times;</span>
                 </button>
-                {cb && (
-                  <button className="btn btn-primary" onClick={cb}>
-                    Try Again
-                  </button>
-                )}
               </div>
             </div>
           </div>
         </div>
       );
+
       return showMsg;
     } else {
       return showMsgContainer;
