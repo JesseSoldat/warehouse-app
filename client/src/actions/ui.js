@@ -9,5 +9,6 @@ export const serverMsg = (msg = null) => ({
 
 export const loading = loading => ({
   type: LOADING,
+  msg: null,
   loading
 });

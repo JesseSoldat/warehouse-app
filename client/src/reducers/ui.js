@@ -7,7 +7,7 @@ export default (state = initialState, action) => {
 
   switch (type) {
     case LOADING:
-      return { ...state, msg: null, loading };
+      return { ...state, msg, loading };
     case NEW_MSG:
       console.log("NEW_MSG", msg);
       return { ...state, msg, loading };

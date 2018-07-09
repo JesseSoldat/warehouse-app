@@ -1,12 +1,10 @@
 const crypto = require("crypto");
 
+// models
 const User = require("../models/user");
-const {
-  succRes,
-  errRes,
-  errMsg,
-  serverRes
-} = require("../utils/serverResponses");
+// helpers
+const { errMsg, serverRes } = require("../utils/serverResponses");
+// utils
 const sendMail = require("../utils/sendMail");
 const isEmail = require("../utils/isEmail");
 const isAuth = require("../middleware/isAuth");
@@ -84,7 +82,6 @@ module.exports = app => {
         color: "blue"
       };
       return serverRes(res, 200, msg, null);
-      // Error -----------------
     } catch (err) {
       const msg = {
         info: "An error occured while trying to register.",
@@ -119,23 +116,30 @@ module.exports = app => {
     const { email } = req.body;
 
     if (!isEmail(email)) {
-      return res.send(
-        errRes("The email address you have entered is not a valid email.", 202)
-      );
+      const msg = {
+        info: "The email address you have entered is not a valid email.",
+        color: "red"
+      };
+      return serverRes(res, 400, msg, null);
     }
 
     try {
       const user = await User.findOne({ email });
 
       if (!user) {
-        return res.send(errRes("Unable to find a user with that email.", 400));
+        const msg = {
+          info: "Unable to find a user with that email.",
+          color: "red"
+        };
+        return serverRes(res, 400, msg, null);
       }
 
-      // Info
       if (user.isVerified) {
-        return res.send(
-          errRes("This account has already been verified. Please log in.", 201)
-        );
+        const msg = {
+          info: "This account has already been verified. Please log in.",
+          color: "blue"
+        };
+        return serverRes(res, 400, msg, null);
       }
 
       // Create a verification token, save it, and send email
@@ -145,15 +149,19 @@ module.exports = app => {
 
       sendMail(req, user, verficationToken, (type = "confirm"));
 
-      succRes(
-        res,
-        {
-          msg: `A verification email has been sent to ${user.email}`
-        },
-        null
-      );
+      const msg = {
+        info: `A verification email has been sent to ${user.email}.`,
+        color: "blue"
+      };
+      serverRes(res, 200, msg, null);
     } catch (err) {
-      next(errRes("An error occured while trying to verify the email."));
+      const msg = {
+        info: `An error occured while trying to verify the following email ${
+          user.email
+        }.`,
+        color: "red"
+      };
+      serverRes(res, 400, msg, null);
     }
   });
 
@@ -230,12 +238,17 @@ module.exports = app => {
     try {
       user.tokens = user.tokens.filter(tokenObj => tokenObj.token !== token);
       await user.save();
-      succRes(res, null, null);
+      const msg = {
+        info: "You were successfully logged out.",
+        color: "blue"
+      };
+      serverRes(res, 200, msg, null);
     } catch (err) {
-      if (err.msg) {
-        return next(err);
-      }
-      next(errRes("An error occured while logging out."));
+      const msg = {
+        info: "An error occured while trying to logout.",
+        color: "red"
+      };
+      return serverRes(res, 400, msg, null);
     }
   });
 
@@ -247,9 +260,18 @@ module.exports = app => {
       const user = await User.findByToken(token);
       user.tokens = user.tokens.filter(tokenObj => tokenObj.token !== token);
       await user.save();
-      succRes(res, null, null);
+
+      const msg = {
+        info: "The token was deleted.",
+        color: "info"
+      };
+      serverRes(res, 200, msg, null);
     } catch (err) {
-      next(errRes("An error occured while deleting the token."));
+      const msg = {
+        info: "An error occured while deleting the token.",
+        color: "red"
+      };
+      return serverRes(res, 400, msg, null);
     }
   });
 };

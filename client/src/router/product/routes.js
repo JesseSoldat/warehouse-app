@@ -9,15 +9,15 @@ import ProductDetails from "../../pages/product/details/ProductDetails";
 const ProductRoutes = [
   <PrivateRoute key="products" path="/products" component={Products} exact />,
   <PrivateRoute
-    key="product"
-    path="/products/:productId"
-    component={ProductDetails}
-    exact
-  />,
-  <PrivateRoute
     key="create-product"
     path="/products/create"
     component={CreateProduct}
+    exact
+  />,
+  <PrivateRoute
+    key="product"
+    path="/products/:productId"
+    component={ProductDetails}
     exact
   />
 ];

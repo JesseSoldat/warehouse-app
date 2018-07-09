@@ -47,7 +47,6 @@ export const startLogin = user => async dispatch => {
 
       dispatch(login(_id, token));
     }
-
     checkForMsg(msg, dispatch);
   } catch (err) {
     axiosResponseErrorHandling(err, dispatch, "login", "user");
@@ -82,21 +81,15 @@ export const startResendVerification = email => async dispatch => {
 
 export const startLogout = () => async dispatch => {
   try {
-    await axios.delete("/api/logout");
-
+    const res = await axios.delete("/api/logout");
+    const { msg } = res.data;
     // axios headers
     setAxiosHeader(null);
     // remove user to local storage
     localStorage.removeItem("user");
     dispatch({ type: AUTH_LOGOUT, _id: null, token: null });
+    checkForMsg(msg, dispatch);
   } catch (err) {
-    dispatch(
-      serverMsg(
-        buildServerMsg({
-          msg: "Something went wrong while trying log out.",
-          statusCode: 500
-        })
-      )
-    );
+    axiosResponseErrorHandling(err, dispatch, "logout", "user");
   }
 };
