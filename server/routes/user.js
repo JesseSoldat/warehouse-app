@@ -1,7 +1,12 @@
 const crypto = require("crypto");
 
 const User = require("../models/user");
-const { succRes, errRes } = require("../utils/serverResponses");
+const {
+  succRes,
+  errRes,
+  errMsg,
+  serverRes
+} = require("../utils/serverResponses");
 const sendMail = require("../utils/sendMail");
 const isEmail = require("../utils/isEmail");
 const isAuth = require("../middleware/isAuth");
@@ -11,9 +16,13 @@ module.exports = app => {
   app.get("/api/users", isAuth, async (req, res, next) => {
     try {
       const users = await User.find({});
-      succRes(res, null, users);
+      serverRes(res, 200, null, users);
     } catch (err) {
-      next(errRes("An error occured while trying to fetch the users."));
+      const msg = {
+        info: errMsg("fetch", "users"),
+        color: "red"
+      };
+      serverRes(res, 400, msg, null);
     }
   });
 
@@ -22,40 +31,40 @@ module.exports = app => {
     const { username, email, password } = req.body;
 
     if (!username || !email || !password) {
-      return res
-        .status(202)
-        .send(errRes("All form fields must be filled in.", 202));
+      const msg = {
+        info: "All form fields must be filled in.",
+        color: "red"
+      };
+      serverRes(res, 400, msg, null);
+      return;
     }
 
     if (!isEmail(email)) {
-      return res
-        .status(202)
-        .send(
-          errRes(
-            "The email address you have entered is not a valid email.",
-            202
-          )
-        );
+      const msg = {
+        info: "The email address you have entered is not a valid email.",
+        color: "red"
+      };
+      return serverRes(res, 400, msg, null);
     }
 
     if (password.length < 6) {
-      return res
-        .status(202)
-        .send(errRes("The password must be at least 6 characters longs.", 202));
+      const msg = {
+        info: "The password must be at least 6 characters longs.",
+        color: "red"
+      };
+      return serverRes(res, 400, msg, null);
     }
 
     try {
       const haveUser = await User.findOne({ email });
 
       if (haveUser) {
-        return res
-          .status(202)
-          .send(
-            errRes(
-              "The email address you have entered is already associated with another account.",
-              400
-            )
-          );
+        const msg = {
+          info:
+            "The email address you have entered is already associated with another account.",
+          color: "yellow"
+        };
+        return serverRes(res, 400, msg, null);
       }
 
       const user = new User({ username, email, password });
@@ -67,21 +76,21 @@ module.exports = app => {
       await user.save();
       sendMail(req, user, verificationToken, (type = "confirm"));
 
-      succRes(
-        res,
-        {
-          msg: `A verification email has been sent to ${
-            user.email
-          }. Please verify your email before you login.`,
-          statusCode: 200
-        },
-        null
-      );
+      // Success ---------------
+      const msg = {
+        info: `A verification email has been sent to ${
+          user.email
+        }. Please verify your email before you login.`,
+        color: "blue"
+      };
+      return serverRes(res, 200, msg, null);
+      // Error -----------------
     } catch (err) {
-      if (err.msg) {
-        return next(err);
-      }
-      next(errRes("An error occured while trying to register.", 500));
+      const msg = {
+        info: "An error occured while trying to register.",
+        color: "red"
+      };
+      return serverRes(res, 400, msg, null);
     }
   });
 

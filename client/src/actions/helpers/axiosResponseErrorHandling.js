@@ -3,9 +3,11 @@ import buildClientMsg from "./buildClientMsg";
 
 const axiosLog = (status, data) => {
   console.log("--------------- axios error handling -----------------");
-  console.log("axios status", status);
-  console.log("axios data", data);
-  console.log("--------------- axios error handling -----------------");
+  // console.log("axios status", status);
+  // console.log("axios data", data);
+  console.log("msg", data.msg.info);
+  // console.log("color", data.msg.color);
+  console.log("------------------------------------------------------");
 };
 
 const errMsg = (method, target) =>
@@ -19,19 +21,7 @@ const axiosResponseErrorHandling = (error, dispatch, method, target) => {
     const { status, data } = error.response;
 
     axiosLog(status, data);
-
-    switch (status) {
-      case 200:
-        color = "green";
-        break;
-      case 400:
-        color = "red";
-        break;
-
-      default:
-        break;
-    }
-
+    color = data.msg.color;
     info = data.msg.info;
   }
   // The request was made but no response was received

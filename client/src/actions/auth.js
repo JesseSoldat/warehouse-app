@@ -1,8 +1,14 @@
 import axios from "axios";
 
+// utils
 import setAxiosHeader from "../utils/setAxiosHeader";
+// helpers
+import checkForMsg from "./helpers/checkForMsg";
+import axiosResponseErrorHandling from "./helpers/axiosResponseErrorHandling";
 import buildServerMsg from "./buildServerMsg";
+// actions
 import { serverMsg } from "./ui";
+// types
 export const AUTH_LOGIN = "AUTH_LOGIN";
 export const AUTH_LOGOUT = "AUTH_LOGOUT";
 
@@ -11,24 +17,10 @@ export const startRegister = (user, history) => async dispatch => {
     const res = await axios.post("/api/register", user);
     const { msg } = res.data;
 
-    if (res.data && res.data.msg) {
-      // All Messages (error & success)
-      dispatch(serverMsg(buildServerMsg(msg)));
-      // Navigate on success
-      if (msg.statusCode === 200) {
-        history.push("/login");
-      }
-      return;
-    }
+    checkForMsg(msg, dispatch);
+    history.push("/login");
   } catch (err) {
-    dispatch(
-      serverMsg(
-        buildServerMsg({
-          msg: "Something went wrong while trying to register.",
-          statusCode: 500
-        })
-      )
-    );
+    axiosResponseErrorHandling(err, dispatch, "register", "user");
   }
 };
 

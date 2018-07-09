@@ -34,7 +34,6 @@ export const startGetProducts = (skip = 0, limit = 20) => async dispatch => {
     axiosResponseErrorHandling(err, dispatch, "fetch", "products");
   }
 };
-
 // Product Details -------------------------------
 export const getProductDetails = product => ({
   type: PRODUCTS_FETCH_ONE,

@@ -6,7 +6,7 @@ import { parse } from "qs";
 import TextInput from "../../components/inputs/TextInput";
 import Spinner from "../../components/Spinner";
 import Message from "../../components/Message";
-import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
+import Heading from "../../components/Heading";
 import formIsValid from "./helpers/formIsValid";
 import {
   startRegister,
@@ -77,11 +77,11 @@ class AuthForm extends Component {
     this.refs.submitBtn.setAttribute("disabled", "disabled");
     const { isValid, errObj } = formIsValid(this.state, this.props.parent);
 
-    if (!isValid) {
-      this.refs.submitBtn.removeAttribute("disabled");
-      this.setState(() => ({ ...errObj }));
-      return;
-    }
+    // if (!isValid) {
+    //   this.refs.submitBtn.removeAttribute("disabled");
+    //   this.setState(() => ({ ...errObj }));
+    //   return;
+    // }
 
     switch (this.props.parent) {
       case "register":
@@ -228,9 +228,7 @@ class AuthForm extends Component {
     return (
       <div>
         <Message />
-        <h2 className="text-center display-4">
-          {capitalizeFirstLetter(parent)}
-        </h2>
+        <Heading title={parent} />
         {content}
       </div>
     );

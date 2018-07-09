@@ -1,28 +1,28 @@
 import axios from "axios";
 
-import { serverMsg, LOADING } from "./ui";
-import buildServerMsg from "./buildServerMsg";
-
+// helpers
+import checkForMsg from "./helpers/checkForMsg";
+import axiosResponseErrorHandling from "./helpers/axiosResponseErrorHandling";
+// actions
+import { loading } from "./ui";
+// types
 export const GET_ALL_USERS = "GET_ALL_USERS";
 
+// Get all users -----------------------------
 export const getAllUsers = payload => ({
   type: GET_ALL_USERS,
   allUsers: payload
 });
 
 export const startGetAllUsers = () => async dispatch => {
-  dispatch({ type: LOADING, loading: true });
+  dispatch(loading(true));
   try {
     const res = await axios.get("/api/users");
     const { msg, payload } = res.data;
 
-    if (msg) {
-      dispatch(serverMsg(buildServerMsg(msg)));
-      return;
-    }
-    dispatch({ type: LOADING, loading: false });
     dispatch(getAllUsers(payload));
+    checkForMsg(msg, dispatch);
   } catch (err) {
-    console.log(err);
+    axiosResponseErrorHandling(err, dispatch, "fetch", "users");
   }
 };

@@ -67,6 +67,25 @@ const NavBar = ({ isAuth, startLogout, history }) => {
         </div>
       </li>
 
+      <li className="nav-item dropdown mr-3 pb-sm-3 pb-md-0">
+        <Link
+          className="dropdown-toggle"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          to="/admin"
+        >
+          <i className="fas fa-unlock-alt mr-2" />
+          Admin
+        </Link>
+        <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+          <Link className="dropdown-item" to="/admin/manageUsers">
+            Manage User
+          </Link>
+        </div>
+      </li>
+
       <li className="nav-item mr-3 pb-sm-3 pb-md-0">
         <a href="" onClick={e => onStartLogout(e)}>
           <i className="fas fa-sign-out-alt mr-2" />

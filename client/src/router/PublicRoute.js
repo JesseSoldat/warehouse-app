@@ -19,8 +19,9 @@ const PublicRoute = ({
         ) : (
           <div>
             <NavBar />
-
-            <Component {...props} />
+            <div className="my-3">
+              <Component {...props} />
+            </div>
           </div>
         )
       }
