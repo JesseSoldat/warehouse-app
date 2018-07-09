@@ -46,18 +46,11 @@ export const startLogin = user => async dispatch => {
       localStorage.setItem("user", JSON.stringify({ _id, token }));
 
       dispatch(login(_id, token));
-    } else {
-      return dispatch(serverMsg(buildServerMsg(msg)));
     }
+
+    checkForMsg(msg, dispatch);
   } catch (err) {
-    dispatch(
-      serverMsg(
-        buildServerMsg({
-          msg: "Something went wrong while posting the data",
-          statusCode: 500
-        })
-      )
-    );
+    axiosResponseErrorHandling(err, dispatch, "login", "user");
   }
 };
 

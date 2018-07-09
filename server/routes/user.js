@@ -162,52 +162,63 @@ module.exports = app => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res
-        .status(202)
-        .send(errRes("All form fields must be filled in.", 202));
+      const msg = {
+        info: "All form fields must be filled in.",
+        color: "red"
+      };
+      serverRes(res, 400, msg, null);
+      return;
     }
 
     if (!isEmail(email)) {
-      return res
-        .status(202)
-        .send(
-          errRes(
-            "The email address you have entered is not a valid email.",
-            202
-          )
-        );
+      const msg = {
+        info: "The email address you have entered is not a valid email.",
+        color: "red"
+      };
+      serverRes(res, 400, msg, null);
+      return;
     }
 
     try {
       const user = await User.findByCredentials(email, password);
 
       if (!user) {
-        return res
-          .status(202)
-          .send(errRes("No user for this email and password.", 400));
+        const msg = {
+          info: "No user for this email and password.",
+          color: "red"
+        };
+        serverRes(res, 400, msg, null);
+        return;
       }
 
       if (!user.isVerified) {
-        return res.send(
-          errRes(
+        const msg = {
+          info:
             "Please confirm your email first by following the link in the email.",
-            201
-          )
-        );
+          color: "blue"
+        };
+        serverRes(res, 400, msg, null);
+        return;
       }
 
       const token = await user.generateAuthToken();
 
+      // Success ---------------
       const msg = {
-        msg: "Login was successful.",
-        statusCode: 200
+        info: `${user.email} has logged in successfully.`,
+        color: "green"
       };
-      res.header("x-auth", token).send({ payload: user, msg });
+      res
+        .header("x-auth", token)
+        .status(200)
+        .send({ msg, payload: user });
     } catch (err) {
-      if (err.msg) {
-        return next(err);
-      }
-      next(errRes("An unknown error occured while trying to login.", 500));
+      const msg = {
+        info: "An unknown error occured while trying to login.",
+        color: "red"
+      };
+      serverRes(res, 400, msg, null);
+      return;
     }
   });
 

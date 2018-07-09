@@ -1,11 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import Message from "../../components/Message";
 import Heading from "../../components/Heading";
 
 const Dashboard = () => {
   return (
     <div className="container">
+      <Message />
       <div className="row">
         <Heading title="Dashboard" />
         <div className="col-12 d-flex flex-wrap justify-content-between my-4">
