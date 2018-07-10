@@ -166,7 +166,7 @@ UserSchema.statics.findByToken = async function(token) {
       "tokens.access": "auth"
     });
   } catch (err) {
-    return errRes("There was an error while authenticating the user");
+    return null;
   }
 };
 

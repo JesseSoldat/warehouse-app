@@ -7,7 +7,7 @@ const { errMsg, msgObj, serverRes } = require("../utils/serverResponses");
 const mergeObjFields = require("../utils/mergeObjFields");
 
 module.exports = app => {
-  app.get("/api/products", isAuth, async (req, res, next) => {
+  app.get("/api/products", isAuth, async (req, res) => {
     let { skip = 0, limit = 20 } = req.query;
     skip = parseInt(skip, 10);
     limit = parseInt(limit, 10);

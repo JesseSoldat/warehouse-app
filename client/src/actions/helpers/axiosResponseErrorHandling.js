@@ -1,13 +1,13 @@
 import { serverMsg } from "../ui";
+import { login } from "../auth";
 import buildClientMsg from "./buildClientMsg";
 
 const axiosLog = (status, data) => {
   console.log("--------------- axios error handling -----------------");
   // console.log("axios status", status);
   // console.log("axios data", data);
-  console.log("msg", data.msg.info);
+  console.log("info", data.msg.info);
   // console.log("color", data.msg.color);
-  console.log("------------------------------------------------------");
 };
 
 const errMsg = (method, target) =>
@@ -19,10 +19,28 @@ const axiosResponseErrorHandling = (error, dispatch, method, target) => {
   // check for axios response object any response other than 2xx
   if (error && error.response) {
     const { status, data } = error.response;
-
-    axiosLog(status, data);
-    color = data.msg.color;
-    info = data.msg.info;
+    // check that the server sent the correct msg obj
+    if (!data || !data.msg || !data.msg.info) {
+      console.log(
+        "axios error handling - the msg obj was not sent from the server"
+      );
+      info = errMsg(method, target);
+      color = "red";
+    }
+    // check for expired or no token info
+    else if (data.msg.info === "token error") {
+      console.log("isAuth: token error");
+      info = "A user with that token was not found. Please login again";
+      color = "blue";
+      localStorage.removeItem("user");
+      dispatch(login(null, null));
+    }
+    // default case
+    else {
+      axiosLog(status, data);
+      color = data.msg.color;
+      info = data.msg.info;
+    }
   }
   // The request was made but no response was received
   else if (error.request) {
