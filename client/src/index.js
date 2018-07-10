@@ -11,7 +11,7 @@ import configureStore from "./store/configureStore";
 import setAxiosHeader from "./utils/setAxiosHeader";
 import { AUTH_LOGIN } from "./actions/auth";
 import { NEW_MSG } from "./actions/ui";
-import buildServerMsg from "./actions/buildServerMsg";
+import buildClientMsg from "./actions/helpers/buildClientMsg";
 import isTokenExp from "./utils/isTokenExp";
 import deleteExpToken from "./utils/deleteExpToken";
 
@@ -46,9 +46,9 @@ if (user) {
     setAxiosHeader(null);
     store.dispatch({
       type: NEW_MSG,
-      msg: buildServerMsg({
-        msg: "Your session expired please login again.",
-        statusCode: 201
+      msg: buildClientMsg({
+        info: "Your session expired please login again.",
+        color: "blue"
       }),
       loading: false
     });

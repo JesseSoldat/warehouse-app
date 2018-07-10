@@ -5,7 +5,7 @@ import setAxiosHeader from "../utils/setAxiosHeader";
 // helpers
 import checkForMsg from "./helpers/checkForMsg";
 import axiosResponseErrorHandling from "./helpers/axiosResponseErrorHandling";
-import buildServerMsg from "./buildServerMsg";
+import buildClientMsg from "./helpers/buildClientMsg";
 // actions
 import { serverMsg } from "./ui";
 // types
@@ -59,18 +59,18 @@ export const startResendVerification = email => async dispatch => {
     const { msg } = res.data;
 
     if (msg.statusCode === 201) {
-      return dispatch(serverMsg(buildServerMsg(msg)));
+      return dispatch(serverMsg(buildClientMsg(msg)));
     }
 
     if (msg.statusCode === 400) {
-      dispatch(serverMsg(buildServerMsg(msg)));
+      dispatch(serverMsg(buildClientMsg(msg)));
     } else {
-      dispatch(serverMsg(buildServerMsg(msg)));
+      dispatch(serverMsg(buildClientMsg(msg)));
     }
   } catch (err) {
     dispatch(
       serverMsg(
-        buildServerMsg({
+        buildClientMsg({
           msg: "Something went wrong while resending the verification.",
           statusCode: 500
         })
