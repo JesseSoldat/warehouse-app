@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const { errRes } = require("../utils/serverResponses");
-
 const ShelfSchema = new Schema(
   {
     shelfLabel: { type: Number, required: true },
@@ -33,7 +31,7 @@ ShelfSchema.statics.getShelfSpotLabel = async function(shelfId) {
     return Promise.resolve(shelf.shelfSpotLabelCounter);
   } catch (err) {
     return Promise.reject(
-      errRes("A error occured while updating the shelf spot counter.")
+      "A error occured while updating the shelf spot counter."
     );
   }
 };

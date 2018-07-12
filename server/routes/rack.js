@@ -1,8 +1,10 @@
+// models
 const Storage = require("../models/storage");
 const Rack = require("../models/rack");
 const Shelf = require("../models/shelf");
 const ShelfSpot = require("../models/shelfSpot");
-const { succRes, errRes, errMsg } = require("../utils/serverResponses");
+// utils
+const { succRes, errRes, errMsg } = require("../utils/serverRes");
 const mergeObjFields = require("../utils/mergeObjFields");
 
 module.exports = app => {

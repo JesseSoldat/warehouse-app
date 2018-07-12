@@ -9,30 +9,36 @@ const Message = ({ uiMsg, serverMsg, cb = null }) => {
   };
 
   const showMsgContainer = (
-    <div
-      className="row mt-1"
-      id="showMsgContainer"
-      style={{ height: "70px" }}
-    />
+    <div className="row" id="showMsgContainer" style={{ height: "20px" }} />
   );
 
   const renderMsg = () => {
     if (uiMsg) {
-      const { heading, details, color } = uiMsg;
+      const { heading, details, color, code = null } = uiMsg;
+
+      const showCbBtn = cb && code === null ? true : false;
 
       const showMsg = (
         <div className="row">
           <div className="col-xs-12 col-md-8 mx-auto">
-            <div className="mt-1">
+            <div>
               <div
-                className={`alert alert-${color} alert-dismissible fade show`}
+                className={`alert alert-${color} alert-dismissible fade show d-flex`}
                 role="alert"
               >
-                <strong>{heading}: </strong>&nbsp; {details}
-                {cb && (
-                  <span className={`btn btn-link`} onClick={cb}>
+                <span className="mr-auto">
+                  <strong>{heading}: </strong>&nbsp; {details}
+                </span>
+
+                {showCbBtn && (
+                  <a
+                    href=""
+                    className="ml-auto badge badge-info px-2"
+                    onClick={cb}
+                    style={{ verticalAlign: "middle", lineHeight: "22px" }}
+                  >
                     Try Again?
-                  </span>
+                  </a>
                 )}
                 <button
                   onClick={closeMessage}

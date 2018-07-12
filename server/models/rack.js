@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const { errRes } = require("../utils/serverResponses");
-
 const RackSchema = new Schema(
   {
     rackLabel: { type: Number, required: true },
@@ -31,9 +29,7 @@ RackSchema.statics.getShelfLabel = async function(rackId) {
     );
     return Promise.resolve(rack.shelfLabelCounter);
   } catch (err) {
-    return Promise.reject(
-      errRes("An error occured while creating the shelf label")
-    );
+    return Promise.reject("An error occured while creating the shelf label");
   }
 };
 

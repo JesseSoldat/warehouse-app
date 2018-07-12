@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const { errRes } = require("../utils/serverResponses");
-
 const CounterSchema = new Schema({
   _id: { type: String, required: true },
   prodSeq: { type: Number, default: 0 }
@@ -19,7 +17,7 @@ CounterSchema.statics.createProductLabel = async function() {
     console.log(`Product Counter: ${counter.prodSeq}`);
     return Promise.resolve(counter.prodSeq);
   } catch (err) {
-    return Promise.reject(errRes("Product Counter Error"));
+    return Promise.reject("Product Counter Error");
   }
 };
 

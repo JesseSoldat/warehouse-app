@@ -5,9 +5,6 @@ import setAxiosHeader from "../utils/setAxiosHeader";
 // helpers
 import checkForMsg from "./helpers/checkForMsg";
 import axiosResponseErrorHandling from "./helpers/axiosResponseErrorHandling";
-import buildClientMsg from "./helpers/buildClientMsg";
-// actions
-import { serverMsg } from "./ui";
 // types
 export const AUTH_LOGIN = "AUTH_LOGIN";
 export const AUTH_LOGOUT = "AUTH_LOGOUT";
@@ -15,9 +12,10 @@ export const AUTH_LOGOUT = "AUTH_LOGOUT";
 export const startRegister = (user, history) => async dispatch => {
   try {
     const res = await axios.post("/api/register", user);
-    const { msg } = res.data;
+    const { msg, options } = res.data;
 
-    checkForMsg(msg, dispatch);
+    checkForMsg(msg, dispatch, options);
+
     history.push("/login");
   } catch (err) {
     axiosResponseErrorHandling(err, dispatch, "register", "user");
@@ -34,7 +32,7 @@ export const startLogin = user => async dispatch => {
   try {
     const res = await axios.post("/api/login", user);
 
-    const { msg, payload } = res.data;
+    const { msg, payload, options } = res.data;
 
     if (payload) {
       const { _id, tokens } = payload;
@@ -47,7 +45,8 @@ export const startLogin = user => async dispatch => {
 
       dispatch(login(_id, token));
     }
-    checkForMsg(msg, dispatch);
+
+    checkForMsg(msg, dispatch, options);
   } catch (err) {
     axiosResponseErrorHandling(err, dispatch, "login", "user");
   }
@@ -56,39 +55,26 @@ export const startLogin = user => async dispatch => {
 export const startResendVerification = email => async dispatch => {
   try {
     const res = await axios.post("/api/resendVerification", { email });
-    const { msg } = res.data;
+    const { msg, options } = res.data;
 
-    if (msg.statusCode === 201) {
-      return dispatch(serverMsg(buildClientMsg(msg)));
-    }
-
-    if (msg.statusCode === 400) {
-      dispatch(serverMsg(buildClientMsg(msg)));
-    } else {
-      dispatch(serverMsg(buildClientMsg(msg)));
-    }
+    checkForMsg(msg, dispatch, options);
   } catch (err) {
-    dispatch(
-      serverMsg(
-        buildClientMsg({
-          msg: "Something went wrong while resending the verification.",
-          statusCode: 500
-        })
-      )
-    );
+    axiosResponseErrorHandling(err, dispatch, "resend", "verification email");
   }
 };
 
 export const startLogout = () => async dispatch => {
   try {
     const res = await axios.delete("/api/logout");
-    const { msg } = res.data;
+    const { msg, options } = res.data;
     // axios headers
     setAxiosHeader(null);
     // remove user to local storage
     localStorage.removeItem("user");
+
     dispatch({ type: AUTH_LOGOUT, _id: null, token: null });
-    checkForMsg(msg, dispatch);
+
+    checkForMsg(msg, dispatch, options);
   } catch (err) {
     axiosResponseErrorHandling(err, dispatch, "logout", "user");
   }

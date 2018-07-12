@@ -1,6 +1,9 @@
+// models
 const Customer = require("../models/customer");
+// middleware
 const isAuth = require("../middleware/isAuth");
-const { serverRes, msgObj, errMsg } = require("../utils/serverResponses");
+// utils
+const { serverRes, msgObj, errMsg } = require("../utils/serverRes");
 
 module.exports = app => {
   app.post("/api/customers", isAuth, async (req, res, next) => {

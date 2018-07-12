@@ -1,27 +1,28 @@
 // create obj to use in the Message Component
-const generateMsgObj = (heading, details, color) => ({
+const generateMsgObj = (heading, details, color, code) => ({
   heading,
   details,
-  color
+  color,
+  code
 });
 
 // gets a msg obj with info and color property
-const buildClientMsg = ({ info = null, color = null }) => {
+const buildClientMsg = ({ info = null, color = null, code = null }) => {
   switch (color) {
     case "green":
-      return generateMsgObj("Success Info", info, "success");
+      return generateMsgObj("Success Info", info, "success", code);
 
     case "blue":
-      return generateMsgObj("Server Info", info, "info");
+      return generateMsgObj("Server Info", info, "info", code);
 
     case "yellow":
-      return generateMsgObj("Server Warning", info, "warning");
+      return generateMsgObj("Server Warning", info, "warning", code);
 
     case "red":
-      return generateMsgObj("Server Error", info, "danger");
+      return generateMsgObj("Server Error", info, "danger", code);
 
     default:
-      return generateMsgObj("Unknown Error", info, "danger");
+      return generateMsgObj("Unknown Error", info, "danger", code);
   }
 };
 

@@ -4,8 +4,10 @@ const validator = require("validator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
+// utils
+const { serverRes, msgObj } = "../utils/serverRes.js";
 const { milliFromNow, daysFromNow } = require("../utils/timeHelpers");
-
+// token times
 const tokenExpirationTime = 30 * 1000; // 30 seconds TESTING
 const tokenExpirationDays = 7; // 7 days; USE this for real token
 const verificationExpirationTime = 43200; // 12 hours
@@ -43,11 +45,6 @@ const UserSchema = new Schema(
         token: {
           type: String,
           required: true
-        },
-        createdAt: {
-          type: Date,
-          default: Date.now(),
-          expires: tokenExpirationTime
         }
       }
     ],
@@ -99,6 +96,12 @@ UserSchema.statics.findByCredentials = async function(email, password) {
     const user = await User.findOne({ email });
 
     if (!user) return null;
+
+    // Make sure the user has been verified
+    if (!user.isVerified) {
+      const msg = msgObj("Make sure you verify this account first.", "blue");
+      return serverRes(res, 400, msg, null);
+    }
 
     const match = await new Promise((resolve, reject) => {
       bcrypt.compare(password, user.password, (err, matched) => {
@@ -154,6 +157,7 @@ UserSchema.methods.generateAuthToken = async function() {
 UserSchema.statics.findByToken = async function(token) {
   const User = this;
   let decodedToken;
+
   try {
     decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
     // console.log("findByToken -- decodedToken", decodedToken);

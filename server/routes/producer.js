@@ -1,6 +1,9 @@
+// models
 const Producer = require("../models/producer");
+// middleware
 const isAuth = require("../middleware/isAuth");
-const { serverRes, msgObj, errMsg } = require("../utils/serverResponses");
+// utils
+const { serverRes, msgObj, errMsg } = require("../utils/serverRes");
 
 module.exports = app => {
   app.post("/api/producers", isAuth, async (req, res, next) => {

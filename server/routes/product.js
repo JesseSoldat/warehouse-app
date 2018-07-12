@@ -3,15 +3,14 @@ const Product = require("../models/product");
 const Counter = require("../models/counter");
 const Customer = require("../models/customer");
 const Producer = require("../models/producer");
-
 // middleware
 const isAuth = require("../middleware/isAuth");
-
-// helpers
-const { errMsg, msgObj, serverRes } = require("../utils/serverResponses");
+// utils
+const { errMsg, msgObj, serverRes } = require("../utils/serverRes");
 const mergeObjFields = require("../utils/mergeObjFields");
 
 module.exports = app => {
+  // Get All Products
   app.get("/api/products", isAuth, async (req, res) => {
     let { skip = 0, limit = 20 } = req.query;
     skip = parseInt(skip, 10);
@@ -32,7 +31,8 @@ module.exports = app => {
     }
   });
 
-  app.get("/api/products/clients", isAuth, async (req, res, next) => {
+  // Get Producers and Customers for Product Form (Form Data)
+  app.get("/api/products/clients", isAuth, async (req, res) => {
     try {
       const [customers, producers] = await Promise.all([
         Customer.find({}),
@@ -45,7 +45,28 @@ module.exports = app => {
     }
   });
 
-  app.get("/api/products/:productId", isAuth, async (req, res, next) => {
+  // Products Producers and Customer for Product Form (Form Data)
+  app.get(
+    "/api/products/productWithClients/:productId",
+    isAuth,
+    async (req, res) => {
+      const { productId } = req.params;
+      try {
+        const [product, customers, producers] = await Promise.all([
+          Product.findById(productId).populate("producer customer"),
+          Customer.find({}),
+          Producer.find({})
+        ]);
+        serverRes(res, 200, null, { product, customers, producers });
+      } catch (err) {
+        const msg = msgObj(errMsg("fetch", "eform data"), "red");
+        serverRes(res, 400, msg, null);
+      }
+    }
+  );
+
+  // Get a Single Product
+  app.get("/api/products/:productId", isAuth, async (req, res) => {
     const { productId } = req.params;
     try {
       const product = await Product.findById(productId).populate(
@@ -59,7 +80,8 @@ module.exports = app => {
     }
   });
 
-  app.post("/api/products", isAuth, async (req, res, next) => {
+  // Post a Product
+  app.post("/api/products", isAuth, async (req, res) => {
     const { producerId, customerIds } = req.body;
     const product = new Product(req.body);
 
@@ -83,6 +105,7 @@ module.exports = app => {
     }
   });
 
+  // Update a Product
   app.patch("/api/products/:productId", isAuth, async (req, res) => {
     const { productId } = req.params;
     const { producerId, customerIds } = req.body;

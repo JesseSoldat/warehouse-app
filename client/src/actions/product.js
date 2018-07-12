@@ -25,11 +25,11 @@ export const startGetProducts = (skip = 0, limit = 20) => async dispatch => {
   try {
     const res = await axios.get(`/api/products?skip=${skip}&limit=${limit}`);
 
-    const { msg, payload } = res.data;
+    const { msg, payload, options } = res.data;
 
     dispatch(getProducts(payload));
 
-    checkForMsg(msg, dispatch);
+    checkForMsg(msg, dispatch, options);
   } catch (err) {
     axiosResponseErrorHandling(err, dispatch, "fetch", "products");
   }
@@ -44,10 +44,11 @@ export const startGetProductDetails = productId => async dispatch => {
   try {
     const res = await axios.get(`/api/products/${productId}`);
 
-    const { msg, payload } = res.data;
+    const { msg, payload, options } = res.data;
 
     dispatch(getProductDetails(payload));
-    checkForMsg(msg, dispatch);
+
+    checkForMsg(msg, dispatch, options);
   } catch (err) {
     axiosResponseErrorHandling(err, dispatch, "fetch", "product");
   }
@@ -58,13 +59,14 @@ export const startGetClients = () => async dispatch => {
   try {
     const res = await axios.get("/api/products/clients");
 
-    const { msg, payload } = res.data;
+    const { msg, payload, options } = res.data;
     const { customers, producers } = payload;
 
     dispatch(getCustomers(customers));
     dispatch(getProducers(producers));
-    checkForMsg(msg, dispatch);
+
+    checkForMsg(msg, dispatch, options);
   } catch (err) {
-    axiosResponseErrorHandling(err, dispatch, "fetch", "clients");
+    axiosResponseErrorHandling(err, dispatch, "fetch", "form data");
   }
 };

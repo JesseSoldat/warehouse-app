@@ -18,10 +18,10 @@ export const startGetAllUsers = () => async dispatch => {
   dispatch(loading(true));
   try {
     const res = await axios.get("/api/users");
-    const { msg, payload } = res.data;
+    const { msg, payload, options } = res.data;
 
     dispatch(getAllUsers(payload));
-    checkForMsg(msg, dispatch);
+    checkForMsg(msg, dispatch, options);
   } catch (err) {
     axiosResponseErrorHandling(err, dispatch, "fetch", "users");
   }
