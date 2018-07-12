@@ -4,10 +4,10 @@ import buildClientMsg from "./buildClientMsg";
 
 const axiosLog = (status, data) => {
   console.log("--------------- axios error handling -----------------");
-  // console.log("axios status", status);
-  // console.log("axios data", data);
-  console.log("info", data.msg.info);
-  // console.log("color", data.msg.color);
+  // console.log("axios status:", status);
+  // console.log("axios data:", data);
+  console.log("info:", data.msg.info);
+  // console.log("color:", data.msg.color);
 };
 
 const errMsg = (method, target) =>

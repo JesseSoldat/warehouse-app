@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import moment from "moment";
 
+// components
 import TextInputList from "./TextInputList";
 import ObjInputList from "./ObjInputList";
 import SelectInput from "../../../components/inputs/SelectInput";
+// helpers
 import resetRequiredFieldsErr from "./helpers/resetRequiredFieldsErr";
 import validateOnSubmit from "./helpers/validateOnSubmit";
 import formatFieldValues from "./helpers/formatFieldValues";
@@ -70,7 +72,7 @@ class ProductForm extends Component {
 
   onSelect = selectedOption => {
     const stateName = "producerId";
-    const value = selectedOption ? selectedOption.value : "";
+    const value = selectedOption ? selectedOption : "";
     this.setState(() => ({ [stateName]: value }));
   };
 

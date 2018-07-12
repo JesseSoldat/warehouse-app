@@ -1,3 +1,7 @@
+// required fields for creating a product
+// err is the name of the the error in component state
+// msg is what should be set in state if the field is empty on submit
+
 const requiredFields = {
   productName: {
     err: "productNameErr",

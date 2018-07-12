@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const deleteExpToken = async (userId, token) => {
+const deleteExpToken = async token => {
   try {
-    await axios.post(`/api/token/${userId}`, { token });
+    await axios.post("/api/token", { token });
   } catch (err) {
     console.log("deleteExpToken err", err);
   }

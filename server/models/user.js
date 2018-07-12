@@ -4,7 +4,6 @@ const validator = require("validator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-const { errRes } = require("../utils/serverResponses");
 const { milliFromNow, daysFromNow } = require("../utils/timeHelpers");
 
 const tokenExpirationTime = 30 * 1000; // 30 seconds TESTING
@@ -85,7 +84,6 @@ UserSchema.pre("save", function(next) {
   if (user.isModified("password")) {
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(user.password, salt, (err, hash) => {
-        if (err) next(errRes("Could not hash the password"));
         user.password = hash;
         next();
       });
@@ -121,7 +119,7 @@ UserSchema.methods.generateAuthToken = async function() {
 
   const access = "auth";
 
-  // -- Create an expiration time by milliseconds OR days for the token --
+  // - Token expiration time by milliseconds OR days -
   //const expires = milliFromNow(tokenExpirationTime); // TESTING TOKEN
   const expires = daysFromNow(new Date(), tokenExpirationDays);
 

@@ -1,8 +1,13 @@
+// models
 const Product = require("../models/product");
 const Counter = require("../models/counter");
 const Customer = require("../models/customer");
 const Producer = require("../models/producer");
+
+// middleware
 const isAuth = require("../middleware/isAuth");
+
+// helpers
 const { errMsg, msgObj, serverRes } = require("../utils/serverResponses");
 const mergeObjFields = require("../utils/mergeObjFields");
 
@@ -78,7 +83,7 @@ module.exports = app => {
     }
   });
 
-  app.patch("/api/products/:productId", isAuth, async (req, res, next) => {
+  app.patch("/api/products/:productId", isAuth, async (req, res) => {
     const { productId } = req.params;
     const { producerId, customerIds } = req.body;
     const product = req.body;
@@ -98,7 +103,7 @@ module.exports = app => {
         { new: true }
       );
 
-      const msg = msgObj("The producer was updated.", "green");
+      const msg = msgObj("The product was updated.", "green");
       serverRes(res, 200, msg, updatedProduct);
     } catch (err) {
       const msg = msgObj(errMsg("update", "product"), "red");

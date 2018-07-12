@@ -1,3 +1,7 @@
+// Measurements fields is an array of objs
+// each obj has a parent property and fields property
+// fields is an array of objs
+
 const objInputFields = [
   {
     parent: "Product Measurements: ",

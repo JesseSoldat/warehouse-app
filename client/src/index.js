@@ -3,15 +3,21 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import registerServiceWorker from "./registerServiceWorker";
 
+// css
 import "react-select/dist/react-select.css";
 import "./index.css";
 
+// router
 import AppRouter from "./router/AppRouter";
+// store
 import configureStore from "./store/configureStore";
-import setAxiosHeader from "./utils/setAxiosHeader";
+
+// actions & action helpers
+import buildClientMsg from "./actions/helpers/buildClientMsg";
 import { AUTH_LOGIN } from "./actions/auth";
 import { NEW_MSG } from "./actions/ui";
-import buildClientMsg from "./actions/helpers/buildClientMsg";
+// utils
+import setAxiosHeader from "./utils/setAxiosHeader";
 import isTokenExp from "./utils/isTokenExp";
 import deleteExpToken from "./utils/deleteExpToken";
 
@@ -53,7 +59,7 @@ if (user) {
       loading: false
     });
 
-    deleteExpToken(_id, token);
+    deleteExpToken(token);
 
     renderApp();
   } else {

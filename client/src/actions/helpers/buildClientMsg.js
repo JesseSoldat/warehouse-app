@@ -15,7 +15,7 @@ const buildClientMsg = ({ info = null, color = null }) => {
       return generateMsgObj("Server Info", info, "info");
 
     case "yellow":
-      return generateMsgObj("Server Info", info, "warning");
+      return generateMsgObj("Server Warning", info, "warning");
 
     case "red":
       return generateMsgObj("Server Error", info, "danger");

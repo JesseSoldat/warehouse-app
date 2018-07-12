@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+// components
 import Message from "../../components/Message";
 import Heading from "../../components/Heading";
 

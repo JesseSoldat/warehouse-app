@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
+// components
 import Heading from "../../../components/Heading";
 import Message from "../../../components/Message";
 import Spinner from "../../../components/Spinner";
 import ProductForm from "./ProductForm";
+// actions
 import { startGetClients } from "../../../actions/product";
 
 class CreateProduct extends Component {

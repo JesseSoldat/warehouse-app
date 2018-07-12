@@ -11,7 +11,7 @@ const isAuth = require("../middleware/isAuth");
 
 module.exports = app => {
   // get all of the users of the app
-  app.get("/api/users", isAuth, async (req, res, next) => {
+  app.get("/api/users", isAuth, async (req, res) => {
     try {
       const users = await User.find({});
       serverRes(res, 200, null, users);
@@ -51,7 +51,7 @@ module.exports = app => {
 
       if (haveUser) {
         const msg = msgObj(
-          "The email address you have entered is already in use.",
+          "The email address you entered is already in use.",
           "red"
         );
         return serverRes(res, 400, msg, null);
@@ -62,6 +62,7 @@ module.exports = app => {
       // Email verification token
       const verificationToken = crypto.randomBytes(16).toString("hex");
       user["verificationToken"].token = verificationToken;
+      user["role"] = "user";
 
       await user.save();
       sendMail(req, user, verificationToken, (type = "confirm"));
@@ -70,10 +71,10 @@ module.exports = app => {
         `A verification email has been sent to ${user.email}.`,
         "blue"
       );
-      return serverRes(res, 200, msg, null);
+      serverRes(res, 200, msg, null);
     } catch (err) {
       const msg = msgObj("An error occured while trying to register.", "red");
-      return serverRes(res, 400, msg, null);
+      serverRes(res, 400, msg, null);
     }
   });
 
@@ -194,7 +195,6 @@ module.exports = app => {
         "red"
       );
       serverRes(res, 400, msg, null);
-      return;
     }
   });
 
@@ -216,8 +216,7 @@ module.exports = app => {
   });
 
   // delete an expired token
-  app.post("/api/token/:userId", async (req, res, next) => {
-    const { userId } = req.params;
+  app.post("/api/token", async (req, res) => {
     const { token } = req.body;
     try {
       const user = await User.findByToken(token);
