@@ -11,7 +11,7 @@ import { getCustomers } from "./customer";
 export const PRODUCTS_FETCH_ALL = "PRODUCTS_FETCH_ALL";
 export const PRODUCTS_FETCH_ONE = "PRODUCTS_FETCH_ONE";
 
-// All Products -------------------------------
+// All Products ---------------------------------------------
 export const getProducts = ({ products, count, limit, skip }) => ({
   type: PRODUCTS_FETCH_ALL,
   products,
@@ -34,7 +34,10 @@ export const startGetProducts = (skip = 0, limit = 20) => async dispatch => {
     axiosResponseErrorHandling(err, dispatch, "fetch", "products");
   }
 };
-// Product Details -------------------------------
+
+// Query of Products -------------------------------------------
+
+// Product Details ---------------------------------------------
 export const getProductDetails = product => ({
   type: PRODUCTS_FETCH_ONE,
   product
@@ -53,7 +56,8 @@ export const startGetProductDetails = productId => async dispatch => {
     axiosResponseErrorHandling(err, dispatch, "fetch", "product");
   }
 };
-// Product ( Customers and Producers) --------------------------
+
+// Product ( Customers & Producers) ----------------------------
 export const startGetClients = () => async dispatch => {
   dispatch(loading(true));
   try {
@@ -65,6 +69,26 @@ export const startGetClients = () => async dispatch => {
     dispatch(getCustomers(customers));
     dispatch(getProducers(producers));
 
+    checkForMsg(msg, dispatch, options);
+  } catch (err) {
+    axiosResponseErrorHandling(err, dispatch, "fetch", "form data");
+  }
+};
+
+// Product ( Product & Customers & Producers) -------------------
+export const startGetProductWithClients = productId => async dispatch => {
+  dispatch(loading(true));
+  try {
+    const res = await axios.get(
+      `/api/products/productWithClients/${productId}`
+    );
+
+    const { msg, payload, options } = res.data;
+    const { product, customers, producers } = payload;
+
+    dispatch(getProductDetails(product));
+    dispatch(getCustomers(customers));
+    dispatch(getProducers(producers));
     checkForMsg(msg, dispatch, options);
   } catch (err) {
     axiosResponseErrorHandling(err, dispatch, "fetch", "form data");
@@ -87,3 +111,22 @@ export const createProduct = (newProduct, history) => async dispatch => {
     axiosResponseErrorHandling(err, dispatch, "save", "product");
   }
 };
+
+// Edit Product -----------------------------------------------
+export const editProduct = (productId, update, history) => async dispatch => {
+  dispatch(loading(true));
+  try {
+    const res = await axios.patch(`/api/products/${productId}`, update);
+
+    const { msg, options } = res.data;
+
+    checkForMsg(msg, dispatch, options);
+
+    history.push(`/products/${productId}`);
+  } catch (err) {
+    axiosResponseErrorHandling(err, dispatch, "update", "product");
+  }
+};
+
+// Delete Product -----------------------------------------------
+// Reset Filter -------------------------------------------------

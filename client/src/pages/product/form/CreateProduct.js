@@ -39,6 +39,8 @@ class CreateProduct extends Component {
     const { msg, loading, customers, producers } = this.props;
     let content;
 
+    const productObj = {};
+
     // No selected producers or customers during creation
     // Product form uses these during Edit mode
     const selectedProducer = "";
@@ -50,6 +52,7 @@ class CreateProduct extends Component {
       content = (
         <ProductForm
           msg={msg}
+          productObj={productObj}
           producerOptions={producers}
           selectedProducer={selectedProducer}
           selectedCustomers={selectedCustomers}

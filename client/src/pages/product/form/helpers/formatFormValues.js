@@ -19,10 +19,6 @@ const formatFormValues = state => {
     selectedCustomers
   } = state;
 
-  customerIds: selectedCustomers.map(obj => obj.value) || [];
-
-  const customerIds = [];
-
   const formattedValues = {
     brandName: brandName || "",
     productName: productName || "",
@@ -46,8 +42,9 @@ const formatFormValues = state => {
   };
 
   const haveManufacturingDate = dateCheckbox ? manufacturingDate : null;
+
   if (haveManufacturingDate) {
-    formattedValues[manufacturingDate] = haveManufacturingDate;
+    formattedValues["manufacturingDate"] = manufacturingDate;
   }
   // console.log(formattedValues);
   return formattedValues;

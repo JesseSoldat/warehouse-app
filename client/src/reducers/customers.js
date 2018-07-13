@@ -8,7 +8,7 @@ export default (state = initialState, action) => {
 
   switch (type) {
     case CUSTOMERS_FETCH_ALL:
-      console.log("CUSTOMERS_FETCH_ALL", customers);
+      // console.log("CUSTOMERS_FETCH_ALL", customers);
       return { ...state, customers };
 
     default:

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import MultiSelectInput from "../../components/inputs/MultiSelectInput";
-import Select from "react-select";
+// import Select from "react-select";
 
 // used to test concepts
 class PlayGround extends Component {

@@ -12,7 +12,6 @@ import resetRequiredFieldsErr from "./helpers/resetRequiredFieldsErr";
 import formatClientSelectOptions from "./helpers/formatClientSelectOptions";
 import validateOnSubmit from "./helpers/validateOnSubmit";
 import formatFormValues from "./helpers/formatFormValues";
-import getEditStateObj from "./helpers/getEditStateObj";
 
 class ProductForm extends Component {
   state = {
@@ -20,48 +19,34 @@ class ProductForm extends Component {
     productNameErr: "",
     brandNameErr: "",
     //fields---------------
-    brandName: "",
-    productName: "",
-    pointOfBuy: "",
+    brandName: this.props.productObj.brandName,
+    productName: this.props.productObj.productName,
+    pointOfBuy: this.props.productObj.pointOfBuy,
     //Date
-    manufacturingDate: moment(),
-    dateCheckbox: false,
+    manufacturingDate: this.props.productObj.manufacturingDate,
+    dateCheckbox: this.props.productObj.dateCheckbox,
     //Numbers
-    price: 0,
-    amountOfPieces: 0,
-    quantity: 1,
-    weight: 0,
+    price: this.props.productObj.price,
+    amountOfPieces: this.props.productObj.amountOfPieces,
+    quantity: this.props.productObj.quantity,
+    weight: this.props.productObj.weight,
     //Array of Strings
-    productMaterial: "",
-    comments: "",
+    productMaterial: this.props.productObj.productMaterial,
+    comments: this.props.productObj.comments,
     //Obj
     productMeasurements: {},
-    prodHeight: 0,
-    prodWidth: 0,
-    prodLength: 0,
+    prodHeight: this.props.productObj.prodHeight,
+    prodWidth: this.props.productObj.prodWidth,
+    prodLength: this.props.productObj.prodLength,
     packagingMeasurements: {},
-    packHeight: 0,
-    packWidth: 0,
-    packLength: 0,
+    packHeight: this.props.productObj.packHeight,
+    packWidth: this.props.productObj.packWidth,
+    packLength: this.props.productObj.packLength,
     //Ref
     selectedProducer: this.props.selectedProducer,
     selectedCustomers: this.props.selectedCustomers
       ? this.props.selectedCustomers
       : []
-  };
-
-  // Edit Product flow ---------------------------------------
-  componentWillReceiveProps(nextProps) {
-    const { product } = nextProps;
-    // product is only passed during edit mode
-    if (product) {
-      this.setStateWithProductDetails(product);
-    }
-  }
-
-  setStateWithProductDetails = product => {
-    const editStateObj = getEditStateObj(product);
-    this.setState(() => ({ ...editStateObj }));
   };
 
   // Events --------------------------------
@@ -123,7 +108,8 @@ class ProductForm extends Component {
   };
 
   render() {
-    const { msg, producerOptions, customerOptions } = this.props; //customerOptions
+    const { msg, producerOptions, customerOptions, product } = this.props;
+
     const {
       selectedProducer,
       selectedCustomers, // edit mode

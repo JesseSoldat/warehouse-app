@@ -31,7 +31,7 @@ module.exports = app => {
     }
   });
 
-  // Get Producers and Customers for Product Form (Form Data)
+  // Get Producers & Customers for Product Form (Form Data)
   app.get("/api/products/clients", isAuth, async (req, res) => {
     try {
       const [customers, producers] = await Promise.all([
@@ -45,7 +45,7 @@ module.exports = app => {
     }
   });
 
-  // Products Producers and Customer for Product Form (Form Data)
+  // Products & Producers & Customer for Product Form (Form Data)
   app.get(
     "/api/products/productWithClients/:productId",
     isAuth,

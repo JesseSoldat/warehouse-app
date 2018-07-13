@@ -34,7 +34,7 @@ const getEditStateObj = product => {
     packLength: product.packagingMeasurments.packLength || 0
   };
 
-  // console.log(editStateObj);
+  // console.log("stateObj", editStateObj);
 
   return editStateObj;
 };
