@@ -70,3 +70,20 @@ export const startGetClients = () => async dispatch => {
     axiosResponseErrorHandling(err, dispatch, "fetch", "form data");
   }
 };
+
+// Create Product -----------------------------------------------
+export const createProduct = (newProduct, history) => async dispatch => {
+  try {
+    const res = await axios.post("/api/products", newProduct);
+
+    const { msg, payload, options } = res.data;
+
+    checkForMsg(msg, dispatch, options);
+
+    const productId = payload._id;
+
+    history.push(`/products/${productId}`);
+  } catch (err) {
+    axiosResponseErrorHandling(err, dispatch, "save", "product");
+  }
+};

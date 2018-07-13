@@ -7,14 +7,14 @@ import ObjInputList from "./ObjInputList";
 import SelectInput from "../../../components/inputs/SelectInput";
 // helpers
 import resetRequiredFieldsErr from "./helpers/resetRequiredFieldsErr";
+import formatClientSelectOptions from "./helpers/formatClientSelectOptions";
 import validateOnSubmit from "./helpers/validateOnSubmit";
-import formatFieldValues from "./helpers/formatFieldValues";
-import formatSelectInputData from "../../../components/inputs/helpers/formatSelectInputData";
+import formatFormValues from "./helpers/formatFormValues";
+import getEditStateObj from "./helpers/getEditStateObj";
 
 class ProductForm extends Component {
   state = {
     //errors----------------
-    errors: {},
     productNameErr: "",
     brandNameErr: "",
     //fields---------------
@@ -42,22 +42,51 @@ class ProductForm extends Component {
     packWidth: 0,
     packLength: 0,
     //Ref
-    producerId: "", //producer model id
-    customerIds: [] //customer model ids
+    //Ref
+    selectedProducer: this.props.selectedProducer,
+    selectedCustomers: this.props.selectedCustomers
+      ? this.props.selectedCustomers
+      : []
   };
 
+  // Edit Product flow ---------------------------------------
+  componentWillReceiveProps(nextProps) {
+    const { product } = nextProps;
+    // product is only passed during edit mode
+    if (product) {
+      this.setStateWithProductDetails(product);
+    }
+  }
+
+  setStateWithProductDetails = product => {
+    const editStateObj = getEditStateObj(product);
+    this.setState(() => ({ ...editStateObj }));
+  };
+
+  // Events --------------------------------
   onSubmit = e => {
+    const { handleSendMsg, handleSubmit } = this.props;
     e.preventDefault();
+    // don't allow the user to submit more than once
     this.refs.submitBtn.setAttribute("disabled", "disabled");
+    // clear any messages from the server
+    handleSendMsg(null);
+
     const { isValid, errObj } = validateOnSubmit(this.state);
-    this.setState(() => ({ ...errObj }));
 
     if (!isValid) {
+      // allow user to submit form again
       this.refs.submitBtn.removeAttribute("disabled");
+      this.setState(() => ({ ...errObj }));
+      // TODO add smooth scrolling
+      // scroll to the message since the form is long
+      window.scrollTo(0, 0);
       return;
     }
 
-    formatFieldValues(this.state);
+    const formattedValues = formatFormValues(this.state);
+
+    handleSubmit(formattedValues);
   };
 
   onChange = e => {
@@ -71,28 +100,25 @@ class ProductForm extends Component {
   };
 
   onSelect = selectedOption => {
-    const stateName = "producerId";
+    const stateName = "selectedProducer";
     const value = selectedOption ? selectedOption : "";
     this.setState(() => ({ [stateName]: value }));
   };
 
   render() {
-    const { producerOptions } = this.props; //customerOptions
-    const { producerId } = this.state;
+    const { msg, producerOptions, customerOptions } = this.props; //customerOptions
+    const {
+      selectedProducer,
+      selectedCustomers, // edit mode
+      manufacturingDate,
+      dateCheckbox
+    } = this.state;
 
-    // Format Data to work with React-Select API
-    // array of obj - labelKey - valueKey
-    // const customerSelect = formatSelectInputData(
-    //   customerOptions,
-    //   "customerName",
-    //   "_id"
-    // );
-
-    const producerSelect = formatSelectInputData(
-      producerOptions,
-      "producerName",
-      "_id"
-    );
+    // transform raw api data to work with react-select api
+    const {
+      producerSelectOptions,
+      customerSelectOptions
+    } = formatClientSelectOptions(producerOptions, customerOptions);
 
     // when a message from the server arrives let the user resubmit the form
     if (this.props.msg) {
@@ -105,11 +131,11 @@ class ProductForm extends Component {
       <form onSubmit={this.onSubmit}>
         <TextInputList state={this.state} cb={this.onChange} />
         <SelectInput
-          options={producerSelect}
+          options={producerSelectOptions}
           label="Producer"
           name="producerName"
           cb={this.onSelect}
-          selectedOption={producerId}
+          selectedOption={selectedProducer}
         />
         <ObjInputList state={this.state} cb={this.onChange} />
 
