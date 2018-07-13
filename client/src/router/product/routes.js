@@ -5,7 +5,7 @@ import PrivateRoute from "../PrivateRoute";
 import Products from "../../pages/product/products/Products";
 import CreateProduct from "../../pages/product/form/CreateProduct";
 import EditProduct from "../../pages/product/form/EditProduct";
-import ProductDetails from "../../pages/product/details/ProductDetails";
+import Product from "../../pages/product/details/Product";
 
 const ProductRoutes = [
   <PrivateRoute key="products" path="/products" component={Products} exact />,
@@ -24,7 +24,7 @@ const ProductRoutes = [
   <PrivateRoute
     key="product"
     path="/products/:productId"
-    component={ProductDetails}
+    component={Product}
     exact
   />
 ];

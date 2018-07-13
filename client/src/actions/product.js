@@ -129,4 +129,18 @@ export const editProduct = (productId, update, history) => async dispatch => {
 };
 
 // Delete Product -----------------------------------------------
+export const deleteProduct = (productId, history) => async dispatch => {
+  try {
+    const res = await axios.delete(`/api/products/${productId}`);
+
+    const { msg, options } = res.data;
+
+    checkForMsg(msg, dispatch, options);
+
+    history.push("/products/search");
+  } catch (err) {
+    axiosResponseErrorHandling(err, dispatch, "delete", "product");
+  }
+};
+
 // Reset Filter -------------------------------------------------

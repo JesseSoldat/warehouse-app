@@ -133,4 +133,47 @@ module.exports = app => {
       serverRes(res, 400, msg, null);
     }
   });
+
+  // Delete a Product
+  app.delete("/api/products/:productId", isAuth, async (req, res) => {
+    const { productId } = req.params;
+
+    try {
+      const product = await Product.findById(productId);
+
+      const {
+        productFolder,
+        pictureFolder,
+        packagingFolder,
+        productPictures,
+        packagingPictures
+      } = product;
+
+      // if any of these exist
+      if (
+        productFolder ||
+        pictureFolder ||
+        packagingFolder ||
+        (productPictures && productPictures.length > 0) ||
+        (productPictures && packagingPictures.length > 0)
+      ) {
+        const msg = msgObj(
+          "Delete all pictures and their parent folders first.",
+          "red",
+          "delete err"
+        );
+
+        return serverRes(res, 400, msg, product);
+      }
+
+      await product.remove();
+
+      const msg = msgObj("The product was deleted.", "green");
+
+      serverRes(res, 200, msg, null);
+    } catch (error) {
+      const msg = msgObj(errMsg("delete", "product"), "red", "delete err");
+      serverRes(res, 400, msg, null);
+    }
+  });
 };
