@@ -5,6 +5,8 @@ import moment from "moment";
 import TextInputList from "./TextInputList";
 import ObjInputList from "./ObjInputList";
 import SelectInput from "../../../components/inputs/SelectInput";
+import MultiSelectInput from "../../../components/inputs/MultiSelectInput";
+import DatePickerInput from "../../../components/inputs/DatePickerInput";
 // helpers
 import resetRequiredFieldsErr from "./helpers/resetRequiredFieldsErr";
 import formatClientSelectOptions from "./helpers/formatClientSelectOptions";
@@ -41,7 +43,6 @@ class ProductForm extends Component {
     packHeight: 0,
     packWidth: 0,
     packLength: 0,
-    //Ref
     //Ref
     selectedProducer: this.props.selectedProducer,
     selectedCustomers: this.props.selectedCustomers
@@ -99,10 +100,26 @@ class ProductForm extends Component {
     this.setState(() => ({ [name]: value }));
   };
 
+  // Select
   onSelect = selectedOption => {
     const stateName = "selectedProducer";
     const value = selectedOption ? selectedOption : "";
     this.setState(() => ({ [stateName]: value }));
+  };
+
+  onMultiSelect = selectedOptions => {
+    const stateName = "selectedCustomers"; // array of selected obj
+    const value = selectedOptions ? selectedOptions : [];
+    this.setState(() => ({ [stateName]: value }));
+  };
+
+  // Date
+  handleDateChange = manufacturingDate => {
+    this.setState({ manufacturingDate });
+  };
+
+  handleCheck = () => {
+    this.setState({ dateCheckbox: !this.state.dateCheckbox });
   };
 
   render() {
@@ -121,7 +138,7 @@ class ProductForm extends Component {
     } = formatClientSelectOptions(producerOptions, customerOptions);
 
     // when a message from the server arrives let the user resubmit the form
-    if (this.props.msg) {
+    if (msg) {
       if (this.refs && "submitBtn" in this.refs) {
         this.refs.submitBtn.removeAttribute("disabled");
       }
@@ -130,6 +147,14 @@ class ProductForm extends Component {
     return (
       <form onSubmit={this.onSubmit}>
         <TextInputList state={this.state} cb={this.onChange} />
+        <DatePickerInput
+          dateLabel="Manufacturing Date"
+          checkLabel="Use this date"
+          date={manufacturingDate}
+          checked={dateCheckbox}
+          handleDateChange={this.handleDateChange}
+          handleCheck={this.handleCheck}
+        />
         <SelectInput
           options={producerSelectOptions}
           label="Producer"
@@ -137,6 +162,14 @@ class ProductForm extends Component {
           cb={this.onSelect}
           selectedOption={selectedProducer}
         />
+
+        <MultiSelectInput
+          options={customerSelectOptions}
+          selectedOptions={selectedCustomers}
+          label="Customers"
+          cb={this.onMultiSelect}
+        />
+
         <ObjInputList state={this.state} cb={this.onChange} />
 
         <input

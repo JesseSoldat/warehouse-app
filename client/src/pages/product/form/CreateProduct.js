@@ -28,8 +28,7 @@ class CreateProduct extends Component {
 
   // handle cb ---------------
   handleSubmit = form => {
-    console.log("form", form);
-    // this.props.createProduct(form, this.props.history);
+    this.props.createProduct(form, this.props.history);
   };
 
   handleSendMsg = msg => {

@@ -83,6 +83,9 @@ const NavBar = ({ isAuth, startLogout, history }) => {
           <Link className="dropdown-item" to="/admin/manageUsers">
             Manage User
           </Link>
+          <Link className="dropdown-item" to="/admin/playground">
+            Playground
+          </Link>
         </div>
       </li>
 

@@ -19,6 +19,10 @@ const formatFormValues = state => {
     selectedCustomers
   } = state;
 
+  customerIds: selectedCustomers.map(obj => obj.value) || [];
+
+  const customerIds = [];
+
   const formattedValues = {
     brandName: brandName || "",
     productName: productName || "",

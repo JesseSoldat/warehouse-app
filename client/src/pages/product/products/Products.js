@@ -58,11 +58,7 @@ class Products extends Component {
           </div>
         </div>
 
-        <div className="row">
-          <div className="col-11 mx-auto d-flex justify-content-around flex-wrap">
-            {content}
-          </div>
-        </div>
+        {content}
       </div>
     );
   }

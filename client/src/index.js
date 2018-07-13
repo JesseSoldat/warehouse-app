@@ -4,7 +4,6 @@ import { Provider } from "react-redux";
 import registerServiceWorker from "./registerServiceWorker";
 
 // css
-import "react-select/dist/react-select.css";
 import "./index.css";
 
 // router

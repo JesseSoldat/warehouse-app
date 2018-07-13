@@ -27,7 +27,13 @@ const CardList = ({ products }) => {
     return <Card key={productLabel} data={data} />;
   };
 
-  return <div>{products.map(product => renderCards(product))}</div>;
+  return (
+    <div className="row">
+      <div className="col-11 mx-auto d-flex justify-content-around flex-wrap">
+        {products.map(product => renderCards(product))}
+      </div>
+    </div>
+  );
 };
 
 export default CardList;
