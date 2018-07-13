@@ -7,12 +7,21 @@ import Spinner from "../../../components/Spinner";
 import Message from "../../../components/Message";
 import Heading from "../../../components/Heading";
 import InfoCard from "./InfoCard";
+import LocationCard from "./LocationCard";
+import ToggleListCard from "./ToggleListCard";
+import MeasurmentCard from "./MeasurmentCard";
+import ClientsCard from "./ClientsCard";
 // helpers
 import createDetailsArray from "./helpers/createDetailsArray";
+import createLocationObj from "./helpers/createLocationObj";
+import createMeasurmentsArray from "./helpers/createMeasurmentsArray";
+import createProducerArray from "./helpers/createProducerArray";
+import createCustomersArray from "./helpers/createCustomersArray";
 // utils
 import createObjWithAllPropsAsArrays from "../../../utils/createObjWithAllPropsAsArrays";
 // actions
 import {
+  getProductDetails,
   startGetProductDetails,
   deleteProduct
 } from "../../../actions/product";
@@ -24,8 +33,11 @@ class Product extends Component {
 
   // api calls ---------------------------------------
   getProduct = () => {
-    const { startGetProductDetails, match } = this.props;
+    const { getProductDetails, startGetProductDetails, match } = this.props;
     const { productId } = match.params;
+    // clear old data
+    getProductDetails(null);
+    // fetch new data
     startGetProductDetails(productId);
   };
 
@@ -34,6 +46,8 @@ class Product extends Component {
     const { productId } = match.params;
     deleteProduct(productId, history);
   };
+
+  onUnlinkProduct = () => {};
 
   render() {
     const { product, loading } = this.props;
@@ -67,8 +81,19 @@ class Product extends Component {
         { customers }
       ]);
 
+      // Card Data ----------------------------------------
       // Info Card
       const productDetails = createDetailsArray(product);
+      // Location Card
+      const locationDetails = createLocationObj(productLocation, productId);
+      // MeasurmentCard
+      const measurmentDetails = createMeasurmentsArray(
+        packagingMeasurments,
+        productMeasurments
+      );
+      // ClientsCard
+      const producerDetails = createProducerArray(producer);
+      const customersDetails = createCustomersArray(defaultedObj.customers);
 
       content = (
         <div>
@@ -83,6 +108,29 @@ class Product extends Component {
             // router
             history={history}
           />
+
+          <LocationCard
+            productId={productId}
+            productLocationObj={locationDetails}
+            // cb
+            unlinkCb={this.onUnlinkProduct}
+            history={history}
+          />
+
+          <ToggleListCard array={comments} label="Comments" />
+          <ToggleListCard array={productMaterial} label="Materials" />
+
+          {measurmentDetails.map((array, i) => (
+            <MeasurmentCard array={array} key={i} />
+          ))}
+
+          {producerDetails.map((array, i) => (
+            <ClientsCard array={array} key={i} />
+          ))}
+
+          {customersDetails.map((array, i) => (
+            <ClientsCard array={array} key={i} />
+          ))}
         </div>
       );
     }
@@ -105,5 +153,5 @@ const mapStateToProps = ({ ui, product }) => ({
 
 export default connect(
   mapStateToProps,
-  { startGetProductDetails, deleteProduct }
+  { getProductDetails, startGetProductDetails, deleteProduct }
 )(withRouter(Product));
