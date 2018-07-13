@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import moment from "moment";
 
 // components
 import TextInputList from "./TextInputList";
@@ -34,11 +33,9 @@ class ProductForm extends Component {
     productMaterial: this.props.productObj.productMaterial,
     comments: this.props.productObj.comments,
     //Obj
-    productMeasurements: {},
     prodHeight: this.props.productObj.prodHeight,
     prodWidth: this.props.productObj.prodWidth,
     prodLength: this.props.productObj.prodLength,
-    packagingMeasurements: {},
     packHeight: this.props.productObj.packHeight,
     packWidth: this.props.productObj.packWidth,
     packLength: this.props.productObj.packLength,
@@ -108,7 +105,7 @@ class ProductForm extends Component {
   };
 
   render() {
-    const { msg, producerOptions, customerOptions, product } = this.props;
+    const { msg, producerOptions, customerOptions } = this.props;
 
     const {
       selectedProducer,

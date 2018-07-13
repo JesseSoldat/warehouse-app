@@ -7,6 +7,8 @@ import Heading from "../../../components/Heading";
 import Message from "../../../components/Message";
 import Spinner from "../../../components/Spinner";
 import ProductForm from "./ProductForm";
+// helpers
+import getInitialState from "./helpers/getInitialState";
 // actions
 import {
   getProductDetails,
@@ -39,8 +41,8 @@ class CreateProduct extends Component {
     const { msg, loading, customers, producers } = this.props;
     let content;
 
-    const productObj = {};
-
+    // set product default to child component's state
+    const productObj = getInitialState();
     // No selected producers or customers during creation
     // Product form uses these during Edit mode
     const selectedProducer = "";

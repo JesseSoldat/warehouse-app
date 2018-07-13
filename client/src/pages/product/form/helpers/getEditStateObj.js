@@ -10,22 +10,23 @@ const getEditStateObj = product => {
     : moment(product.manufacturingDate);
 
   const editStateObj = {
+    // strings
     brandName: product.brandName || "",
     productName: product.productName || "",
-    price: product.price || 0,
     pointOfBuy: product.pointOfBuy || "",
+    // numbers
+    price: product.price || 0,
     weight: product.weight || 0,
-
+    quantity: product.quantity || 1,
+    amountOfPieces: product.amountOfPieces || 0,
     // Date
     dateCheckbox,
     manufacturingDate,
-
+    // arrays
     productPictures: product.productPictures.join() || "",
     productMaterial: product.productMaterial.join() || "",
     comments: product.comments.join() || "",
-
-    quantity: product.quantity || 1,
-    amountOfPieces: product.amountOfPieces || 0,
+    // objects
     prodHeight: product.productMeasurments.prodHeight || 0,
     prodWidth: product.productMeasurments.prodWidth || 0,
     prodLength: product.productMeasurments.prodLength || 0,

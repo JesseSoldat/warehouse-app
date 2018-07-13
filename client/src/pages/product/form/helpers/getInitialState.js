@@ -1,31 +1,30 @@
 import moment from "moment";
 
-const getInitialProductState = () => {
+const getInitialState = () => {
   return {
+    // strings
     brandName: "",
     productName: "",
     pointOfBuy: "",
-    //Date
-    manufacturingDate: moment(),
-    dateCheckbox: false,
-    //Numbers
+    // Numbers
     price: 0,
     amountOfPieces: 0,
     quantity: 1,
     weight: 0,
-    //Array of Strings
+    // Date
+    manufacturingDate: moment(),
+    dateCheckbox: false,
+    // Array of Strings
     productMaterial: "",
     comments: "",
-    //Obj
-    productMeasurements: {},
+    // Obj
     prodHeight: 0,
     prodWidth: 0,
     prodLength: 0,
-    packagingMeasurements: {},
     packHeight: 0,
     packWidth: 0,
     packLength: 0
   };
 };
 
-export default getInitialProductState;
+export default getInitialState;

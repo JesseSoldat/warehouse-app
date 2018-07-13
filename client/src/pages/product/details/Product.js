@@ -6,7 +6,9 @@ import { withRouter } from "react-router-dom";
 import Spinner from "../../../components/Spinner";
 import Message from "../../../components/Message";
 import Heading from "../../../components/Heading";
+import InfoCard from "./InfoCard";
 // helpers
+import createDetailsArray from "./helpers/createDetailsArray";
 // utils
 import createObjWithAllPropsAsArrays from "../../../utils/createObjWithAllPropsAsArrays";
 // actions
@@ -40,7 +42,8 @@ class Product extends Component {
     if (loading || !product) {
       content = <Spinner />;
     } else {
-      const { productId } = this.props.match.params;
+      const { match, history } = this.props;
+      const { productId } = match.params;
 
       const {
         // array ----------
@@ -63,6 +66,25 @@ class Product extends Component {
         { productMaterial },
         { customers }
       ]);
+
+      // Info Card
+      const productDetails = createDetailsArray(product);
+
+      content = (
+        <div>
+          <InfoCard
+            pageName="Product"
+            productId={productId}
+            productDetails={productDetails}
+            productPictures={defaultedObj.productPictures}
+            packagingPictures={defaultedObj.packagingPictures}
+            // cb
+            deleteCb={this.onDeleteProduct}
+            // router
+            history={history}
+          />
+        </div>
+      );
     }
 
     return (

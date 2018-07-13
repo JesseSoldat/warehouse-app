@@ -8,7 +8,7 @@ import Message from "../../../components/Message";
 import Spinner from "../../../components/Spinner";
 import ProductForm from "./ProductForm";
 // helpers
-import getInitialProductState from "./helpers/getInitialProductState";
+import getInitialState from "./helpers/getInitialState";
 import getEditStateObj from "./helpers/getEditStateObj";
 // actions
 import {
@@ -44,7 +44,7 @@ class EditProduct extends Component {
     let selectedProducer = "";
     let selectedCustomers = [];
 
-    let productObj = getInitialProductState();
+    let productObj = getInitialState();
 
     if (product) {
       productObj = getEditStateObj(product);
@@ -73,7 +73,6 @@ class EditProduct extends Component {
         <ProductForm
           msg={msg}
           productObj={productObj}
-          product={product}
           producerOptions={producers}
           selectedProducer={selectedProducer}
           customerOptions={customers}
