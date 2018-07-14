@@ -1,5 +1,18 @@
+const defaultValueArray = [
+  [
+    {
+      label: "Customer Details",
+      data: [
+        { label: "Name", value: "" },
+        { label: "Address", value: "" },
+        { label: "Contact", value: "" }
+      ]
+    }
+  ]
+];
+
 const createCustomersArray = array => {
-  if (!array) return [];
+  if (array.length === 0) return defaultValueArray;
   let label = "";
 
   const objArray = array.map((obj, i) => {

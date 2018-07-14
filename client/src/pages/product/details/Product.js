@@ -88,8 +88,8 @@ class Product extends Component {
       const locationDetails = createLocationObj(productLocation, productId);
       // MeasurmentCard
       const measurmentDetails = createMeasurmentsArray(
-        packagingMeasurments,
-        productMeasurments
+        productMeasurments,
+        packagingMeasurments
       );
       // ClientsCard
       const producerDetails = createProducerArray(producer);
