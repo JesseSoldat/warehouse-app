@@ -2,6 +2,7 @@ const crypto = require("crypto");
 
 // models
 const User = require("../models/user");
+const VerificationToken = require("../models/tokens/verificationToken");
 // middleware
 const isAuth = require("../middleware/isAuth");
 // utils
@@ -41,13 +42,21 @@ module.exports = app => {
 
       const user = new User({ username, email, password });
 
-      // Email verification token
-      const verificationToken = crypto.randomBytes(16).toString("hex");
-      user["verificationToken"].token = verificationToken;
       user["role"] = "user";
 
       await user.save();
-      await sendMail(req, user, verificationToken, (type = "confirm"));
+
+      // Email verification token
+      const token = crypto.randomBytes(16).toString("hex");
+
+      const verificationToken = new VerificationToken({
+        user: user._id,
+        token
+      });
+
+      await verificationToken.save();
+
+      await sendMail(req, user, token, (type = "confirm"));
 
       const msg = msgObj(
         `A verification email has been sent to ${user.email}.`,
@@ -90,13 +99,10 @@ module.exports = app => {
         return serverRes(res, 400, msg, null);
       }
 
-      const token = await user.generateAuthToken();
+      const { token, expires } = await user.generateAuthToken();
 
       const msg = msgObj(`${user.email} has logged in successfully.`, "green");
-      res
-        .header("x-auth", token)
-        .status(200)
-        .send({ msg, payload: user });
+      serverRes(res, 200, msg, { _id: user._id, token, expires });
     } catch (err) {
       const msg = serverMsg("error", "login", "user");
       serverRes(res, 400, msg, null);
@@ -126,9 +132,23 @@ module.exports = app => {
     try {
       if (!token) throw new Error();
 
-      const user = await User.findOne({ "verificationToken.token": token });
+      // get the token
+      const verificationToken = await VerificationToken.findOne({ token });
 
-      if (!user) throw new Error();
+      if (
+        !verificationToken ||
+        !verificationToken.token ||
+        !verificationToken.user
+      ) {
+        const msg = msgObj(
+          "No verification token found, you might already be verified. Try to log in.",
+          "red"
+        );
+        return serverRes(res, 400, msg, null);
+      }
+
+      // use the token to get the user
+      const user = await User.findById(verificationToken.user);
 
       // If user is already verified redirect
       if (user.isVerified) {
@@ -136,9 +156,10 @@ module.exports = app => {
       }
 
       user.isVerified = true;
-      user["verificationToken"] = null;
 
       await user.save();
+
+      await VerificationToken.findOneAndRemove({ token });
 
       return res.redirect("/login?verify=true");
     } catch (err) {

@@ -12,6 +12,7 @@ export const AUTH_LOGOUT = "AUTH_LOGOUT";
 export const startRegister = (user, history) => async dispatch => {
   try {
     const res = await axios.post("/api/register", user);
+
     const { msg, options } = res.data;
 
     checkForMsg(msg, dispatch, options);
@@ -35,13 +36,12 @@ export const startLogin = user => async dispatch => {
     const { msg, payload, options } = res.data;
 
     if (payload) {
-      const { _id, tokens } = payload;
-      const token = tokens[0].token;
+      const { _id, token, expires } = payload;
 
       // axios headers
       setAxiosHeader(token);
       // set user to local storage
-      localStorage.setItem("user", JSON.stringify({ _id, token }));
+      localStorage.setItem("user", JSON.stringify({ _id, token, expires }));
 
       dispatch(login(_id, token));
     }

@@ -4,8 +4,10 @@ const validator = require("validator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
+// models
+const AuthToken = "./tokens/authToken";
 // utils
-const { serverRes, msgObj } = "../utils/serverRes.js";
+const { serverRes, msgObj } = "../utils/serverRes";
 const { milliFromNow, daysFromNow } = require("../utils/timeHelpers");
 // token times
 const tokenExpirationTime = 30 * 1000; // 30 seconds TESTING
@@ -36,27 +38,8 @@ const UserSchema = new Schema(
       required: true,
       minlength: 6
     },
-    tokens: [
-      {
-        access: {
-          type: String,
-          required: true
-        },
-        token: {
-          type: String,
-          required: true
-        }
-      }
-    ],
-    isVerified: { type: Boolean, default: false },
-    verificationToken: {
-      token: { type: String },
-      createdAt: {
-        type: Date,
-        default: Date.now(),
-        expires: verificationExpirationTime
-      }
-    }
+    role: { type: String, default: "user" },
+    isVerified: { type: Boolean, default: false }
   },
   { timestamps: true }
 );
@@ -118,37 +101,42 @@ UserSchema.statics.findByCredentials = async function(email, password) {
 UserSchema.methods.generateAuthToken = async function() {
   const user = this;
 
-  const { _id, tokens } = user;
-
-  const access = "auth";
+  const { _id } = user;
 
   // - Token expiration time by milliseconds OR days -
   //const expires = milliFromNow(tokenExpirationTime); // TESTING TOKEN
   const expires = daysFromNow(new Date(), tokenExpirationDays);
 
+  // generate a new token
   const token = jwt
     .sign(
       {
         _id: _id.toHexString(),
-        access,
         expires
       },
       process.env.TOKEN_SECRET
     )
     .toString();
 
-  // remove the first token
-  if (tokens.length > 5) {
-    user.tokens.shift();
-  }
-  tokens.push({
-    access,
-    token
-  });
-
   try {
-    await user.save();
-    return token;
+    // check if the user already has a tokens array
+    const authToken = await AuthToken.findOne({ user: _id });
+
+    if (!authToken) {
+      // create a new AuthToken document with the signed token
+      const newToken = new AuthToken({ tokens: [token], user: _id });
+      await newToken.save();
+    } else {
+      // pushed the signed token to the found tokens document
+      authToken.tokens.push(token);
+      // remove the first token if there are already move than 5 tokens
+      if (tokens.length > 5) {
+        user.tokens.shift();
+      }
+      await authToken.save();
+    }
+
+    return { token, expires };
   } catch (err) {
     return err;
   }
