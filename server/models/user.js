@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 // models
-const AuthToken = "./tokens/authToken";
+const AuthToken = require("./tokens/authToken");
 // utils
 const { serverRes, msgObj } = "../utils/serverRes";
 const { milliFromNow, daysFromNow } = require("../utils/timeHelpers");
@@ -138,6 +138,7 @@ UserSchema.methods.generateAuthToken = async function() {
 
     return { token, expires };
   } catch (err) {
+    console.log("ERR: generateAuthToken", err);
     return err;
   }
 };
@@ -152,8 +153,7 @@ UserSchema.statics.findByToken = async function(token) {
 
     return User.findOne({
       _id: decodedToken._id,
-      "tokens.token": token,
-      "tokens.access": "auth"
+      "tokens.token": token
     });
   } catch (err) {
     return null;
