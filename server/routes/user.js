@@ -100,7 +100,6 @@ module.exports = app => {
       }
 
       const { token, expires } = await user.generateAuthToken();
-      console.log(token, expires);
 
       const msg = msgObj(`${user.email} has logged in successfully.`, "green");
       serverRes(res, 200, msg, { _id: user._id, token, expires });

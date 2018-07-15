@@ -130,8 +130,8 @@ UserSchema.methods.generateAuthToken = async function() {
       // pushed the signed token to the found tokens document
       authToken.tokens.push(token);
       // remove the first token if there are already move than 5 tokens
-      if (tokens.length > 5) {
-        user.tokens.shift();
+      if (authToken.tokens.length > 5) {
+        authToken.tokens.shift();
       }
       await authToken.save();
     }
@@ -145,17 +145,20 @@ UserSchema.methods.generateAuthToken = async function() {
 
 UserSchema.statics.findByToken = async function(token) {
   const User = this;
-  let decodedToken;
 
   try {
-    decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
-    // console.log("findByToken -- decodedToken", decodedToken);
+    // see if the token is in the database
+    const authToken = await AuthToken.findOne({ tokens: token });
 
-    return User.findOne({
-      _id: decodedToken._id,
-      "tokens.token": token
-    });
+    if (authToken && authToken.tokens.indexOf(token) !== -1) {
+      return User.findOne({
+        _id: authToken.user
+      });
+    } else {
+      return null;
+    }
   } catch (err) {
+    console.log("Err: User.findByToken", err);
     return null;
   }
 };
