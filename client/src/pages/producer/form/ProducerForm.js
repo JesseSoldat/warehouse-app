@@ -11,9 +11,9 @@ import validateOnSubmit from "../../../utils/validation/validateOnSubmit";
 class ProducerForm extends Component {
   state = {
     producerNameErr: "",
-    producerName: "",
-    producerContact: "",
-    producerAddress: ""
+    producerName: this.props.data.producerName,
+    producerContact: this.props.data.producerContact,
+    producerAddress: this.props.data.producerAddress
   };
 
   // events ------------------------

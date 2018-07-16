@@ -68,3 +68,23 @@ export const startCreateProducer = (data, history) => async dispatch => {
     axiosResponseErrorHandling(err, dispatch, "create", "producer");
   }
 };
+// Edit a producer -------------------------------------------
+export const startEditProducer = (
+  producerId,
+  data,
+  history
+) => async dispatch => {
+  try {
+    const res = await axios.patch(`/api/producers/${producerId}`, data);
+
+    const { msg, payload, options } = res.data;
+
+    checkForMsg(msg, dispatch, options);
+
+    const productId = payload._id;
+
+    history.push(`/producers/${productId}`);
+  } catch (err) {
+    axiosResponseErrorHandling(err, dispatch, "update", "producer");
+  }
+};

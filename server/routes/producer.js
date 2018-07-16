@@ -50,4 +50,23 @@ module.exports = app => {
       serverRes(res, 400, msg, null);
     }
   });
+  // Edit a producer
+  app.patch("/api/producers/:producerId", isAuth, async (req, res) => {
+    const { producerId } = req.params;
+    try {
+      const producer = await Producer.findByIdAndUpdate(
+        producerId,
+        mergeObjFields("", req.body),
+        { new: true }
+      );
+
+      const msg = msgObj("The producer was updated.", "green");
+      serverRes(res, 200, msg, producer);
+    } catch (err) {
+      console.log("Err: PATCH/api/producers,", err);
+
+      const msg = serverMsg("error", "update", "producer");
+      serverRes(res, 400, msg, null);
+    }
+  });
 };

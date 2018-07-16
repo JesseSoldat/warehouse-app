@@ -15,11 +15,17 @@ const CreateProducer = ({ loading, history, startCreateProducer }) => {
     startCreateProducer(formData, history);
   };
 
+  const data = {
+    producerName: "",
+    producerContact: "",
+    producerAddress: ""
+  };
+
   let content;
   if (loading) {
     content = <Spinner />;
   } else {
-    content = <ProducerForm handleSubmit={handleSubmit} />;
+    content = <ProducerForm handleSubmit={handleSubmit} data={data} />;
   }
 
   return (

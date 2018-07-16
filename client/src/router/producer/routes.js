@@ -5,6 +5,7 @@ import PrivateRoute from "../PrivateRoute";
 import Producers from "../../pages/producer/producers/Producers";
 import Producer from "../../pages/producer/details/Producer";
 import CreateProducer from "../../pages/producer/form/CreateProducer";
+import EditProducer from "../../pages/producer/form/EditProducer";
 
 const ProducerRoutes = [
   <PrivateRoute
@@ -17,6 +18,12 @@ const ProducerRoutes = [
     key="producer-create"
     path="/producers/create"
     component={CreateProducer}
+    exact
+  />,
+  <PrivateRoute
+    key="producer-edit"
+    path="/producers/edit/:producerId"
+    component={EditProducer}
     exact
   />,
   <PrivateRoute
