@@ -16,6 +16,5 @@ export const serverOptions = (options = null) => ({
 
 export const loading = loading => ({
   type: LOADING,
-  msg: null,
   loading
 });

@@ -60,12 +60,12 @@ module.exports = app => {
         { new: true }
       );
 
-      const msg = msgObj("The producer was updated.", "green");
+      const msg = msgObj("The producer was updated.", "green", "update");
       serverRes(res, 200, msg, producer);
     } catch (err) {
       console.log("Err: PATCH/api/producers,", err);
 
-      const msg = serverMsg("error", "update", "producer");
+      const msg = serverMsg("error", "update", "producer", "update error");
       serverRes(res, 400, msg, null);
     }
   });

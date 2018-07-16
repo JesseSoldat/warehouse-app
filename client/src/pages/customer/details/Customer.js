@@ -6,7 +6,7 @@ import { withRouter } from "react-router-dom";
 import Spinner from "../../../components/Spinner";
 import Message from "../../../components/Message";
 import Heading from "../../../components/Heading";
-import TopRowBtn from "../../../components/TopRowBtn";
+import TopRowBtns from "../../../components/TopRowBtns";
 import SingleFieldList from "../../../components/SingleFieldList";
 // helpers
 import customerListData from "./helpers/customerListData";
@@ -23,6 +23,9 @@ class Customer extends Component {
     this.getCustomer();
   }
 
+  goBack = () => {
+    this.props.history.push("/customers");
+  };
   // api call
   getCustomer = () => {
     const { customerId } = this.props.match.params;
@@ -40,8 +43,7 @@ class Customer extends Component {
   onEditCustomer = () => {
     const { match, history } = this.props;
     const { customerId } = match.params;
-    console.log("edit");
-    // history.push(`/products/edit/${productId}`);
+    history.push(`/customers/edit/${customerId}`);
   };
 
   render() {
@@ -64,11 +66,13 @@ class Customer extends Component {
       <div className="container">
         <Message cb={this.getCustomer} />
         {customer && (
-          <TopRowBtn
+          <TopRowBtns
             bt1Disable={bt1Disable}
             bt2Disable={bt2Disable}
+            btn0Cb={this.goBack}
             btn1Cb={this.onDeleteCustomer}
             btn2Cb={this.onEditCustomer}
+            showRightBtns={true}
           />
         )}
         <Heading title="Customer Details" />

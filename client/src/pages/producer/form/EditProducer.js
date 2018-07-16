@@ -6,6 +6,7 @@ import { withRouter } from "react-router-dom";
 import Heading from "../../../components/Heading";
 import Message from "../../../components/Message";
 import Spinner from "../../../components/Spinner";
+import TopRowBtns from "../../../components/TopRowBtns";
 import ProducerForm from "./ProducerForm";
 // actions
 import { startGetProducer, startEditProducer } from "../../../actions/producer";
@@ -25,6 +26,10 @@ class EditProducer extends Component {
     this.props.startEditProducer(producerId, formData, this.props.history);
   };
 
+  goBack = () => {
+    console.log(this.props.match);
+  };
+
   render() {
     const { loading, producer } = this.props;
     let content;
@@ -41,6 +46,7 @@ class EditProducer extends Component {
     return (
       <div className="container">
         <Message cb={this.getProducer} />
+        <TopRowBtns btn0Cb={this.goBack} />
         <Heading title="Edit Producer" />
         <div className="row">
           <div className="col-xs-12 col-md-8 mx-auto">{content}</div>

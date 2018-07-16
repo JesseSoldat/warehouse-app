@@ -1,10 +1,10 @@
 const { msgObj, errMsg } = require("./serverRes");
 
-const serverMsg = (key, method, target) => {
+const serverMsg = (key, method, target, options = null) => {
   let msg;
   switch (key) {
     case "error":
-      msg = msgObj(errMsg(method, target), "red");
+      msg = msgObj(errMsg(method, target), "red", options);
       break;
 
     case "allFields":

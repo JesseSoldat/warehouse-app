@@ -6,12 +6,13 @@ import { withRouter } from "react-router-dom";
 import Spinner from "../../../components/Spinner";
 import Message from "../../../components/Message";
 import Heading from "../../../components/Heading";
-import TopRowBtn from "../../../components/TopRowBtn";
+import TopRowBtns from "../../../components/TopRowBtns";
 import SingleFieldList from "../../../components/SingleFieldList";
 // helpers
 import producerListData from "./helpers/producerListData";
 // actions
 import { startGetProducer } from "../../../actions/producer";
+import { serverMsg } from "../../../actions/ui";
 
 class Producer extends Component {
   state = {
@@ -22,6 +23,14 @@ class Producer extends Component {
   componentDidMount() {
     this.getProducer();
   }
+
+  componentWillUnmount() {
+    this.props.serverMsg(null);
+  }
+
+  goBack = () => {
+    this.props.history.push("/producers");
+  };
 
   // api call
   getProducer = () => {
@@ -40,8 +49,7 @@ class Producer extends Component {
   onEdit = () => {
     const { match, history } = this.props;
     const { producerId } = match.params;
-    console.log("edit");
-    // history.push(`/products/edit/${productId}`);
+    history.push(`/producers/edit/${producerId}`);
   };
 
   render() {
@@ -64,11 +72,13 @@ class Producer extends Component {
       <div className="container">
         <Message cb={this.getProducer} />
         {producer && (
-          <TopRowBtn
+          <TopRowBtns
             bt1Disable={bt1Disable}
             bt2Disable={bt2Disable}
+            btn0Cb={this.goBack}
             btn1Cb={this.onDeleteProduct}
             btn2Cb={this.onEdit}
+            showRightBtns={true}
           />
         )}
         <Heading title="Producer Details" />
@@ -85,5 +95,5 @@ const mapStateToProps = ({ ui, producer }) => ({
 
 export default connect(
   mapStateToProps,
-  { startGetProducer }
+  { startGetProducer, serverMsg }
 )(withRouter(Producer));
