@@ -9,81 +9,81 @@ import Heading from "../../../components/Heading";
 import TopRowBtn from "../../../components/TopRowBtn";
 import SingleFieldList from "../../../components/SingleFieldList";
 // helpers
-import producerListData from "./helpers/producerListData";
+import customerListData from "./helpers/customerListData";
 // actions
-import { startGetProducer } from "../../../actions/producer";
+import { startGetCustomer } from "../../../actions/customer";
 
-class Producer extends Component {
+class Customer extends Component {
   state = {
     bt1Disable: false,
     bt2Disable: false
   };
 
   componentDidMount() {
-    this.getProducer();
+    this.getCustomer();
   }
 
   // api call
-  getProducer = () => {
-    const { producerId } = this.props.match.params;
-    this.props.startGetProducer(producerId);
+  getCustomer = () => {
+    const { customerId } = this.props.match.params;
+    this.props.startGetCustomer(customerId);
   };
 
   // events
-  onDeleteProduct = () => {
+  onDeleteCustomer = () => {
     const { match, history } = this.props;
-    const { producerId } = match.params;
+    const { customerId } = match.params;
     console.log("delete");
     // deleteProduct(id, history);
   };
 
-  onEdit = () => {
+  onEditCustomer = () => {
     const { match, history } = this.props;
-    const { producerId } = match.params;
+    const { customerId } = match.params;
     console.log("edit");
     // history.push(`/products/edit/${productId}`);
   };
 
   render() {
     // props
-    const { loading, producer } = this.props;
+    const { loading, customer } = this.props;
     // state
     const { bt1Disable, bt2Disable } = this.state;
     let content;
 
     if (loading) {
       content = <Spinner />;
-    } else if (!producer) {
-      // dispatch a msg that no producer was found
-      console.log("No producer found");
+    } else if (!customer) {
+      // dispatch a msg that no customer was found
+      console.log("No customer found");
     } else {
-      content = <SingleFieldList data={producerListData(producer)} />;
+      content = <SingleFieldList data={customerListData(customer)} />;
     }
 
     return (
       <div className="container">
-        <Message cb={this.getProducer} />
-        {producer && (
+        <Message cb={this.getCustomer} />
+        {customer && (
           <TopRowBtn
             bt1Disable={bt1Disable}
             bt2Disable={bt2Disable}
-            btn1Cb={this.onDeleteProduct}
-            btn2Cb={this.onEdit}
+            btn1Cb={this.onDeleteCustomer}
+            btn2Cb={this.onEditCustomer}
           />
         )}
-        <Heading title="Producer Details" />
+        <Heading title="Customer Details" />
         {content}
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ ui, producer }) => ({
+const mapStateToProps = ({ ui, customer }) => ({
   loading: ui.loading,
-  producer: producer.producer
+  customer: customer.customer
 });
 
 export default connect(
   mapStateToProps,
-  { startGetProducer }
-)(withRouter(Producer));
+  { startGetCustomer }
+)(Customer);

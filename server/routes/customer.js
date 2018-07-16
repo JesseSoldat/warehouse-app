@@ -20,6 +20,20 @@ module.exports = app => {
       serverRes(res, 400, msg, null);
     }
   });
+  // Get one customer
+  app.get("/api/customers/:customerId", isAuth, async (req, res) => {
+    const { customerId } = req.params;
+    try {
+      const customer = await Customer.findById(customerId);
+
+      serverRes(res, 200, null, customer);
+    } catch (err) {
+      console.log("Err: GET/api/customers/:customerId,", err);
+
+      const msg = serverMsg("error", "get", "customer");
+      serverRes(res, 400, msg, null);
+    }
+  });
   // Create a new customer
   app.post("/api/customers", isAuth, async (req, res) => {
     const customer = new Customer(req.body);

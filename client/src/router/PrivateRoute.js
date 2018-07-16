@@ -15,6 +15,7 @@ const PrivateRoute = ({ isAuth, component: Component, ...restOfProps }) => {
             <div className="my-3">
               <Component {...props} />
             </div>
+            <div style={{ height: "80px" }} />
           </div>
         ) : (
           <Redirect to="/login" />
