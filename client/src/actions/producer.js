@@ -8,6 +8,7 @@ import { loading } from "./ui";
 // types
 export const PRODUCERS_FETCH_ALL = "PRODUCERS_FETCH_ALL";
 export const PRODUCERS_FETCH_ONE = "PRODUCERS_FETCH_ONE";
+export const PRODUCERS_CREATE = "PRODUCERS_CREATE";
 
 // Get all producers ----------------------------------------
 export const getProducers = producers => ({
@@ -49,5 +50,21 @@ export const startGetProducer = producerId => async dispatch => {
     checkForMsg(msg, dispatch, options);
   } catch (err) {
     axiosResponseErrorHandling(err, dispatch, "fetch", "producer");
+  }
+};
+// Create a producer ---------------------------------------
+export const startCreateProducer = (data, history) => async dispatch => {
+  try {
+    const res = await axios.post("/api/producer", data);
+
+    const { msg, payload, options } = res.data;
+
+    checkForMsg(msg, dispatch, options);
+
+    const productId = payload._id;
+
+    history.push(`/producers/${productId}`);
+  } catch (err) {
+    axiosResponseErrorHandling(err, dispatch, "create", "producer");
   }
 };
