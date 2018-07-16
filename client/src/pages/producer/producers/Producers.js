@@ -5,7 +5,9 @@ import { connect } from "react-redux";
 import Spinner from "../../../components/Spinner";
 import Message from "../../../components/Message";
 import Heading from "../../../components/Heading";
-import CardList from "./CardList";
+import CardList from "../../../components/CardList";
+// helpers
+import producerCardData from "./helpers/producerCardData";
 // actions
 import { startGetProducers } from "../../../actions/producer";
 
@@ -25,7 +27,7 @@ class Producers extends Component {
     if (loading) {
       content = <Spinner />;
     } else {
-      content = <CardList producers={producers} />;
+      content = <CardList data={producerCardData(producers)} />;
     }
 
     return (
