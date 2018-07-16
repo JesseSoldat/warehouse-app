@@ -48,6 +48,9 @@ const NavBar = ({ isAuth, startLogout, history }) => {
           <Link className="dropdown-item" to="/producers">
             Producers
           </Link>
+          <Link className="dropdown-item" to="/customers">
+            Customers
+          </Link>
         </div>
       </li>
 

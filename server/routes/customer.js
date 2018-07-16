@@ -4,9 +4,24 @@ const Customer = require("../models/customer");
 const isAuth = require("../middleware/isAuth");
 // utils
 const { serverRes, msgObj, errMsg } = require("../utils/serverRes");
+const serverMsg = require("../utils/serverMsg");
 
 module.exports = app => {
-  app.post("/api/customers", isAuth, async (req, res, next) => {
+  // Get all customers
+  app.get("/api/customers", isAuth, async (req, res) => {
+    try {
+      const customers = await Customer.find({}).sort({ $natural: -1 });
+
+      serverRes(res, 200, null, customers);
+    } catch (err) {
+      console.log("Err: GET/api/customers,", err);
+
+      const msg = serverMsg("error", "get", "customers");
+      serverRes(res, 400, msg, null);
+    }
+  });
+  // Create a new customer
+  app.post("/api/customers", isAuth, async (req, res) => {
     const customer = new Customer(req.body);
     try {
       await customer.save();
@@ -14,7 +29,9 @@ module.exports = app => {
       const msg = msgObj("The customer was saved.", "green");
       serverRes(res, 200, msg, customer);
     } catch (err) {
-      const msg = msgObj(errMsg("save", "customer"), "red");
+      console.log("Err: POST/api/customers,", err);
+
+      const msg = serverMsg("error", "save", "customer");
       serverRes(res, 400, msg, null);
     }
   });

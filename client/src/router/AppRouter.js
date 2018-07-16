@@ -7,6 +7,7 @@ import AuthRoutes from "./auth/routes";
 import GeneralRoutes from "./general/routes";
 import ProductRoutes from "./product/routes";
 import ProducerRoutes from "./producer/routes";
+import CustomerRoutes from "./customer/routes";
 // used to test concepts
 import PlayGroundRoutes from "./playground/routes";
 
@@ -20,6 +21,7 @@ const AppRouter = () => (
       {GeneralRoutes}
       {ProductRoutes}
       {ProducerRoutes}
+      {CustomerRoutes}
       {PlayGroundRoutes}
     </Switch>
   </Router>
