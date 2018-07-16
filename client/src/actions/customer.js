@@ -66,3 +66,21 @@ export const startCreateCustomer = (data, history) => async dispatch => {
     axiosResponseErrorHandling(err, dispatch, "create", "customer");
   }
 };
+// Edit a customer ---------------------------------------
+export const startEditCustomer = (
+  customerId,
+  data,
+  history
+) => async dispatch => {
+  try {
+    const res = await axios.patch(`/api/customers/${customerId}`, data);
+
+    const { msg, options } = res.data;
+
+    checkForMsg(msg, dispatch, options);
+
+    history.push(`/customers/${customerId}`);
+  } catch (err) {
+    axiosResponseErrorHandling(err, dispatch, "update", "customer");
+  }
+};

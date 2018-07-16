@@ -77,13 +77,11 @@ export const startEditProducer = (
   try {
     const res = await axios.patch(`/api/producers/${producerId}`, data);
 
-    const { msg, payload, options } = res.data;
+    const { msg, options } = res.data;
 
     checkForMsg(msg, dispatch, options);
 
-    const productId = payload._id;
-
-    history.push(`/producers/${productId}`);
+    history.push(`/producers/${producerId}`);
   } catch (err) {
     axiosResponseErrorHandling(err, dispatch, "update", "producer");
   }

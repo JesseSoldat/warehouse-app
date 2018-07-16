@@ -7,62 +7,62 @@ import Heading from "../../../components/Heading";
 import Message from "../../../components/Message";
 import Spinner from "../../../components/Spinner";
 import TopRowBtns from "../../../components/TopRowBtns";
-import ProducerForm from "./ProducerForm";
+import CustomerForm from "./CustomerForm";
 // actions
-import { startGetProducer, startEditProducer } from "../../../actions/producer";
+import { startGetCustomer, startEditCustomer } from "../../../actions/customer";
 
-class EditProducer extends Component {
+class EditCustomer extends Component {
   componentDidMount() {
-    this.getProducer();
+    this.getCustomer();
   }
 
-  getProducer = () => {
-    const { producerId } = this.props.match.params;
-    this.props.startGetProducer(producerId);
+  getCustomer = () => {
+    const { customerId } = this.props.match.params;
+    this.props.startGetCustomer(customerId);
   };
 
   handleSubmit = formData => {
-    const { producerId } = this.props.match.params;
-    this.props.startEditProducer(producerId, formData, this.props.history);
+    const { customerId } = this.props.match.params;
+    this.props.startEditCustomer(customerId, formData, this.props.history);
   };
 
   goBack = () => {
     const { from, history, match } = this.props;
-    const { producerId } = match.params;
+    const { customerId } = match.params;
 
     switch (from) {
-      case "/producers":
-        history.push("/producers");
+      case "/customers":
+        history.push("/customers");
         return;
 
-      case "/producers/:producerId":
-        history.push(`/producers/${producerId}`);
+      case "/customers/:customerId":
+        history.push(`/customers/${customerId}`);
         return;
 
       default:
-        history.push("/producers");
+        history.push("/customers");
         break;
     }
   };
 
   render() {
-    const { loading, producer } = this.props;
+    const { loading, customer } = this.props;
     let content;
 
     if (loading) {
       content = <Spinner />;
-    } else if (!producer) {
+    } else if (!customer) {
     } else {
       content = (
-        <ProducerForm handleSubmit={this.handleSubmit} data={producer} />
+        <CustomerForm handleSubmit={this.handleSubmit} data={customer} />
       );
     }
 
     return (
       <div className="container">
-        <Message cb={this.getProducer} />
+        <Message cb={this.getCustomer} />
         <TopRowBtns btn0Cb={this.goBack} />
-        <Heading title="Edit Producer" />
+        <Heading title="Edit Customer" />
         <div className="row">
           <div className="col-xs-12 col-md-8 mx-auto">{content}</div>
         </div>
@@ -71,13 +71,13 @@ class EditProducer extends Component {
   }
 }
 
-const mapStateToProps = ({ ui, router, producer }) => ({
+const mapStateToProps = ({ ui, router, customer }) => ({
   loading: ui.loading,
   from: router.from,
-  producer: producer.producer
+  customer: customer.customer
 });
 
 export default connect(
   mapStateToProps,
-  { startGetProducer, startEditProducer }
-)(withRouter(EditProducer));
+  { startGetCustomer, startEditCustomer }
+)(withRouter(EditCustomer));

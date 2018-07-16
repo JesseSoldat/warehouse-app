@@ -15,11 +15,17 @@ const CreateCustomer = ({ loading, history, startCreateCustomer }) => {
     startCreateCustomer(formData, history);
   };
 
+  const data = {
+    customerName: "",
+    customerContact: "",
+    customerAddress: ""
+  };
+
   let content;
   if (loading) {
     content = <Spinner />;
   } else {
-    content = <CustomerForm handleSubmit={handleSubmit} />;
+    content = <CustomerForm handleSubmit={handleSubmit} data={data} />;
   }
 
   return (

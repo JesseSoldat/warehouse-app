@@ -11,9 +11,9 @@ import validateOnSubmit from "../../../utils/validation/validateOnSubmit";
 class CustomerForm extends Component {
   state = {
     customerNameErr: "",
-    customerName: "",
-    customerContact: "",
-    customerAddress: ""
+    customerName: this.props.data.customerName,
+    customerContact: this.props.data.customerContact,
+    customerAddress: this.props.data.customerAddress
   };
 
   // events ------------------------

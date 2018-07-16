@@ -5,6 +5,7 @@ const isAuth = require("../middleware/isAuth");
 // utils
 const { serverRes, msgObj, errMsg } = require("../utils/serverRes");
 const serverMsg = require("../utils/serverMsg");
+const mergeObjFields = require("../utils/mergeObjFields");
 
 module.exports = app => {
   // Get all customers
@@ -46,6 +47,26 @@ module.exports = app => {
       console.log("Err: POST/api/customers,", err);
 
       const msg = serverMsg("error", "save", "customer");
+      serverRes(res, 400, msg, null);
+    }
+  });
+  // Edit a customer
+  app.patch("/api/customers/:customerId", isAuth, async (req, res) => {
+    const { customerId } = req.params;
+
+    try {
+      const customer = await Customer.findByIdAndUpdate(
+        customerId,
+        mergeObjFields("", req.body),
+        { new: true }
+      );
+
+      const msg = msgObj("The customer was updated.", "green", "update");
+      serverRes(res, 200, msg, customer);
+    } catch (err) {
+      console.log("Err: PATCH/api/customers,", err);
+
+      const msg = serverMsg("error", "update", "customer", "update error");
       serverRes(res, 400, msg, null);
     }
   });
