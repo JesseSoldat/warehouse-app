@@ -6,26 +6,26 @@ import { withRouter } from "react-router-dom";
 import Spinner from "../../../components/Spinner";
 import Message from "../../../components/Message";
 import Heading from "../../../components/Heading";
-import ProducerForm from "./ProducerForm";
+import CustomerForm from "./CustomerForm";
 // actions
-import { startCreateProducer } from "../../../actions/producer";
+import { startCreateCustomer } from "../../../actions/customer";
 
-const CreateProducer = ({ loading, history, startCreateProducer }) => {
+const CreateCustomer = ({ loading, history, startCreateCustomer }) => {
   const handleSubmit = formData => {
-    startCreateProducer(formData, history);
+    startCreateCustomer(formData, history);
   };
 
   let content;
   if (loading) {
     content = <Spinner />;
   } else {
-    content = <ProducerForm handleSubmit={handleSubmit} />;
+    content = <CustomerForm handleSubmit={handleSubmit} />;
   }
 
   return (
     <div className="container">
       <Message />
-      <Heading title="Create Producer" />
+      <Heading title="Create Customer" />
       <div className="row">
         <div className="col-xs-12 col-md-8 m-auto">{content}</div>
       </div>
@@ -39,5 +39,5 @@ const mapStateToProps = ({ ui }) => ({
 
 export default connect(
   mapStateToProps,
-  { startCreateProducer }
-)(withRouter(CreateProducer));
+  { startCreateCustomer }
+)(withRouter(CreateCustomer));

@@ -8,7 +8,7 @@ const serverMsg = require("../utils/serverMsg");
 const mergeObjFields = require("../utils/mergeObjFields");
 
 module.exports = app => {
-  // Get all of the producers
+  // Get all of the producers ------------------------------
   app.get("/api/producers", isAuth, async (req, res) => {
     try {
       const producers = await Producer.find({}).sort({ $natural: -1 });
@@ -21,7 +21,7 @@ module.exports = app => {
       serverRes(res, 400, msg, null);
     }
   });
-  // Get one producer
+  // Get one producer -----------------------------------------
   app.get("/api/producers/:producerId", isAuth, async (req, res) => {
     const { producerId } = req.params;
     try {
@@ -35,7 +35,7 @@ module.exports = app => {
       serverRes(res, 400, msg, null);
     }
   });
-  // Create a new producer
+  // Create a new producer ------------------------------------
   app.post("/api/producers", isAuth, async (req, res) => {
     const producer = new Producer(req.body);
     try {

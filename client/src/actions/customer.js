@@ -8,7 +8,7 @@ import { loading } from "./ui";
 export const CUSTOMERS_FETCH_ALL = "CUSTOMERS_FETCH_ALL";
 export const CUSTOMERS_FETCH_ONE = "CUSTOMERS_FETCH_ONE";
 
-// Get all customers
+// Get all customers -------------------------------
 export const getCustomers = customers => ({
   type: CUSTOMERS_FETCH_ALL,
   customers
@@ -29,7 +29,7 @@ export const startGetCustomers = () => async dispatch => {
     axiosResponseErrorHandling(err, dispatch, "fetch", "customers");
   }
 };
-// Get one customer
+// Get one customer ----------------------------------
 export const getCustomer = customer => ({
   type: CUSTOMERS_FETCH_ONE,
   customer
@@ -48,5 +48,21 @@ export const startGetCustomer = customerId => async dispatch => {
     checkForMsg(msg, dispatch, options);
   } catch (err) {
     axiosResponseErrorHandling(err, dispatch, "fetch", "customer");
+  }
+};
+// Create a new customer -----------------------------
+export const startCreateCustomer = (data, history) => async dispatch => {
+  try {
+    const res = await axios.post("/api/customers", data);
+
+    const { msg, payload, options } = res.data;
+
+    checkForMsg(msg, dispatch, options);
+
+    const customerId = payload._id;
+
+    history.push(`/customers/${customerId}`);
+  } catch (err) {
+    axiosResponseErrorHandling(err, dispatch, "create", "customer");
   }
 };
