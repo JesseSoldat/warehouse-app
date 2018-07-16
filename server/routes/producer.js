@@ -22,7 +22,7 @@ module.exports = app => {
     }
   });
   // Get one producer
-  app.get("/api/producer/:producerId", isAuth, async (req, res) => {
+  app.get("/api/producers/:producerId", isAuth, async (req, res) => {
     const { producerId } = req.params;
     try {
       const producer = await Producer.findById(producerId);

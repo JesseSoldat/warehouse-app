@@ -29,21 +29,19 @@ class ProducerForm extends Component {
       return;
     }
 
-    this.refs.submitBtn.removeAttribute("disabled");
-
-    //this.props.handleSubmit(this.state);
+    this.props.handleSubmit({
+      producerName: this.state.producerName,
+      producerContact: this.state.producerContact,
+      producerAddress: this.state.producerAddress
+    });
   };
 
   onChange = e => {
     const { name, value } = e.target;
-    const { shouldRemoveError, newErrorState } = validateOnChange(
-      producerFieldData,
-      name,
-      value
-    );
-    if (shouldRemoveError) {
-      console.log(newErrorState);
+    // newErrorState will be null || obj with errors
+    const newErrorState = validateOnChange(producerFieldData, { name, value });
 
+    if (newErrorState) {
       this.setState({ [name]: value, ...newErrorState });
       return;
     }

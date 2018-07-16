@@ -9,7 +9,7 @@
 // name = the name attribute on the input
 // value = the value of the field in state
 
-const validateOnChange = (fieldData, name, value) => {
+const validateOnChange = (fieldData, { name, value }) => {
   const newErrorState = {};
   let shouldRemoveError = false;
 
@@ -29,7 +29,7 @@ const validateOnChange = (fieldData, name, value) => {
     }
   });
 
-  return { shouldRemoveError, newErrorState };
+  return shouldRemoveError ? newErrorState : null;
 };
 
 export default validateOnChange;

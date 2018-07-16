@@ -41,7 +41,7 @@ export const startGetProducer = producerId => async dispatch => {
   dispatch(loading(true));
 
   try {
-    const res = await axios.get(`/api/producer/${producerId}`);
+    const res = await axios.get(`/api/producers/${producerId}`);
 
     const { msg, payload, options } = res.data;
 
@@ -55,7 +55,7 @@ export const startGetProducer = producerId => async dispatch => {
 // Create a producer ---------------------------------------
 export const startCreateProducer = (data, history) => async dispatch => {
   try {
-    const res = await axios.post("/api/producer", data);
+    const res = await axios.post("/api/producers", data);
 
     const { msg, payload, options } = res.data;
 
