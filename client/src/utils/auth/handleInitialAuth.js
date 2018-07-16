@@ -13,7 +13,7 @@ const handleInitialAuth = (store, renderApp) => {
   if (user) {
     const { _id, token, expires } = user;
 
-    console.log(user);
+    // console.log(user);
 
     if (isTokenExp(token)) {
       localStorage.removeItem("user");

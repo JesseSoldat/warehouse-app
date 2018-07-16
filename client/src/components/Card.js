@@ -5,19 +5,13 @@ import truncateStr from "../utils/truncateStr";
 
 const Card = ({ data }) => {
   const {
-    title,
-    picture,
-    subtitle,
-    text1,
-    text2,
-    text3,
-    text4,
-    link1,
-    link2,
-    link3,
-    linkText1,
-    linkText2,
-    linkText3,
+    title = "",
+    picture = "",
+    subtitle = "",
+    link1 = "",
+    link2 = "",
+    linkText1 = "",
+    linkText2 = "",
     showPic = true,
     picSrc = "http://via.placeholder.com/150x100"
   } = data;
@@ -37,36 +31,20 @@ const Card = ({ data }) => {
           }}
         />
       )}
-      <div className="card-body d-flex flex-column align-items-center mb-3">
+      <div className="card-body d-flex flex-column align-items-center pt-1 mb-3">
         <h6 className="card-title">{truncateStr(title, 25)}</h6>
         {subtitle && <h6 className="card-subtitle mb-2">{subtitle}</h6>}
-        <p className="card-text">{text1}</p>
-        {text2 && <p className="card-text">{text2}</p>}
-        {text3 && <p className="card-text">{text3}</p>}
-        {text4 && <p className="card-text">{text4}</p>}
 
-        <div className="d-flex flex-column">
-          <button className="btn btn-default mb-1">
-            <Link className="card-link" to={link1}>
-              {linkText1}
+        <div className="d-flex justify-content-between mt-2">
+          <Link className="card-link" to={link1}>
+            <button className="btn btn-default">{linkText1}</button>
+          </Link>
+
+          {link2 && (
+            <Link className="card-link" to={link2}>
+              <button className="btn btn-default">{linkText2}</button>
             </Link>
-          </button>
-          {link2 &&
-            linkText2 && (
-              <button className="btn btn-default mb-1">
-                <Link className="card-link" to={link2}>
-                  {linkText2}
-                </Link>
-              </button>
-            )}
-          {link3 &&
-            linkText3 && (
-              <button className="btn btn-default mb-1">
-                <Link className="card-link" to={link3}>
-                  {linkText3}
-                </Link>
-              </button>
-            )}
+          )}
         </div>
       </div>
     </div>
