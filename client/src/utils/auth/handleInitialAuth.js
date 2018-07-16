@@ -29,7 +29,7 @@ const handleInitialAuth = (store, renderApp) => {
         loading: false
       });
 
-      deleteExpToken(token);
+      // deleteExpToken(token);
 
       renderApp();
     } else {
