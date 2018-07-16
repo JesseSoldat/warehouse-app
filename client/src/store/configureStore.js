@@ -5,8 +5,8 @@ import adminReducer from "../reducers/admin";
 import uiReducer from "../reducers/ui";
 import authReducer from "../reducers/auth";
 import productReducer from "../reducers/product";
-import customerReducer from "../reducers/customers";
-import producerReducer from "../reducers/producers";
+import customerReducer from "../reducers/customer";
+import producerReducer from "../reducers/producer";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

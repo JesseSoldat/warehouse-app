@@ -21,6 +21,20 @@ module.exports = app => {
       serverRes(res, 400, msg, null);
     }
   });
+  // Get one producer
+  app.get("/api/producer/:producerId", isAuth, async (req, res) => {
+    const { producerId } = req.params;
+    try {
+      const producer = await Producer.findById(producerId);
+
+      serverRes(res, 200, null, producer);
+    } catch (err) {
+      console.log("Err: GET/api/producers/:producerId,", err);
+
+      const msg = serverMsg("error", "get", "producer");
+      serverRes(res, 400, msg, null);
+    }
+  });
   // Create a new producer
   app.post("/api/producers", isAuth, async (req, res) => {
     const producer = new Producer(req.body);
