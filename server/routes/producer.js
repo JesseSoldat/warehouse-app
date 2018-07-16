@@ -41,7 +41,7 @@ module.exports = app => {
     try {
       await producer.save();
 
-      const msg = msgObj("The producer was saved.", "green");
+      const msg = msgObj("The producer was saved.", "green", "create");
       serverRes(res, 200, msg, producer);
     } catch (err) {
       console.log("Err: POST/api/producers,", err);
@@ -66,6 +66,22 @@ module.exports = app => {
       console.log("Err: PATCH/api/producers,", err);
 
       const msg = serverMsg("error", "update", "producer", "update error");
+      serverRes(res, 400, msg, null);
+    }
+  });
+  // Delete a producer
+  app.delete("/api/producers/:producerId", isAuth, async (req, res) => {
+    const { producerId } = req.params;
+    try {
+      const producer = await Producer.findByIdAndRemove(producerId);
+
+      const msg = msgObj("The producer was deleted.", "green", "delete");
+
+      serverRes(res, 200, msg, producer);
+    } catch (err) {
+      console.log("Err: DELETE/api/producers/:producerId,", err);
+
+      const msg = serverMsg("error", "delete", "producer", "delete error");
       serverRes(res, 400, msg, null);
     }
   });

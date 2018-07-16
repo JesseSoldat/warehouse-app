@@ -11,7 +11,10 @@ import SingleFieldList from "../../../components/SingleFieldList";
 // helpers
 import producerListData from "./helpers/producerListData";
 // actions
-import { startGetProducer } from "../../../actions/producer";
+import {
+  startGetProducer,
+  startDeleteProducer
+} from "../../../actions/producer";
 import { serverMsg } from "../../../actions/ui";
 
 class Producer extends Component {
@@ -40,10 +43,10 @@ class Producer extends Component {
 
   // events
   onDeleteProduct = () => {
-    const { match, history } = this.props;
+    this.setState({ bt1Disable: true });
+    const { startDeleteProducer, match, history } = this.props;
     const { producerId } = match.params;
-    console.log("delete");
-    // deleteProduct(id, history);
+    startDeleteProducer(producerId, history);
   };
 
   onEdit = () => {
@@ -95,5 +98,5 @@ const mapStateToProps = ({ ui, producer }) => ({
 
 export default connect(
   mapStateToProps,
-  { startGetProducer, serverMsg }
+  { startGetProducer, startDeleteProducer, serverMsg }
 )(withRouter(Producer));

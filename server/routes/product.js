@@ -97,7 +97,7 @@ module.exports = app => {
       product["productLabel"] = await Counter.createProductLabel();
       await product.save();
 
-      const msg = msgObj("The product was saved.", "green");
+      const msg = msgObj("The product was saved.", "green", "create");
       serverRes(res, 200, msg, product);
     } catch (err) {
       const msg = msgObj(errMsg("save", "product"), "red");
@@ -126,7 +126,7 @@ module.exports = app => {
         { new: true }
       );
 
-      const msg = msgObj("The product was updated.", "green");
+      const msg = msgObj("The product was updated.", "green", "update");
       serverRes(res, 200, msg, updatedProduct);
     } catch (err) {
       const msg = msgObj(errMsg("update", "product"), "red");
@@ -168,7 +168,7 @@ module.exports = app => {
 
       await product.remove();
 
-      const msg = msgObj("The product was deleted.", "green");
+      const msg = msgObj("The product was deleted.", "green", "delete");
 
       serverRes(res, 200, msg, null);
     } catch (error) {

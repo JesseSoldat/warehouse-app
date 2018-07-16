@@ -41,7 +41,7 @@ module.exports = app => {
     try {
       await customer.save();
 
-      const msg = msgObj("The customer was saved.", "green");
+      const msg = msgObj("The customer was saved.", "green", "create");
       serverRes(res, 200, msg, customer);
     } catch (err) {
       console.log("Err: POST/api/customers,", err);
@@ -64,9 +64,25 @@ module.exports = app => {
       const msg = msgObj("The customer was updated.", "green", "update");
       serverRes(res, 200, msg, customer);
     } catch (err) {
-      console.log("Err: PATCH/api/customers,", err);
+      console.log("Err: PATCH/api/customers/:customerId,", err);
 
       const msg = serverMsg("error", "update", "customer", "update error");
+      serverRes(res, 400, msg, null);
+    }
+  });
+  // Delete a customer
+  app.delete("/api/customers/:customerId", isAuth, async (req, res) => {
+    const { customerId } = req.params;
+    try {
+      const customer = await Customer.findByIdAndRemove(customerId);
+
+      const msg = msgObj("The customer was deleted.", "green", "delete");
+
+      serverRes(res, 200, msg, customer);
+    } catch (err) {
+      console.log("Err: DELETE/api/customers/:customerId,", err);
+
+      const msg = serverMsg("error", "delete", "customer", "delete error");
       serverRes(res, 400, msg, null);
     }
   });

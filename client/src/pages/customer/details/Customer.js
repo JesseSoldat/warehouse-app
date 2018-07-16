@@ -11,7 +11,10 @@ import SingleFieldList from "../../../components/SingleFieldList";
 // helpers
 import customerListData from "./helpers/customerListData";
 // actions
-import { startGetCustomer } from "../../../actions/customer";
+import {
+  startGetCustomer,
+  startDeleteCustomer
+} from "../../../actions/customer";
 
 class Customer extends Component {
   state = {
@@ -34,10 +37,10 @@ class Customer extends Component {
 
   // events
   onDeleteCustomer = () => {
-    const { match, history } = this.props;
+    this.setState({ bt1Disable: true });
+    const { startDeleteCustomer, match, history } = this.props;
     const { customerId } = match.params;
-    console.log("delete");
-    // deleteProduct(id, history);
+    startDeleteCustomer(customerId, history);
   };
 
   onEditCustomer = () => {
@@ -89,5 +92,5 @@ const mapStateToProps = ({ ui, customer }) => ({
 
 export default connect(
   mapStateToProps,
-  { startGetCustomer }
+  { startGetCustomer, startDeleteCustomer }
 )(Customer);

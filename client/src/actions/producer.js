@@ -86,3 +86,17 @@ export const startEditProducer = (
     axiosResponseErrorHandling(err, dispatch, "update", "producer");
   }
 };
+// Delete a producer --------------------------------------
+export const startDeleteProducer = (producerId, history) => async dispatch => {
+  try {
+    const res = await axios.delete(`/api/producers/${producerId}`);
+
+    const { msg, options } = res.data;
+
+    checkForMsg(msg, dispatch, options);
+
+    history.push("/producers");
+  } catch (err) {
+    axiosResponseErrorHandling(err, dispatch, "delete", "producer");
+  }
+};

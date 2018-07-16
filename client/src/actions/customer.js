@@ -84,3 +84,17 @@ export const startEditCustomer = (
     axiosResponseErrorHandling(err, dispatch, "update", "customer");
   }
 };
+// Delete a customer --------------------------------------
+export const startDeleteCustomer = (customerId, history) => async dispatch => {
+  try {
+    const res = await axios.delete(`/api/customers/${customerId}`);
+
+    const { msg, options } = res.data;
+
+    checkForMsg(msg, dispatch, options);
+
+    history.push("/customers");
+  } catch (err) {
+    axiosResponseErrorHandling(err, dispatch, "delete", "customer");
+  }
+};
