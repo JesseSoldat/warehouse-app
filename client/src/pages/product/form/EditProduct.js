@@ -10,17 +10,26 @@ import ProductForm from "./ProductForm";
 // helpers
 import getInitialState from "./helpers/getInitialState";
 import getEditStateObj from "./helpers/getEditStateObj";
+// utils
+import clearUiMsg from "../../../utils/clearUiMsg";
 // actions
+import { changeRoute } from "../../../actions/router";
+import { serverMsg } from "../../../actions/ui";
 import {
   getProductDetails,
   startGetProductWithClients,
   editProduct
 } from "../../../actions/product";
-import { serverMsg } from "../../../actions/ui";
 
 class EditProduct extends Component {
   componentDidMount() {
     this.getFormData();
+  }
+
+  componentWillUnmount() {
+    const { msg, serverMsg, changeRoute } = this.props;
+    clearUiMsg(msg, serverMsg);
+    changeRoute("/products/edit/:productId");
   }
 
   getFormData = () => {
@@ -106,5 +115,11 @@ const mapStateToProps = ({ ui, product, producer, customer }) => {
 };
 export default connect(
   mapStateToProps,
-  { serverMsg, getProductDetails, startGetProductWithClients, editProduct }
+  {
+    changeRoute,
+    serverMsg,
+    getProductDetails,
+    startGetProductWithClients,
+    editProduct
+  }
 )(withRouter(EditProduct));

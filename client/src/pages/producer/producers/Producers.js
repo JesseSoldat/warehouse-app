@@ -8,12 +8,22 @@ import Heading from "../../../components/Heading";
 import CardList from "../../../components/CardList";
 // helpers
 import producerCardData from "./helpers/producerCardData";
+// utils
+import clearUiMsg from "../../../utils/clearUiMsg";
 // actions
+import { changeRoute } from "../../../actions/router";
+import { serverMsg } from "../../../actions/ui";
 import { startGetProducers } from "../../../actions/producer";
 
 class Producers extends Component {
   componentDidMount() {
     this.getProducers();
+  }
+
+  componentWillUnmount() {
+    const { msg, serverMsg, changeRoute } = this.props;
+    clearUiMsg(msg, serverMsg);
+    changeRoute("/producers");
   }
 
   getProducers = () => {
@@ -41,11 +51,12 @@ class Producers extends Component {
 }
 
 const mapStateToProps = ({ ui, producer }) => ({
+  msg: ui.msg,
   loading: ui.loading,
   producers: producer.producers
 });
 
 export default connect(
   mapStateToProps,
-  { startGetProducers }
+  { serverMsg, changeRoute, startGetProducers }
 )(Producers);

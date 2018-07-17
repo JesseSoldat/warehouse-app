@@ -8,12 +8,22 @@ import Message from "../../../components/Message";
 import Spinner from "../../../components/Spinner";
 import TopRowBtns from "../../../components/TopRowBtns";
 import CustomerForm from "./CustomerForm";
+// utils
+import clearUiMsg from "../../../utils/clearUiMsg";
 // actions
+import { changeRoute } from "../../../actions/router";
+import { serverMsg } from "../../../actions/ui";
 import { startGetCustomer, startEditCustomer } from "../../../actions/customer";
 
 class EditCustomer extends Component {
   componentDidMount() {
     this.getCustomer();
+  }
+
+  componentWillUnmount() {
+    const { msg, serverMsg, changeRoute } = this.props;
+    clearUiMsg(msg, serverMsg);
+    changeRoute("/customers/edit/:customerId");
   }
 
   getCustomer = () => {
@@ -72,6 +82,7 @@ class EditCustomer extends Component {
 }
 
 const mapStateToProps = ({ ui, router, customer }) => ({
+  msg: ui.msg,
   loading: ui.loading,
   from: router.from,
   customer: customer.customer
@@ -79,5 +90,5 @@ const mapStateToProps = ({ ui, router, customer }) => ({
 
 export default connect(
   mapStateToProps,
-  { startGetCustomer, startEditCustomer }
+  { serverMsg, changeRoute, startGetCustomer, startEditCustomer }
 )(withRouter(EditCustomer));

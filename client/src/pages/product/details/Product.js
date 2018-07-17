@@ -19,7 +19,10 @@ import createProducerArray from "./helpers/createProducerArray";
 import createCustomersArray from "./helpers/createCustomersArray";
 // utils
 import createObjWithAllPropsAsArrays from "../../../utils/createObjWithAllPropsAsArrays";
+import clearUiMsg from "../../../utils/clearUiMsg";
 // actions
+import { changeRoute } from "../../../actions/router";
+import { serverMsg } from "../../../actions/ui";
 import {
   getProductDetails,
   startGetProductDetails,
@@ -29,6 +32,12 @@ import {
 class Product extends Component {
   componentDidMount() {
     this.getProduct();
+  }
+
+  componentWillUnmount() {
+    const { msg, serverMsg, changeRoute } = this.props;
+    clearUiMsg(msg, serverMsg);
+    changeRoute("/products/:productId");
   }
 
   // api calls ---------------------------------------
@@ -153,5 +162,11 @@ const mapStateToProps = ({ ui, product }) => ({
 
 export default connect(
   mapStateToProps,
-  { getProductDetails, startGetProductDetails, deleteProduct }
+  {
+    serverMsg,
+    changeRoute,
+    getProductDetails,
+    startGetProductDetails,
+    deleteProduct
+  }
 )(withRouter(Product));

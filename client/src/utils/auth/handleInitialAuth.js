@@ -5,13 +5,13 @@ import { NEW_MSG } from "../../actions/ui";
 // utils
 import setAxiosHeader from "../setAxiosHeader";
 import isTokenExp from "./isTokenExp";
-import deleteExpToken from "./deleteExpToken";
+// import deleteExpToken from "./deleteExpToken";
 
 const handleInitialAuth = (store, renderApp) => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   if (user) {
-    const { _id, token, expires } = user;
+    const { _id, token } = user;
 
     // console.log(user);
 

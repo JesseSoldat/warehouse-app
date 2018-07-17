@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
 
 // components
 import Spinner from "../../../components/Spinner";
@@ -10,12 +9,15 @@ import TopRowBtns from "../../../components/TopRowBtns";
 import SingleFieldList from "../../../components/SingleFieldList";
 // helpers
 import producerListData from "./helpers/producerListData";
+// utils
+import clearUiMsg from "../../../utils/clearUiMsg";
 // actions
+import { changeRoute } from "../../../actions/router";
+import { serverMsg } from "../../../actions/ui";
 import {
   startGetProducer,
   startDeleteProducer
 } from "../../../actions/producer";
-import { serverMsg } from "../../../actions/ui";
 
 class Producer extends Component {
   state = {
@@ -28,7 +30,9 @@ class Producer extends Component {
   }
 
   componentWillUnmount() {
-    this.props.serverMsg(null);
+    const { msg, serverMsg, changeRoute } = this.props;
+    clearUiMsg(msg, serverMsg);
+    changeRoute("/producers/:producerId");
   }
 
   goBack = () => {
@@ -66,7 +70,6 @@ class Producer extends Component {
       content = <Spinner />;
     } else if (!producer) {
       // dispatch a msg that no producer was found
-      console.log("No producer found");
     } else {
       content = <SingleFieldList data={producerListData(producer)} />;
     }
@@ -92,11 +95,12 @@ class Producer extends Component {
 }
 
 const mapStateToProps = ({ ui, producer }) => ({
+  msg: ui.msg,
   loading: ui.loading,
   producer: producer.producer
 });
 
 export default connect(
   mapStateToProps,
-  { startGetProducer, startDeleteProducer, serverMsg }
-)(withRouter(Producer));
+  { startGetProducer, startDeleteProducer, serverMsg, changeRoute }
+)(Producer);

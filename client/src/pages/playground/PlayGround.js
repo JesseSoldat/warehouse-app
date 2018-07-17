@@ -1,6 +1,14 @@
 import React, { Component } from "react";
-import MultiSelectInput from "../../components/inputs/MultiSelectInput";
+import { connect } from "react-redux";
 // import Select from "react-select";
+
+// components
+import MultiSelectInput from "../../components/inputs/MultiSelectInput";
+// utils
+import clearUiMsg from "../../utils/clearUiMsg";
+// actions
+import { changeRoute } from "../../actions/router";
+import { serverMsg } from "../../actions/ui";
 
 // used to test concepts
 class PlayGround extends Component {
@@ -11,9 +19,14 @@ class PlayGround extends Component {
     ]
   };
 
+  componentWillUnmount() {
+    const { msg, serverMsg, changeRoute } = this.props;
+    clearUiMsg(msg, serverMsg);
+    changeRoute("/admin/playGround");
+  }
+
   onMultiSelect = selectedOptions => {
     console.log("onMulti", selectedOptions);
-
     const stateName = "selectedCustomers"; // array of selected obj
     // const value = selectedOptions ? selectedOptions : [];
     this.setState(() => ({ [stateName]: selectedOptions }));
@@ -54,4 +67,11 @@ class PlayGround extends Component {
   }
 }
 
-export default PlayGround;
+const mapStateToProps = ({ ui }) => ({
+  msg: ui.msg
+});
+
+export default connect(
+  mapStateToProps,
+  { serverMsg, changeRoute }
+)(PlayGround);

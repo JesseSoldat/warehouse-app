@@ -1,33 +1,54 @@
-import React from "react";
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 // components
 import Message from "../../components/Message";
 import Heading from "../../components/Heading";
+// utils
+import clearUiMsg from "../../utils/clearUiMsg";
+// actions
+import { changeRoute } from "../../actions/router";
+import { serverMsg } from "../../actions/ui";
 
-const Dashboard = () => {
-  return (
-    <div className="container">
-      <Message />
-      <div className="row">
-        <Heading title="Dashboard" />
-        <div className="col-12 d-flex flex-wrap justify-content-between my-4">
-          <div
-            className="card mr-1 ml-1 mb-3 col-xs-12 col-md-5 col-lg-3"
-            style={{ minHeight: "11rem" }}
-          >
-            <div className="card-body d-flex flex-column align-items-center">
-              <h5 className="card-title text-center pt-2">
-                Search & Edit Products
-              </h5>
-              <p className="card-text">Search and edit products here</p>
-              <Link to="/products">Go!</Link>
+class Dashboard extends Component {
+  componentWillUnmount() {
+    const { msg, serverMsg, changeRoute } = this.props;
+    clearUiMsg(msg, serverMsg);
+    changeRoute("/dashboard");
+  }
+
+  render() {
+    return (
+      <div className="container">
+        <Message />
+        <div className="row">
+          <Heading title="Dashboard" />
+          <div className="col-12 d-flex flex-wrap justify-content-between my-4">
+            <div
+              className="card mr-1 ml-1 mb-3 col-xs-12 col-md-5 col-lg-3"
+              style={{ minHeight: "11rem" }}
+            >
+              <div className="card-body d-flex flex-column align-items-center">
+                <h5 className="card-title text-center pt-2">
+                  Search & Edit Products
+                </h5>
+                <p className="card-text">Search and edit products here</p>
+                <Link to="/products">Go!</Link>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
-export default Dashboard;
+const mapStateToProps = ({ ui }) => ({
+  msg: ui.msg
+});
+
+export default connect(
+  mapStateToProps,
+  { serverMsg, changeRoute }
+)(Dashboard);

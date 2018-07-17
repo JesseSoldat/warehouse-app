@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
 
 // components
 import Spinner from "../../../components/Spinner";
@@ -10,7 +9,11 @@ import TopRowBtns from "../../../components/TopRowBtns";
 import SingleFieldList from "../../../components/SingleFieldList";
 // helpers
 import customerListData from "./helpers/customerListData";
+// utils
+import clearUiMsg from "../../../utils/clearUiMsg";
 // actions
+import { changeRoute } from "../../../actions/router";
+import { serverMsg } from "../../../actions/ui";
 import {
   startGetCustomer,
   startDeleteCustomer
@@ -24,6 +27,12 @@ class Customer extends Component {
 
   componentDidMount() {
     this.getCustomer();
+  }
+
+  componentWillUnmount() {
+    const { msg, serverMsg, changeRoute } = this.props;
+    clearUiMsg(msg, serverMsg);
+    changeRoute("/customers/:customerId");
   }
 
   goBack = () => {
@@ -60,7 +69,6 @@ class Customer extends Component {
       content = <Spinner />;
     } else if (!customer) {
       // dispatch a msg that no customer was found
-      console.log("No customer found");
     } else {
       content = <SingleFieldList data={customerListData(customer)} />;
     }
@@ -86,11 +94,12 @@ class Customer extends Component {
 }
 
 const mapStateToProps = ({ ui, customer }) => ({
+  msg: ui.msg,
   loading: ui.loading,
   customer: customer.customer
 });
 
 export default connect(
   mapStateToProps,
-  { startGetCustomer, startDeleteCustomer }
+  { serverMsg, changeRoute, startGetCustomer, startDeleteCustomer }
 )(Customer);

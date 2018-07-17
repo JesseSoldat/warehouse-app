@@ -8,12 +8,22 @@ import Message from "../../../components/Message";
 import Spinner from "../../../components/Spinner";
 import TopRowBtns from "../../../components/TopRowBtns";
 import ProducerForm from "./ProducerForm";
+// utils
+import clearUiMsg from "../../../utils/clearUiMsg";
 // actions
+import { changeRoute } from "../../../actions/router";
+import { serverMsg } from "../../../actions/ui";
 import { startGetProducer, startEditProducer } from "../../../actions/producer";
 
 class EditProducer extends Component {
   componentDidMount() {
     this.getProducer();
+  }
+
+  componentWillUnmount() {
+    const { msg, serverMsg, changeRoute } = this.props;
+    clearUiMsg(msg, serverMsg);
+    changeRoute("/producers/edit/:producerId");
   }
 
   getProducer = () => {
@@ -72,6 +82,7 @@ class EditProducer extends Component {
 }
 
 const mapStateToProps = ({ ui, router, producer }) => ({
+  msg: ui.msg,
   loading: ui.loading,
   from: router.from,
   producer: producer.producer
@@ -79,5 +90,5 @@ const mapStateToProps = ({ ui, router, producer }) => ({
 
 export default connect(
   mapStateToProps,
-  { startGetProducer, startEditProducer }
+  { serverMsg, changeRoute, startGetProducer, startEditProducer }
 )(withRouter(EditProducer));

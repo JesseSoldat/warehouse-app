@@ -9,18 +9,27 @@ import Spinner from "../../../components/Spinner";
 import ProductForm from "./ProductForm";
 // helpers
 import getInitialState from "./helpers/getInitialState";
+// utils
+import clearUiMsg from "../../../utils/clearUiMsg";
 // actions
+import { changeRoute } from "../../../actions/router";
+import { serverMsg } from "../../../actions/ui";
 import {
   getProductDetails,
   createProduct,
   startGetClients
 } from "../../../actions/product";
-import { serverMsg } from "../../../actions/ui";
 
 class CreateProduct extends Component {
   componentDidMount() {
     this.props.getProductDetails(null);
     this.getFormData();
+  }
+
+  componentWillUnmount() {
+    const { msg, serverMsg, changeRoute } = this.props;
+    clearUiMsg(msg, serverMsg);
+    changeRoute("/products/create");
   }
 
   // load api data -----------
@@ -90,6 +99,7 @@ export default connect(
     getProductDetails,
     createProduct,
     startGetClients,
-    serverMsg
+    serverMsg,
+    changeRoute
   }
 )(withRouter(CreateProduct));

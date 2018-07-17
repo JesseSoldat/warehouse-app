@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
@@ -7,43 +7,59 @@ import Spinner from "../../../components/Spinner";
 import Message from "../../../components/Message";
 import Heading from "../../../components/Heading";
 import ProducerForm from "./ProducerForm";
+// utils
+import clearUiMsg from "../../../utils/clearUiMsg";
 // actions
+import { changeRoute } from "../../../actions/router";
+import { serverMsg } from "../../../actions/ui";
 import { startCreateProducer } from "../../../actions/producer";
 
-const CreateProducer = ({ loading, history, startCreateProducer }) => {
-  const handleSubmit = formData => {
+class CreateProducer extends Component {
+  componentWillUnmount() {
+    const { msg, serverMsg, changeRoute } = this.props;
+    clearUiMsg(msg, serverMsg);
+    changeRoute("/producers/create");
+  }
+
+  handleSubmit = formData => {
+    const { history, startCreateProducer } = this.props;
     startCreateProducer(formData, history);
   };
 
-  const data = {
-    producerName: "",
-    producerContact: "",
-    producerAddress: ""
-  };
+  render() {
+    const { loading } = this.props;
 
-  let content;
-  if (loading) {
-    content = <Spinner />;
-  } else {
-    content = <ProducerForm handleSubmit={handleSubmit} data={data} />;
-  }
+    const data = {
+      producerName: "",
+      producerContact: "",
+      producerAddress: ""
+    };
 
-  return (
-    <div className="container">
-      <Message />
-      <Heading title="Create Producer" />
-      <div className="row">
-        <div className="col-xs-12 col-md-8 m-auto">{content}</div>
+    let content;
+    if (loading) {
+      content = <Spinner />;
+    } else {
+      content = <ProducerForm handleSubmit={this.handleSubmit} data={data} />;
+    }
+
+    return (
+      <div className="container">
+        <Message />
+        <Heading title="Create Producer" />
+        <div className="row">
+          <div className="col-xs-12 col-md-8 m-auto">{content}</div>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 const mapStateToProps = ({ ui }) => ({
+  msg: ui.msg,
   loading: ui.loading
 });
 
 export default connect(
   mapStateToProps,
-  { startCreateProducer }
+  { serverMsg, changeRoute, startCreateProducer }
 )(withRouter(CreateProducer));

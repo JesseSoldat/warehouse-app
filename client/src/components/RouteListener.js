@@ -2,16 +2,30 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
+// utils
+import clearUiMsg from "../utils/clearUiMsg";
 // actions
 import { changeRoute } from "../actions/router";
+import { serverMsg } from "../actions/ui";
 
 class RouteListener extends Component {
+  state = {};
+
   componentWillMount() {
-    this.unlisten = this.props.history.listen(location => {
-      // console.log("#1 FROM", this.props.match.path);
+    const { changeRoute, msg, serverMsg, history, match } = this.props;
+
+    // the user clicks on any links in the app
+    this.unlisten = history.listen(location => {
+      // console.log("#1 FROM", match.path);
       // console.log("#2 TO", location.pathname);
-      this.props.changeRoute(this.props.match.path, location.pathname);
+      // clearUiMsg(msg, serverMsg);
+      // changeRoute(match.path, location.pathname);
     });
+
+    // the user clicks on the back btn
+    window.onpopstate = () => {
+      // console.log("#2 TO", window.location.pathname);
+    };
   }
   componentWillUnmount() {
     this.unlisten();
@@ -22,7 +36,11 @@ class RouteListener extends Component {
   }
 }
 
+const mapStateToProps = ({ ui }) => ({
+  msg: ui.msg
+});
+
 export default connect(
-  null,
-  { changeRoute }
+  mapStateToProps,
+  { changeRoute, serverMsg }
 )(withRouter(RouteListener));

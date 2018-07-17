@@ -8,12 +8,22 @@ import Heading from "../../../components/Heading";
 import CardList from "../../../components/CardList";
 // helpers
 import customerCardData from "./helpers/customerCardData";
+// utils
+import clearUiMsg from "../../../utils/clearUiMsg";
 // actions
+import { changeRoute } from "../../../actions/router";
+import { serverMsg } from "../../../actions/ui";
 import { startGetCustomers } from "../../../actions/customer";
 
 class Customers extends Component {
   componentDidMount() {
     this.getCustomers();
+  }
+
+  componentWillUnmount() {
+    const { msg, serverMsg, changeRoute } = this.props;
+    clearUiMsg(msg, serverMsg);
+    changeRoute("/customers");
   }
 
   getCustomers = () => {
@@ -40,11 +50,12 @@ class Customers extends Component {
 }
 
 const mapStateToProps = ({ ui, customer }) => ({
+  msg: ui.msg,
   loading: ui.loading,
   customers: customer.customers
 });
 
 export default connect(
   mapStateToProps,
-  { startGetCustomers }
+  { serverMsg, changeRoute, startGetCustomers }
 )(Customers);

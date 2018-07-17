@@ -6,7 +6,6 @@ const customerFieldData = [
   {
     placeholder: "* Name ",
     name: "customerName",
-    err: "errCustomerName",
     err: "customerNameErr",
     msg: "Customer name is a required field!"
   },

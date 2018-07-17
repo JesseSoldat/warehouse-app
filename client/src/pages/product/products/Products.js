@@ -1,17 +1,28 @@
 import React, { Component } from "react";
-// import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
+// components
 import Heading from "../../../components/Heading";
 import Message from "../../../components/Message";
 import Spinner from "../../../components/Spinner";
 import Paginator from "./Paginator";
 import CardList from "./CardList";
+// utils
+import clearUiMsg from "../../../utils/clearUiMsg";
+// actions
+import { changeRoute } from "../../../actions/router";
+import { serverMsg } from "../../../actions/ui";
 import { startGetProducts } from "../../../actions/product";
 
 class Products extends Component {
   componentDidMount() {
     this.getProducts();
+  }
+
+  componentWillUnmount() {
+    const { msg, serverMsg, changeRoute } = this.props;
+    clearUiMsg(msg, serverMsg);
+    changeRoute("/products");
   }
 
   getProducts = () => {
@@ -77,5 +88,5 @@ const mapStateToProps = ({ ui, product }) => ({
 
 export default connect(
   mapStateToProps,
-  { startGetProducts }
+  { serverMsg, changeRoute, startGetProducts }
 )(Products);

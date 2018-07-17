@@ -17,6 +17,7 @@ import {
   startLogin,
   startResendVerification
 } from "../../actions/auth";
+import { changeRoute } from "../../actions/router";
 import { serverMsg } from "../../actions/ui";
 
 class AuthForm extends Component {
@@ -53,7 +54,9 @@ class AuthForm extends Component {
   }
 
   componentWillUnmount() {
-    const { parent, serverMsg } = this.props;
+    const { parent, serverMsg, changeRoute } = this.props;
+    changeRoute(`/${parent}`);
+
     if (parent === "login") {
       serverMsg(null);
     }
@@ -247,5 +250,5 @@ const mapStateToProps = ({ ui, auth }) => ({
 
 export default connect(
   mapStateToProps,
-  { startRegister, startLogin, serverMsg, startResendVerification }
+  { startRegister, startLogin, changeRoute, serverMsg, startResendVerification }
 )(withRouter(AuthForm));
