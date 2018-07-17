@@ -21,8 +21,8 @@ class EditCustomer extends Component {
   }
 
   componentWillUnmount() {
-    const { msg, serverMsg, changeRoute } = this.props;
-    clearUiMsg(msg, serverMsg);
+    const { msg, options, serverMsg, changeRoute } = this.props;
+    clearUiMsg(msg, options, serverMsg);
     changeRoute("/customers/edit/:customerId");
   }
 
@@ -83,6 +83,7 @@ class EditCustomer extends Component {
 
 const mapStateToProps = ({ ui, router, customer }) => ({
   msg: ui.msg,
+  options: ui.options,
   loading: ui.loading,
   from: router.from,
   customer: customer.customer

@@ -13,8 +13,8 @@ import { serverMsg } from "../../actions/ui";
 
 class Dashboard extends Component {
   componentWillUnmount() {
-    const { msg, serverMsg, changeRoute } = this.props;
-    clearUiMsg(msg, serverMsg);
+    const { msg, options, serverMsg, changeRoute } = this.props;
+    clearUiMsg(msg, options, serverMsg);
     changeRoute("/dashboard");
   }
 
@@ -45,7 +45,8 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = ({ ui }) => ({
-  msg: ui.msg
+  msg: ui.msg,
+  options: ui.options
 });
 
 export default connect(

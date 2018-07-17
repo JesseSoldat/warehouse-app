@@ -1,24 +1,27 @@
 // models
 const Storage = require("../models/storage");
 const Rack = require("../models/rack");
-const Shelf = require("../models/shelf");
-const ShelfSpot = require("../models/shelfSpot");
+// middleware
+const isAuth = require("../middleware/isAuth");
 // utils
-const { succRes, errRes, errMsg } = require("../utils/serverRes");
+const { msgObj, serverRes } = require("../utils/serverRes");
+const { serverMsg } = require("../utils/serverMsg");
 const mergeObjFields = require("../utils/mergeObjFields");
 
 module.exports = app => {
   // Get all of the racks
-  app.get("/api/rack", async (req, res, next) => {
+  app.get("/api/rack", isAuth, async (req, res, next) => {
     try {
       const racks = await Rack.find({}).populate("shelves");
-      succRes(res, racks);
+
+      serverRes(res, 200, null, racks);
     } catch (err) {
-      next(errRes(errMsg("fetch", "racks")));
+      const msg = serverMsg("error", "fetch", "racks");
+      serverRes(res, 400, msg, null);
     }
   });
   // Get a single rack
-  app.get("/api/rack/:rackId", async (req, res, next) => {
+  app.get("/api/rack/:rackId", isAuth, async (req, res, next) => {
     const { rackId } = req.params;
     try {
       const rack = await Rack.findById(rackId)
@@ -28,9 +31,10 @@ module.exports = app => {
         })
         .populate("storage");
 
-      succRes(res, rack);
+      serverRes(res, 200, null, rack);
     } catch (err) {
-      next(errRes(errMsg("fetch", "rack")));
+      const msg = serverMsg("error", "fetch", "rack");
+      serverRes(res, 400, msg, null);
     }
   });
   // Create new rack inside storage and link the rack to storage
@@ -52,12 +56,11 @@ module.exports = app => {
         { new: true }
       );
 
-      succRes(res, { storage, rack });
+      const msg = msgObj("The rack was saved.", "green", "create");
+      serverRes(res, 200, msg, { storage, rack });
     } catch (err) {
-      if (err.msg) {
-        return next(err);
-      }
-      next(errRes(errMsg("save", "rack")));
+      const msg = serverMsg("error", "save", "rack", "create error");
+      serverRes(res, 400, msg, null);
     }
   });
   // Update a rack
@@ -69,9 +72,12 @@ module.exports = app => {
         mergeObjFields("", req.body),
         { new: true }
       );
-      succRes(res, rack);
+
+      const msg = msgObj("The rack was updated.", "green", "update");
+      serverRes(res, 200, msg, rack);
     } catch (err) {
-      next(errRes(errMsg("update", "rack")));
+      const msg = serverMsg("error", "update", "rack", "update error");
+      serverRes(res, 400, msg, null);
     }
   });
 };

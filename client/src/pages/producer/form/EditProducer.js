@@ -21,8 +21,8 @@ class EditProducer extends Component {
   }
 
   componentWillUnmount() {
-    const { msg, serverMsg, changeRoute } = this.props;
-    clearUiMsg(msg, serverMsg);
+    const { msg, options, serverMsg, changeRoute } = this.props;
+    clearUiMsg(msg, options, serverMsg);
     changeRoute("/producers/edit/:producerId");
   }
 
@@ -83,6 +83,7 @@ class EditProducer extends Component {
 
 const mapStateToProps = ({ ui, router, producer }) => ({
   msg: ui.msg,
+  options: ui.options,
   loading: ui.loading,
   from: router.from,
   producer: producer.producer

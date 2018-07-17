@@ -16,8 +16,8 @@ import { startCreateProducer } from "../../../actions/producer";
 
 class CreateProducer extends Component {
   componentWillUnmount() {
-    const { msg, serverMsg, changeRoute } = this.props;
-    clearUiMsg(msg, serverMsg);
+    const { msg, options, serverMsg, changeRoute } = this.props;
+    clearUiMsg(msg, options, serverMsg);
     changeRoute("/producers/create");
   }
 
@@ -56,6 +56,7 @@ class CreateProducer extends Component {
 
 const mapStateToProps = ({ ui }) => ({
   msg: ui.msg,
+  options: ui.options,
   loading: ui.loading
 });
 

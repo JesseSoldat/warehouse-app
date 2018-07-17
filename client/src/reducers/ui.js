@@ -1,6 +1,10 @@
 const { NEW_MSG, NEW_OPTIONS, LOADING } = require("../actions/ui");
 
-const initialState = { msg: null, loading: false, options: null };
+const initialState = {
+  msg: null,
+  loading: false,
+  options: null
+};
 
 export default (state = initialState, action) => {
   const { type, loading, msg, options } = action;

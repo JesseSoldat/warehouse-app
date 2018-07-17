@@ -27,8 +27,8 @@ class EditProduct extends Component {
   }
 
   componentWillUnmount() {
-    const { msg, serverMsg, changeRoute } = this.props;
-    clearUiMsg(msg, serverMsg);
+    const { msg, options, serverMsg, changeRoute } = this.props;
+    clearUiMsg(msg, options, serverMsg);
     changeRoute("/products/edit/:productId");
   }
 
@@ -108,6 +108,7 @@ const mapStateToProps = ({ ui, product, producer, customer }) => {
   return {
     product: product.product,
     loading: ui.loading,
+    options: ui.options,
     msg: ui.msg,
     producers: producer.producers,
     customers: customer.customers

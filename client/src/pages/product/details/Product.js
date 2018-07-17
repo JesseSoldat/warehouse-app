@@ -35,8 +35,8 @@ class Product extends Component {
   }
 
   componentWillUnmount() {
-    const { msg, serverMsg, changeRoute } = this.props;
-    clearUiMsg(msg, serverMsg);
+    const { msg, options, serverMsg, changeRoute } = this.props;
+    clearUiMsg(msg, options, serverMsg);
     changeRoute("/products/:productId");
   }
 
@@ -156,6 +156,7 @@ class Product extends Component {
 
 const mapStateToProps = ({ ui, product }) => ({
   loading: ui.loading,
+  options: ui.options,
   msg: ui.msg,
   product: product.product
 });

@@ -6,7 +6,8 @@ const Producer = require("../models/producer");
 // middleware
 const isAuth = require("../middleware/isAuth");
 // utils
-const { errMsg, msgObj, serverRes } = require("../utils/serverRes");
+const { msgObj, serverRes } = require("../utils/serverRes");
+const { serverMsg } = require("../utils/serverMsg");
 const mergeObjFields = require("../utils/mergeObjFields");
 
 module.exports = app => {
@@ -26,7 +27,9 @@ module.exports = app => {
 
       serverRes(res, 200, null, { products, count, skip, limit });
     } catch (err) {
-      const msg = msgObj(errMsg("fetch", "products"), "red");
+      console.log("ERR: GET/api/products", err);
+
+      const msg = serverMsg("error", "fetch", "products");
       serverRes(res, 400, msg, null);
     }
   });
@@ -40,7 +43,9 @@ module.exports = app => {
       ]);
       serverRes(res, 200, null, { customers, producers });
     } catch (err) {
-      const msg = msgObj(errMsg("fetch", "form data"), "red");
+      console.log("ERR: GET/api/products/clients", err);
+
+      const msg = serverMsg("error", "fetch", "form data");
       serverRes(res, 400, msg, null);
     }
   });
@@ -59,7 +64,9 @@ module.exports = app => {
         ]);
         serverRes(res, 200, null, { product, customers, producers });
       } catch (err) {
-        const msg = msgObj(errMsg("fetch", "eform data"), "red");
+        console.log("ERR: GET/api/products/productWithClients/:productId", err);
+
+        const msg = serverMsg("error", "fetch", "form data");
         serverRes(res, 400, msg, null);
       }
     }
@@ -75,7 +82,9 @@ module.exports = app => {
 
       serverRes(res, 200, null, product);
     } catch (err) {
-      const msg = msgObj(errMsg("fetch", "product"), "red");
+      console.log("ERR: GET/api/products/:productId", err);
+
+      const msg = serverMsg("error", "fetch", "product");
       serverRes(res, 400, msg, null);
     }
   });
@@ -100,7 +109,9 @@ module.exports = app => {
       const msg = msgObj("The product was saved.", "green", "create");
       serverRes(res, 200, msg, product);
     } catch (err) {
-      const msg = msgObj(errMsg("save", "product"), "red");
+      console.log("ERR: POST/api/products", err);
+
+      const msg = serverMsg("error", "save", "product", "create error");
       serverRes(res, 400, msg, null);
     }
   });
@@ -129,7 +140,9 @@ module.exports = app => {
       const msg = msgObj("The product was updated.", "green", "update");
       serverRes(res, 200, msg, updatedProduct);
     } catch (err) {
-      const msg = msgObj(errMsg("update", "product"), "red");
+      console.log("ERR: PATCH/api/products/:productId", err);
+
+      const msg = serverMsg("error", "update", "product", "update error");
       serverRes(res, 400, msg, null);
     }
   });
@@ -171,8 +184,10 @@ module.exports = app => {
       const msg = msgObj("The product was deleted.", "green", "delete");
 
       serverRes(res, 200, msg, null);
-    } catch (error) {
-      const msg = msgObj(errMsg("delete", "product"), "red", "delete err");
+    } catch (err) {
+      console.log("ERR: DELETE/api/products/:productId", err);
+
+      const msg = serverMsg("error", "delete", "product", "delete error");
       serverRes(res, 400, msg, null);
     }
   });

@@ -30,8 +30,8 @@ class Producer extends Component {
   }
 
   componentWillUnmount() {
-    const { msg, serverMsg, changeRoute } = this.props;
-    clearUiMsg(msg, serverMsg);
+    const { msg, options, serverMsg, changeRoute } = this.props;
+    clearUiMsg(msg, options, serverMsg);
     changeRoute("/producers/:producerId");
   }
 
@@ -96,6 +96,7 @@ class Producer extends Component {
 
 const mapStateToProps = ({ ui, producer }) => ({
   msg: ui.msg,
+  options: ui.options,
   loading: ui.loading,
   producer: producer.producer
 });

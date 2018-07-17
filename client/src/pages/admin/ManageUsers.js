@@ -14,8 +14,8 @@ class ManageUsers extends Component {
   }
 
   componentWillUnmount() {
-    const { msg, serverMsg, changeRoute } = this.props;
-    clearUiMsg(msg, serverMsg);
+    const { msg, options, serverMsg, changeRoute } = this.props;
+    clearUiMsg(msg, options, serverMsg);
     changeRoute("/admin/manageUsers");
   }
 
@@ -29,7 +29,8 @@ class ManageUsers extends Component {
 }
 
 const mapStateToProps = ({ ui }) => ({
-  msg: ui.msg
+  msg: ui.msg,
+  options: ui.options
 });
 
 export default connect(
