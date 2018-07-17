@@ -18,13 +18,11 @@ import { startGetProducts } from "../../../actions/product";
 class Products extends Component {
   state = {
     searchOption: "",
-    searchOptionErr: "",
     searchText: "",
     searchTextErr: "",
     value: "",
-    valueErr: "",
     value2: "",
-    value2Err: "",
+    valueErr: "",
     searchType: "string"
   };
 
@@ -81,15 +79,14 @@ class Products extends Component {
       searchType,
       searchOption: value,
       value: "",
-      valueErr: "",
       value2: "",
-      value2Err: ""
+      valueErr: ""
     }));
   };
 
   // Value Changed CB ----------------------------------
   onChangeSearchValue = e => {
-    this.setState({ value: e.target.value });
+    this.setState({ value: e.target.value, valueErr: "" });
   };
 
   onChangeSearchValue2 = e => {
@@ -99,6 +96,10 @@ class Products extends Component {
   // SearchBtn CB ------------------------------
   onSearchProduct = e => {
     const { value, value2 } = this.state;
+    if (!value) {
+      this.setState({ valueErr: "This field can not be empty." });
+      return;
+    }
     console.log("value:", value, "value2:", value2);
   };
 
@@ -107,9 +108,8 @@ class Products extends Component {
       searchType: "string",
       searchOption: "productName",
       value: "",
-      valueErr: "",
       value2: "",
-      value2Err: ""
+      valueErr: ""
     }));
   };
 
@@ -132,12 +132,10 @@ class Products extends Component {
         <SearchBar
           // option
           searchOption={this.state.searchOption}
-          searchOptionErr={this.state.searchOptionErr}
           // value
           value={this.state.value}
-          valueErr={this.state.valueErr}
           value2={this.state.value2}
-          value2Err={this.state.value2Err}
+          valueErr={this.state.valueErr}
           // type
           searchType={this.state.searchType}
           // CB

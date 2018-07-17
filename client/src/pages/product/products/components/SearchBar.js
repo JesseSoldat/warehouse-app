@@ -9,14 +9,12 @@ import SearchBarBtn from "./SearchBarBtn";
 const SearchBar = ({
   // option
   searchOption,
-  searchOptionErr,
   // option CB
   onChangeSearchOption,
   // value
   value,
   valueErr,
   value2,
-  value2Err,
   // value CB
   onChangeSearchValue,
   onChangeSearchValue2,
@@ -31,7 +29,6 @@ const SearchBar = ({
       <div className="col-12 d-flex">
         <SearchBarSelect
           searchOption={searchOption}
-          searchOptionErr={searchOptionErr}
           info="Select an option to search by."
           onChangeSearchOption={onChangeSearchOption}
         />
@@ -48,9 +45,8 @@ const SearchBar = ({
         {searchType === "number" && (
           <SearchBarInputNumber
             value={value}
-            valueErr={valueErr}
             value2={value2}
-            value2Err={value2Err}
+            valueErr={valueErr}
             info="Enter a number or a range of two numbers."
             onChangeSearchValue={onChangeSearchValue}
             onChangeSearchValue2={onChangeSearchValue2}

@@ -16,26 +16,16 @@ const SearchBarInput = ({ value, valueErr, info, onChangeSearchValue }) => {
           placeholder="Seach Text"
           onChange={onChangeSearchValue}
         />
+        <div className="invalid-feedback pl-2">{valueErr}</div>
       </div>
       <div>
-        {valueErr ? (
-          <div className="invalid-feedback">{valueErr}</div>
-        ) : (
+        {!valueErr && (
           <small className="form-text text-muted py-0 my-0 pl-2 pt-1 ">
             {info}
           </small>
         )}
       </div>
     </div>
-
-    // <div className="row p-0 m-0">
-    //   <div className="col-xs-12 col-md-6 py-0 my-0" />
-    //   <div className="col-xs-12 col-md-6 py-0 my-0">
-    //     <small className="form-text text-muted py-0 my-0 pb-4 pl-2 pt-1 ">
-    //       {infoMessage}
-    //     </small>
-    //   </div>
-    // </div>
   );
 };
 

@@ -3,12 +3,7 @@ import React from "react";
 // helpers
 import searchBarFields from "../helpers/searchBarFields";
 
-const SearchBarSelect = ({
-  searchOption,
-  searchOptionErr,
-  info,
-  onChangeSearchOption
-}) => {
+const SearchBarSelect = ({ searchOption, info, onChangeSearchOption }) => {
   const options = searchBarFields.map(field => (
     <option key={field.value} value={field.value}>
       {field.name}
@@ -25,9 +20,7 @@ const SearchBarSelect = ({
         </div>
         <select
           id="optionSelect"
-          className={
-            searchOptionErr ? "custom-select is-invalid" : "custom-select"
-          }
+          className="custom-select"
           id="productSelect"
           value={searchOption}
           style={{ height: "37.61px" }}
@@ -37,13 +30,9 @@ const SearchBarSelect = ({
         </select>
       </div>
       <div>
-        {searchOptionErr ? (
-          <div className="invalid-feedback">{searchOptionErr}</div>
-        ) : (
-          <small className="form-text text-muted py-0 my-0 pl-2 pt-1 ">
-            {info}
-          </small>
-        )}
+        <small className="form-text text-muted py-0 my-0 pl-2 pt-1 ">
+          {info}
+        </small>
       </div>
     </div>
   );

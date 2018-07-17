@@ -2,9 +2,8 @@ import React from "react";
 
 const SearchBarInputNumber = ({
   value,
-  valueErr,
   value2,
-  value2Err,
+  valueErr,
   info,
   onChangeSearchValue,
   onChangeSearchValue2
@@ -19,11 +18,14 @@ const SearchBarInputNumber = ({
         </div>
         <input
           type="number"
-          className="form-control mr-2"
+          className={
+            valueErr ? "form-control is-invalid mr-2" : "form-control mr-2"
+          }
           placeholder="Number #1"
           value={value}
           onChange={onChangeSearchValue}
         />
+
         <div className="input-group-prepend">
           <label className="input-group-text" htmlFor="productInput">
             End
@@ -39,11 +41,16 @@ const SearchBarInputNumber = ({
       </div>
 
       <div>
-        {valueErr ? (
-          <div className="invalid-feedback">{valueErr}</div>
-        ) : (
+        {!valueErr ? (
           <small className="form-text text-muted py-0 my-0 pl-2 pt-1 ">
             {info}
+          </small>
+        ) : (
+          <small
+            className="form-text py-0 my-0 pl-2 pt-1"
+            style={{ color: "red" }}
+          >
+            {valueErr}
           </small>
         )}
       </div>
