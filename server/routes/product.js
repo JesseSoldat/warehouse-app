@@ -7,16 +7,16 @@ const Producer = require("../models/producer");
 const isAuth = require("../middleware/isAuth");
 // utils
 const { msgObj, serverRes } = require("../utils/serverRes");
-const { serverMsg } = require("../utils/serverMsg");
+const serverMsg = require("../utils/serverMsg");
 const mergeObjFields = require("../utils/mergeObjFields");
 
 const buildMongoQuery = query => {
-  const { searchType, value, value2, keyName } = query;
+  let { searchType, value, value2, keyName } = query;
   let mongoQuery = {};
 
   switch (searchType) {
     case "number":
-      if (value2 === "null") {
+      if (!value2) {
         mongoQuery[keyName] = value;
       } else {
         mongoQuery = { $and: [{ [keyName]: { $gt: value, $lt: value2 } }] };
@@ -46,21 +46,22 @@ module.exports = app => {
     query.page = parseInt(query.page, 10);
 
     const mongoQuery = buildMongoQuery(query);
-    // console.log("mongoQuery", mongoQuery);
 
     try {
-      const [products, count] = await Promise.all([
+      const [products, count, totalCount] = await Promise.all([
         Product.find(mongoQuery)
           .skip(query.skip)
           .limit(query.limit),
-        Product.find().countDocuments()
+        Product.find(mongoQuery).countDocuments(),
+        Product.find({}).countDocuments()
       ]);
 
       query.count = count;
+      query.totalCount = totalCount;
 
       serverRes(res, 200, null, { products, query });
     } catch (err) {
-      console.log("ERR: GET/api/products", err);
+      // console.log("ERR: GET/api/products", err);
 
       const msg = serverMsg("error", "fetch", "products");
       serverRes(res, 400, msg, null);

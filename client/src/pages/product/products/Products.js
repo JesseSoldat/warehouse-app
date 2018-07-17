@@ -43,7 +43,6 @@ class Products extends Component {
     query["searchType"] = searchType;
     query["value"] = value;
     query["value2"] = value2;
-    console.log("getProducts", query);
     startGetProducts(query);
   };
 
@@ -97,7 +96,11 @@ class Products extends Component {
       this.setState({ valueErr: "This field can not be empty." });
       return;
     }
-    this.getProducts(this.props.query);
+
+    const { query } = this.props;
+    query["page"] = 1;
+    query["skip"] = 0;
+    this.getProducts(query);
   };
 
   onResetFilter = e => {
