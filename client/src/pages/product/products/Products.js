@@ -12,7 +12,10 @@ import clearUiMsg from "../../../utils/clearUiMsg";
 // actions
 import { changeRoute } from "../../../actions/router";
 import { serverMsg } from "../../../actions/ui";
-import { startGetProducts } from "../../../actions/product";
+import {
+  startGetProducts,
+  startGetProductsQuery
+} from "../../../actions/product";
 
 class Products extends Component {
   componentDidMount() {
@@ -25,25 +28,22 @@ class Products extends Component {
     changeRoute("/products");
   }
 
+  // api calls ----------------------------------
   getProducts = () => {
-    const { skip, limit } = this.props;
-    this.props.startGetProducts(skip, limit);
+    const { query, startGetProducts } = this.props;
+    startGetProducts(query);
   };
 
-  getProductsQuery = () => {
-    console.log("query");
+  getProductsQuery = query => {
+    const { startGetProductsQuery } = this.props;
+    this.props.query.keyName = "productName";
+    this.props.query.value = "Generic Granite Bacon";
+    console.log("query", this.props.query);
+    startGetProductsQuery(this.props.query);
   };
 
   render() {
-    const {
-      loading,
-      products,
-      page,
-      count,
-      // filteredCount,
-      skip,
-      limit
-    } = this.props;
+    const { loading, products, query } = this.props;
 
     let content;
 
@@ -57,18 +57,7 @@ class Products extends Component {
       <div className="container">
         <Message cb={this.getProducts} />
         <Heading title="Products" />
-        <div className="row">
-          <div className="col-12">
-            <Paginator
-              page={page}
-              skip={skip}
-              limit={limit}
-              count={count}
-              getProductsQuery={this.getProductsQuery}
-            />
-          </div>
-        </div>
-
+        <Paginator query={query} cb1={this.getProductsQuery} />
         {content}
       </div>
     );
@@ -80,14 +69,10 @@ const mapStateToProps = ({ ui, product }) => ({
   options: ui.options,
   loading: ui.loading,
   products: product.products,
-  page: product.page,
-  count: product.count, // total amount of products
-  filteredCount: product.filteredCount, // count after filter
-  skip: product.skip,
-  limit: product.limit
+  query: product.query
 });
 
 export default connect(
   mapStateToProps,
-  { serverMsg, changeRoute, startGetProducts }
+  { serverMsg, changeRoute, startGetProducts, startGetProductsQuery }
 )(Products);

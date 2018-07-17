@@ -16,6 +16,8 @@ module.exports = app => {
 
       serverRes(res, 200, null, racks);
     } catch (err) {
+      console.log("Err: GET/api/rack", err);
+
       const msg = serverMsg("error", "fetch", "racks");
       serverRes(res, 400, msg, null);
     }
@@ -33,6 +35,8 @@ module.exports = app => {
 
       serverRes(res, 200, null, rack);
     } catch (err) {
+      console.log("Err: GET/api/rack/:rackId", err);
+
       const msg = serverMsg("error", "fetch", "rack");
       serverRes(res, 400, msg, null);
     }
@@ -59,6 +63,8 @@ module.exports = app => {
       const msg = msgObj("The rack was saved.", "green", "create");
       serverRes(res, 200, msg, { storage, rack });
     } catch (err) {
+      console.log("Err: POST/api/rack/:storageId", err);
+
       const msg = serverMsg("error", "save", "rack", "create error");
       serverRes(res, 400, msg, null);
     }
@@ -76,6 +82,8 @@ module.exports = app => {
       const msg = msgObj("The rack was updated.", "green", "update");
       serverRes(res, 200, msg, rack);
     } catch (err) {
+      console.log("Err: PATCH/api/rack/:rackId", err);
+
       const msg = serverMsg("error", "update", "rack", "update error");
       serverRes(res, 400, msg, null);
     }

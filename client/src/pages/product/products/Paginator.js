@@ -1,18 +1,20 @@
 import React from "react";
 
-const Paginator = ({ page, skip, limit, count, getProductsQuery }) => {
+const Paginator = ({ query, cb1 }) => {
+  const { page, skip, limit, count } = query;
+
   const goBack = () => {
     if (skip === 0) return;
-    // const newPage = page - 1;
+    query.page = page - 1;
     // load previous page from server
-    getProductsQuery();
+    cb1(query);
   };
 
   const goFoward = () => {
     if (skip + limit > count) return;
-    // const newPage = page + 1;
+    query.page = page + 1;
     // load previous page from server
-    getProductsQuery();
+    cb1(query);
   };
 
   const renderBtn = direction => {

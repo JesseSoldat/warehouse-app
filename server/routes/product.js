@@ -10,24 +10,74 @@ const { msgObj, serverRes } = require("../utils/serverRes");
 const { serverMsg } = require("../utils/serverMsg");
 const mergeObjFields = require("../utils/mergeObjFields");
 
+const objParamsStringToNumber = obj => {};
+
 module.exports = app => {
   // Get All Products
   app.get("/api/products", isAuth, async (req, res) => {
-    let { skip = 0, limit = 20 } = req.query;
-    skip = parseInt(skip, 10);
-    limit = parseInt(limit, 10);
+    const { query } = req;
+    query.skip = parseInt(query.skip, 10);
+    query.limit = parseInt(query.limit, 10);
+    query.page = parseInt(query.page, 10);
 
     try {
       const [products, count] = await Promise.all([
         Product.find({})
-          .skip(skip)
-          .limit(limit),
+          .skip(query.skip)
+          .limit(query.limit),
         Product.find().countDocuments()
       ]);
 
-      serverRes(res, 200, null, { products, count, skip, limit });
+      query.count = count;
+
+      serverRes(res, 200, null, { products, query });
     } catch (err) {
       console.log("ERR: GET/api/products", err);
+
+      const msg = serverMsg("error", "fetch", "products");
+      serverRes(res, 400, msg, null);
+    }
+  });
+
+  // Get a filtered list of Products
+  app.get("/api/products/query", isAuth, async (req, res) => {
+    const { query } = req;
+    query.skip = parseInt(query.skip, 10);
+    query.limit = parseInt(query.limit, 10);
+    query.page = parseInt(query.page, 10);
+
+    const mongoQuery = {};
+
+    const { searchType, value, value2, keyName } = query;
+    switch (searchType) {
+      case "number":
+        if (value2 === "null") {
+          mongoQuery[keyName] = value;
+        } else {
+          mongoQuery = { $and: [{ [keyName]: { $gt: value, $lt: value2 } }] };
+        }
+        break;
+
+      default:
+        mongoQuery[keyName] = { $regex: new RegExp(value), $options: "i" };
+        break;
+    }
+
+    try {
+      console.log(mongoQuery);
+
+      const [products, count] = await Promise.all([
+        Product.find(mongoQuery)
+          .skip(query.skip)
+          .limit(query.limit),
+        Product.find(mongoQuery).countDocuments()
+      ]);
+
+      query.count = count;
+
+      serverRes(res, 200, null, { products, query });
+    } catch (err) {
+      console.log("ERR: GET/api/query", err);
 
       const msg = serverMsg("error", "fetch", "products");
       serverRes(res, 400, msg, null);

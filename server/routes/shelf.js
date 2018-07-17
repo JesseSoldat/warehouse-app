@@ -2,9 +2,9 @@
 const Storage = require("../models/storage");
 const Rack = require("../models/rack");
 const Shelf = require("../models/shelf");
-const ShelfSpot = require("../models/shelfSpot");
 // utils
-const { succRes, errRes, errMsg } = require("../utils/serverRes");
+const { serverRes, msgObj } = require("../utils/serverRes");
+const { serverMsg } = require("../utils/serverMsg");
 const mergeObjFields = require("../utils/mergeObjFields");
 
 module.exports = app => {
@@ -12,9 +12,13 @@ module.exports = app => {
   app.get("/api/shelf", async (req, res, next) => {
     try {
       const shelves = await Shelf.find({});
-      succRes(res, shelves);
+
+      serverRes(res, 200, null, shelves);
     } catch (err) {
-      next(errRes(errMsg("fetch", "shelves")));
+      console.log("Err: GET/api/shelf", err);
+
+      const msg = serverMsg("error", "fetch", "shelves");
+      serverRes(res, 400, msg, null);
     }
   });
 
@@ -33,9 +37,13 @@ module.exports = app => {
             path: "storage"
           }
         });
-      succRes(res, shelf);
+
+      serverRes(res, 200, null, shelf);
     } catch (err) {
-      next(errRes(errMsg("fetch", "shelf")));
+      console.log("Err: GET/api/shelf/:shelfId", err);
+
+      const msg = serverMsg("error", "fetch", "shelf");
+      serverRes(res, 400, msg, null);
     }
   });
   // Create a new shelf inside a rack and link it to the rack
@@ -58,12 +66,13 @@ module.exports = app => {
         { new: true }
       );
 
-      succRes(res, { rack, shelf });
+      const msg = msgObj("The shelf was saved.", "green", "create");
+      serverRes(res, 200, msg, { rack, shelf });
     } catch (err) {
-      if (err.msg) {
-        return next(err);
-      }
-      next(errRes(errMsg("save", "shelf")));
+      console.log("Err: POST/api/shelf/:rackId", err);
+
+      const msg = serverMsg("error", "create", "shelf", "create error");
+      serverRes(res, 400, msg, null);
     }
   });
   // Update a shelf
@@ -75,9 +84,14 @@ module.exports = app => {
         mergeObjFields("", req.body),
         { new: true }
       );
-      succRes(res, shelf);
+
+      const msg = msgObj("The shelf was updateed.", "green", "update");
+      serverRes(res, 200, msg, shelf);
     } catch (err) {
-      next(errRes(errMsg("update", "shelf")));
+      console.log("Err: PATCH/api/shelf/:shelfId", err);
+
+      const msg = serverMsg("error", "update", "shelf", "update error");
+      serverRes(res, 400, msg, null);
     }
   });
 };
