@@ -2,7 +2,7 @@ import React from "react";
 
 const SearchBarBtn = ({ onSearchProduct, onResetFilter }) => {
   return (
-    <div className="col-xs-12 col-md-3 d-inline-block py-0 my-0">
+    <div className="col-xs-12 col-md-3 d-inline-block py-0 my-0 align-items-start">
       <button
         onClick={onSearchProduct}
         className="btn btn-primary mr-1"

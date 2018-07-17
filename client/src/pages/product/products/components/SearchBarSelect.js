@@ -6,8 +6,8 @@ import searchBarFields from "../helpers/searchBarFields";
 const SearchBarSelect = ({
   searchOption,
   searchOptionErr,
-  onChangeSearchOption,
-  reset
+  info,
+  onChangeSearchOption
 }) => {
   const options = searchBarFields.map(field => (
     <option key={field.value} value={field.value}>
@@ -35,8 +35,15 @@ const SearchBarSelect = ({
         >
           {options}
         </select>
-
-        <div className="invalid-feedback">{searchOptionErr}</div>
+      </div>
+      <div>
+        {searchOptionErr ? (
+          <div className="invalid-feedback">{searchOptionErr}</div>
+        ) : (
+          <small className="form-text text-muted py-0 my-0 pl-2 pt-1 ">
+            {info}
+          </small>
+        )}
       </div>
     </div>
   );

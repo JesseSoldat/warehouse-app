@@ -5,6 +5,7 @@ const SearchBarInputNumber = ({
   valueErr,
   value2,
   value2Err,
+  info,
   onChangeSearchValue,
   onChangeSearchValue2
 }) => {
@@ -35,8 +36,16 @@ const SearchBarInputNumber = ({
           value={value2}
           onChange={onChangeSearchValue2}
         />
+      </div>
 
-        <div className="invalid-feedback">{valueErr}</div>
+      <div>
+        {valueErr ? (
+          <div className="invalid-feedback">{valueErr}</div>
+        ) : (
+          <small className="form-text text-muted py-0 my-0 pl-2 pt-1 ">
+            {info}
+          </small>
+        )}
       </div>
     </div>
   );

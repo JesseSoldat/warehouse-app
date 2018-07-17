@@ -28,10 +28,11 @@ const SearchBar = ({
 }) => {
   return (
     <div className="row mb-3">
-      <div className="col-12">
+      <div className="col-12 d-flex">
         <SearchBarSelect
           searchOption={searchOption}
           searchOptionErr={searchOptionErr}
+          info="Select an option to search by."
           onChangeSearchOption={onChangeSearchOption}
         />
 
@@ -39,6 +40,7 @@ const SearchBar = ({
           <SearchBarInput
             value={value}
             valueErr={valueErr}
+            info="Enter the text you want to filter by."
             onChangeSearchValue={onChangeSearchValue}
           />
         )}
@@ -49,6 +51,7 @@ const SearchBar = ({
             valueErr={valueErr}
             value2={value2}
             value2Err={value2Err}
+            info="Enter a number or a range of two numbers."
             onChangeSearchValue={onChangeSearchValue}
             onChangeSearchValue2={onChangeSearchValue2}
           />

@@ -87,7 +87,7 @@ class Products extends Component {
     }));
   };
 
-  // Value CB ----------------------------------
+  // Value Changed CB ----------------------------------
   onChangeSearchValue = e => {
     this.setState({ value: e.target.value });
   };
