@@ -1,6 +1,6 @@
 import React from "react";
 
-const SearchBarInput = ({ searchText, searchTextErr, onChangeSearchText }) => {
+const SearchBarInput = ({ value, valueErr, onChangeSearchValue }) => {
   return (
     <div className="col-xs-12 col-md-5 d-inline-block py-0 my-0">
       <div className="input-group">
@@ -11,13 +11,13 @@ const SearchBarInput = ({ searchText, searchTextErr, onChangeSearchText }) => {
         </div>
         <input
           type="text"
-          className={searchTextErr ? "form-control is-invalid" : "form-control"}
-          value={searchText}
+          className={valueErr ? "form-control is-invalid" : "form-control"}
+          value={value}
           placeholder="Seach Text"
-          onChange={onChangeSearchText}
+          onChange={onChangeSearchValue}
         />
 
-        <div className="invalid-feedback">{searchTextErr}</div>
+        <div className="invalid-feedback">{valueErr}</div>
       </div>
     </div>
 

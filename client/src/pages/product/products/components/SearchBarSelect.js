@@ -6,7 +6,8 @@ import searchBarFields from "../helpers/searchBarFields";
 const SearchBarSelect = ({
   searchOption,
   searchOptionErr,
-  onChangeSearchOption
+  onChangeSearchOption,
+  reset
 }) => {
   const options = searchBarFields.map(field => (
     <option key={field.value} value={field.value}>
@@ -23,14 +24,15 @@ const SearchBarSelect = ({
           </label>
         </div>
         <select
+          id="optionSelect"
           className={
             searchOptionErr ? "custom-select is-invalid" : "custom-select"
           }
           id="productSelect"
+          value={searchOption}
           style={{ height: "37.61px" }}
           onChange={onChangeSearchOption}
         >
-          <option value="default">Search Products By...</option>
           {options}
         </select>
 

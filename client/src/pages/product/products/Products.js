@@ -21,6 +21,10 @@ class Products extends Component {
     searchOptionErr: "",
     searchText: "",
     searchTextErr: "",
+    value: "",
+    valueErr: "",
+    value2: "",
+    value2Err: "",
     searchType: "string"
   };
 
@@ -51,48 +55,67 @@ class Products extends Component {
   // SearchBar CB ------------------------------
   onChangeSearchOption = e => {
     const { value } = e.target;
+    let searchType;
 
     switch (value) {
-      case "default":
       case "productName":
       case "brandName":
-        this.setState(() => ({ searchType: "string" }));
+        searchType = "string";
         break;
 
       case "price":
       case "productLabel":
-        this.setState(() => ({ searchType: "number" }));
+        searchType = "number";
         break;
 
       case "manufacturingDate":
-        this.setState(() => ({ searchType: "date" }));
+        searchType = "date";
         break;
 
       default:
-        this.setState(() => ({ searchType: "string" }));
+        searchType = "string";
         break;
     }
+
+    this.setState(() => ({
+      searchType,
+      searchOption: value,
+      value: "",
+      valueErr: "",
+      value2: "",
+      value2Err: ""
+    }));
+  };
+
+  // Value CB ----------------------------------
+  onChangeSearchValue = e => {
+    this.setState({ value: e.target.value });
+  };
+
+  onChangeSearchValue2 = e => {
+    this.setState({ value2: e.target.value });
   };
 
   // SearchBtn CB ------------------------------
-  onSearchProduct = e => {};
+  onSearchProduct = e => {
+    const { value, value2 } = this.state;
+    console.log("value:", value, "value2:", value2);
+  };
 
-  onResetFilter = e => {};
-
-  onChangeSearchText = e => {};
+  onResetFilter = e => {
+    this.setState(() => ({
+      searchType: "string",
+      searchOption: "productName",
+      value: "",
+      valueErr: "",
+      value2: "",
+      value2Err: ""
+    }));
+  };
 
   render() {
     // props
     const { loading, products, query } = this.props;
-    // state
-    const {
-      searchOption,
-      searchOptionErr,
-      searchText,
-      searchTextErr,
-      searchType
-    } = this.state;
-
     let content;
 
     if (loading) {
@@ -108,16 +131,19 @@ class Products extends Component {
         <Paginator query={query} cb1={this.getProductsQuery} />
         <SearchBar
           // option
-          searchOption={searchOption}
-          searchOptionErr={searchOptionErr}
-          // text
-          searchText={searchText}
-          searchTextErr={searchTextErr}
+          searchOption={this.state.searchOption}
+          searchOptionErr={this.state.searchOptionErr}
+          // value
+          value={this.state.value}
+          valueErr={this.state.valueErr}
+          value2={this.state.value2}
+          value2Err={this.state.value2Err}
           // type
-          searchType={searchType}
+          searchType={this.state.searchType}
           // CB
           onChangeSearchOption={this.onChangeSearchOption}
-          onChangeSearchText={this.onChangeSearchText}
+          onChangeSearchValue={this.onChangeSearchValue}
+          onChangeSearchValue2={this.onChangeSearchValue2}
           onSearchProduct={this.onSearchProduct}
           onResetFilter={this.onResetFilter}
         />

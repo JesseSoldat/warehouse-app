@@ -10,42 +10,22 @@ const SearchBar = ({
   // option
   searchOption,
   searchOptionErr,
+  // option CB
   onChangeSearchOption,
-  // text
-  searchText,
-  searchTextErr,
-  onChangeSearchText,
+  // value
+  value,
+  valueErr,
+  value2,
+  value2Err,
+  // value CB
+  onChangeSearchValue,
+  onChangeSearchValue2,
   // type
   searchType,
-  // BTN CB
+  // btn CB
   onSearchProduct,
   onResetFilter
 }) => {
-  const renderInputType = () => {
-    let input;
-    switch (searchType) {
-      case "string":
-        input = (
-          <SearchBarInput
-            searchText={searchText}
-            searchTextErr={searchTextErr}
-            onChangeSearchText={onChangeSearchText}
-          />
-        );
-        break;
-
-      case "number":
-        input = <SearchBarInputNumber />;
-        break;
-
-      case "date":
-        break;
-
-      default:
-        break;
-    }
-    return input;
-  };
   return (
     <div className="row mb-3">
       <div className="col-12">
@@ -55,7 +35,26 @@ const SearchBar = ({
           onChangeSearchOption={onChangeSearchOption}
         />
 
-        {renderInputType()}
+        {searchType === "string" && (
+          <SearchBarInput
+            value={value}
+            valueErr={valueErr}
+            onChangeSearchValue={onChangeSearchValue}
+          />
+        )}
+
+        {searchType === "number" && (
+          <SearchBarInputNumber
+            value={value}
+            valueErr={valueErr}
+            value2={value2}
+            value2Err={value2Err}
+            onChangeSearchValue={onChangeSearchValue}
+            onChangeSearchValue2={onChangeSearchValue2}
+          />
+        )}
+
+        {searchType === "date" && null}
 
         <SearchBarBtn
           onSearchProduct={onSearchProduct}
