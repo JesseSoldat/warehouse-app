@@ -19,7 +19,6 @@ const SearchBarSelect = ({ searchOption, info, onChangeSearchOption }) => {
           </label>
         </div>
         <select
-          id="optionSelect"
           className="custom-select"
           id="productSelect"
           value={searchOption}

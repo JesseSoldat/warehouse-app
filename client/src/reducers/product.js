@@ -12,7 +12,7 @@ const initialState = {
     keyName: null,
     value: null,
     value2: null,
-    searchType: null
+    searchType: "string"
   }
 };
 

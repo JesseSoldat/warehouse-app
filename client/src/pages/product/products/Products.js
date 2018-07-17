@@ -17,17 +17,16 @@ import { startGetProducts } from "../../../actions/product";
 
 class Products extends Component {
   state = {
-    searchOption: "",
-    searchText: "",
-    searchTextErr: "",
-    value: "",
-    value2: "",
+    searchOption: "productName",
     valueErr: "",
-    searchType: "string"
+    value: this.props.query.value || "",
+    value2: this.props.query.value2 || "",
+    searchType: this.props.query.searchType || "string"
   };
 
   componentDidMount() {
-    this.getProducts(this.props.query);
+    const { query } = this.props;
+    this.getProducts(query);
   }
 
   componentWillUnmount() {
@@ -39,14 +38,12 @@ class Products extends Component {
   // api calls ----------------------------------
   getProducts = query => {
     const { startGetProducts } = this.props;
-    startGetProducts(query);
-  };
-  // TODO this will be merged with above
-  getProductsQuery = query => {
-    const { startGetProducts } = this.props;
-    query.searchType = "string";
-    query.keyName = "productName";
-    query.value = "Generic Granite Bacon";
+    const { value, value2, searchOption, searchType } = this.state;
+    query["keyName"] = searchOption;
+    query["searchType"] = searchType;
+    query["value"] = value;
+    query["value2"] = value2;
+    console.log("getProducts", query);
     startGetProducts(query);
   };
 
@@ -95,12 +92,12 @@ class Products extends Component {
 
   // SearchBtn CB ------------------------------
   onSearchProduct = e => {
-    const { value, value2 } = this.state;
+    const { value } = this.state;
     if (!value) {
       this.setState({ valueErr: "This field can not be empty." });
       return;
     }
-    console.log("value:", value, "value2:", value2);
+    this.getProducts(this.props.query);
   };
 
   onResetFilter = e => {
@@ -128,7 +125,7 @@ class Products extends Component {
       <div className="container">
         <Message cb={this.getProducts} />
         <Heading title="Products" />
-        <Paginator query={query} cb1={this.getProductsQuery} />
+        <Paginator query={query} cb1={this.getProducts} />
         <SearchBar
           // option
           searchOption={this.state.searchOption}

@@ -6,12 +6,18 @@ const Paginator = ({ query, cb1 }) => {
   const goBack = () => {
     if (skip === 0) return;
     query.page = page - 1;
+    query.skip = skip - 20;
+    if (skip === 0) return;
+
     cb1(query);
   };
 
   const goFoward = () => {
     if (skip + limit > count) return;
     query.page = page + 1;
+    query.skip = skip + 20;
+    if (skip + limit > count) return;
+
     cb1(query);
   };
 
@@ -28,6 +34,11 @@ const Paginator = ({ query, cb1 }) => {
     if (direction === "left") {
       btnClass = skip === 0 ? "page-item disabled" : "page-item";
     }
+
+    if (direction === "right") {
+      btnClass = skip + limit >= count ? "page-item disabled" : "page-item";
+    }
+
     return (
       <li className={btnClass}>
         <a

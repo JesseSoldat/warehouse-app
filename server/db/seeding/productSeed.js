@@ -7,10 +7,10 @@ const randomMinMaxNum = require("./utils/randomMinMaxNum");
 const dropCollection = require("./utils/dropCollection");
 const generateArray = require("./utils/generateArray");
 
-const PRODUCTS_TO_ADD = 20;
+const PRODUCTS_TO_ADD = 22;
 
 const createProducts = labelNumber => ({
-  productLabel: labelNumber, //unique
+  productLabel: labelNumber + 1000, //unique
   // string
   brandName: faker.commerce.productName(),
   productName: faker.commerce.productName(),
