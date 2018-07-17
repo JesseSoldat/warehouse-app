@@ -5,8 +5,9 @@ import { connect } from "react-redux";
 import Heading from "../../../components/Heading";
 import Message from "../../../components/Message";
 import Spinner from "../../../components/Spinner";
-import Paginator from "./Paginator";
-import CardList from "./CardList";
+import Paginator from "./components/Paginator";
+import SearchBar from "./components/SearchBar";
+import CardList from "./components/CardList";
 // utils
 import clearUiMsg from "../../../utils/clearUiMsg";
 // actions
@@ -15,8 +16,16 @@ import { serverMsg } from "../../../actions/ui";
 import { startGetProducts } from "../../../actions/product";
 
 class Products extends Component {
+  state = {
+    searchOption: "",
+    searchOptionErr: "",
+    searchText: "",
+    searchTextErr: "",
+    searchType: "string"
+  };
+
   componentDidMount() {
-    this.getProducts();
+    this.getProducts(this.props.query);
   }
 
   componentWillUnmount() {
@@ -26,11 +35,11 @@ class Products extends Component {
   }
 
   // api calls ----------------------------------
-  getProducts = () => {
-    const { query, startGetProducts } = this.props;
+  getProducts = query => {
+    const { startGetProducts } = this.props;
     startGetProducts(query);
   };
-
+  // TODO this will be merged with above
   getProductsQuery = query => {
     const { startGetProducts } = this.props;
     query.searchType = "string";
@@ -39,8 +48,50 @@ class Products extends Component {
     startGetProducts(query);
   };
 
+  // SearchBar CB ------------------------------
+  onChangeSearchOption = e => {
+    const { value } = e.target;
+
+    switch (value) {
+      case "default":
+      case "productName":
+      case "brandName":
+        this.setState(() => ({ searchType: "string" }));
+        break;
+
+      case "price":
+      case "productLabel":
+        this.setState(() => ({ searchType: "number" }));
+        break;
+
+      case "manufacturingDate":
+        this.setState(() => ({ searchType: "date" }));
+        break;
+
+      default:
+        this.setState(() => ({ searchType: "string" }));
+        break;
+    }
+  };
+
+  // SearchBtn CB ------------------------------
+  onSearchProduct = e => {};
+
+  onResetFilter = e => {};
+
+  onChangeSearchText = e => {};
+
   render() {
+    // props
     const { loading, products, query } = this.props;
+    // state
+    const {
+      searchOption,
+      searchOptionErr,
+      searchText,
+      searchTextErr,
+      searchType
+    } = this.state;
 
     let content;
 
@@ -55,6 +106,22 @@ class Products extends Component {
         <Message cb={this.getProducts} />
         <Heading title="Products" />
         <Paginator query={query} cb1={this.getProductsQuery} />
+        <SearchBar
+          // option
+          searchOption={searchOption}
+          searchOptionErr={searchOptionErr}
+          // text
+          searchText={searchText}
+          searchTextErr={searchTextErr}
+          // type
+          searchType={searchType}
+          // CB
+          onChangeSearchOption={this.onChangeSearchOption}
+          onChangeSearchText={this.onChangeSearchText}
+          onSearchProduct={this.onSearchProduct}
+          onResetFilter={this.onResetFilter}
+        />
+        <div style={{ height: "15px" }} />
         {content}
       </div>
     );
