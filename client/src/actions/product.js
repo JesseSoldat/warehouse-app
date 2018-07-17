@@ -12,17 +12,12 @@ export const PRODUCTS_FETCH_ALL = "PRODUCTS_FETCH_ALL";
 export const PRODUCTS_FETCH_ONE = "PRODUCTS_FETCH_ONE";
 export const PRODUCTS_FETCH_QUERY = "PRODUCTS_FETCH_QUERY";
 
-const getProductsQueryUrl = (query, isFiltered = false) => {
+const getProductsQueryUrl = query => {
   const { skip, limit, page, keyName, value, value2, searchType } = query;
   const baseUrl = "/api/products";
-  const queryUrl = "/query";
   const params = `?skip=${skip}&limit=${limit}&page=${page}&keyName=${keyName}&value=${value}&value2=${value2}&searchType=${searchType}`;
 
-  const url = !isFiltered
-    ? `${baseUrl}${params}`
-    : `${baseUrl}${queryUrl}${params}`;
-
-  return url;
+  return `${baseUrl}${params}`;
 };
 
 // All Products ---------------------------------------------
@@ -36,7 +31,7 @@ export const startGetProducts = query => async dispatch => {
   dispatch(loading(true));
 
   try {
-    const res = await axios.get(getProductsQueryUrl(query, false));
+    const res = await axios.get(getProductsQueryUrl(query));
 
     const { msg, payload, options } = res.data;
 
@@ -48,22 +43,6 @@ export const startGetProducts = query => async dispatch => {
   }
 };
 
-// Query of Products -------------------------------------------
-
-export const startGetProductsQuery = query => async dispatch => {
-  dispatch(loading(true));
-  try {
-    const res = await axios.get(getProductsQueryUrl(query, true));
-
-    const { msg, payload, options } = res.data;
-
-    dispatch(getProducts(payload));
-
-    checkForMsg(msg, dispatch, options);
-  } catch (err) {
-    axiosResponseErrorHandling(err, dispatch, "fetch", "products");
-  }
-};
 // Product Details ---------------------------------------------
 export const getProductDetails = product => ({
   type: PRODUCTS_FETCH_ONE,

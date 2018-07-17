@@ -12,10 +12,7 @@ import clearUiMsg from "../../../utils/clearUiMsg";
 // actions
 import { changeRoute } from "../../../actions/router";
 import { serverMsg } from "../../../actions/ui";
-import {
-  startGetProducts,
-  startGetProductsQuery
-} from "../../../actions/product";
+import { startGetProducts } from "../../../actions/product";
 
 class Products extends Component {
   componentDidMount() {
@@ -35,11 +32,11 @@ class Products extends Component {
   };
 
   getProductsQuery = query => {
-    const { startGetProductsQuery } = this.props;
-    this.props.query.keyName = "productName";
-    this.props.query.value = "Generic Granite Bacon";
-    console.log("query", this.props.query);
-    startGetProductsQuery(this.props.query);
+    const { startGetProducts } = this.props;
+    query.searchType = "string";
+    query.keyName = "productName";
+    query.value = "Generic Granite Bacon";
+    startGetProducts(query);
   };
 
   render() {
@@ -74,5 +71,5 @@ const mapStateToProps = ({ ui, product }) => ({
 
 export default connect(
   mapStateToProps,
-  { serverMsg, changeRoute, startGetProducts, startGetProductsQuery }
+  { serverMsg, changeRoute, startGetProducts }
 )(Products);

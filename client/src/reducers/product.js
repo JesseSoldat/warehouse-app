@@ -8,7 +8,7 @@ const initialState = {
     skip: 0,
     limit: 20,
     count: 0, // total amount of products
-    filteredCount: null, // count after filter
+    //filteredCount: null, // count after filter
     keyName: null,
     value: null,
     value2: null,

@@ -6,14 +6,12 @@ const Paginator = ({ query, cb1 }) => {
   const goBack = () => {
     if (skip === 0) return;
     query.page = page - 1;
-    // load previous page from server
     cb1(query);
   };
 
   const goFoward = () => {
     if (skip + limit > count) return;
     query.page = page + 1;
-    // load previous page from server
     cb1(query);
   };
 

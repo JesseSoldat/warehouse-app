@@ -10,7 +10,32 @@ const { msgObj, serverRes } = require("../utils/serverRes");
 const { serverMsg } = require("../utils/serverMsg");
 const mergeObjFields = require("../utils/mergeObjFields");
 
-const objParamsStringToNumber = obj => {};
+const buildMongoQuery = query => {
+  const { searchType, value, value2, keyName } = query;
+  let mongoQuery = {};
+
+  switch (searchType) {
+    case "number":
+      if (value2 === "null") {
+        mongoQuery[keyName] = value;
+      } else {
+        mongoQuery = { $and: [{ [keyName]: { $gt: value, $lt: value2 } }] };
+      }
+      break;
+
+    case "string":
+      mongoQuery[keyName] = { $regex: new RegExp(value), $options: "i" };
+      break;
+
+    case "date":
+      break;
+
+    default:
+      break;
+  }
+
+  return mongoQuery;
+};
 
 module.exports = app => {
   // Get All Products
@@ -20,9 +45,12 @@ module.exports = app => {
     query.limit = parseInt(query.limit, 10);
     query.page = parseInt(query.page, 10);
 
+    const mongoQuery = buildMongoQuery(query);
+    // console.log("mongoQuery", mongoQuery);
+
     try {
       const [products, count] = await Promise.all([
-        Product.find({})
+        Product.find(mongoQuery)
           .skip(query.skip)
           .limit(query.limit),
         Product.find().countDocuments()
@@ -33,51 +61,6 @@ module.exports = app => {
       serverRes(res, 200, null, { products, query });
     } catch (err) {
       console.log("ERR: GET/api/products", err);
-
-      const msg = serverMsg("error", "fetch", "products");
-      serverRes(res, 400, msg, null);
-    }
-  });
-
-  // Get a filtered list of Products
-  app.get("/api/products/query", isAuth, async (req, res) => {
-    const { query } = req;
-    query.skip = parseInt(query.skip, 10);
-    query.limit = parseInt(query.limit, 10);
-    query.page = parseInt(query.page, 10);
-
-    const mongoQuery = {};
-
-    const { searchType, value, value2, keyName } = query;
-    switch (searchType) {
-      case "number":
-        if (value2 === "null") {
-          mongoQuery[keyName] = value;
-        } else {
-          mongoQuery = { $and: [{ [keyName]: { $gt: value, $lt: value2 } }] };
-        }
-        break;
-
-      default:
-        mongoQuery[keyName] = { $regex: new RegExp(value), $options: "i" };
-        break;
-    }
-
-    try {
-      console.log(mongoQuery);
-
-      const [products, count] = await Promise.all([
-        Product.find(mongoQuery)
-          .skip(query.skip)
-          .limit(query.limit),
-        Product.find(mongoQuery).countDocuments()
-      ]);
-
-      query.count = count;
-
-      serverRes(res, 200, null, { products, query });
-    } catch (err) {
-      console.log("ERR: GET/api/query", err);
 
       const msg = serverMsg("error", "fetch", "products");
       serverRes(res, 400, msg, null);
