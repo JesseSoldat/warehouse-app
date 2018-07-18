@@ -7,7 +7,7 @@ import Message from "../../../components/Message";
 import Spinner from "../../../components/Spinner";
 import CardList from "../../../components/CardList";
 import Paginator from "./components/Paginator";
-import SearchBar from "./components/searchBar/SearchBar";
+import SearchBar from "./components/SearchBar";
 // helpers
 import productCardData from "./helpers/productCardData";
 import createGetProductsQuery from "./helpers/createGetProductsQuery";

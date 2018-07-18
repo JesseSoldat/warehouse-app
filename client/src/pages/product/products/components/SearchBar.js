@@ -1,11 +1,11 @@
 import React from "react";
 
 // components
-import SearchBarSelect from "./SearchBarSelect";
-import FilterTextInput from "./FilterTextInput";
-import NumberRangeInput from "./NumberRangeInput";
-import SearchBarBtn from "./SearchBarBtn";
-import DateRangeInput from "./DateRangeInput";
+import SelectInput from "./searchBar/SelectInput";
+import FilterTextInput from "./searchBar/FilterTextInput";
+import NumberRangeInput from "./searchBar/NumberRangeInput";
+import DateRangeInput from "./searchBar/DateRangeInput";
+import BtnGroup from "./searchBar/BtnGroup";
 
 const SearchBar = ({
   // option
@@ -32,7 +32,7 @@ const SearchBar = ({
   return (
     <div className="row mb-3">
       <div className="col-12 d-flex">
-        <SearchBarSelect
+        <SelectInput
           searchOption={searchOption}
           info="Select an option to search by."
           onChangeSearchOption={onChangeSearchOption}
@@ -73,7 +73,7 @@ const SearchBar = ({
           />
         )}
 
-        <SearchBarBtn
+        <BtnGroup
           onSearchProduct={onSearchProduct}
           onResetFilter={onResetFilter}
         />

@@ -1,6 +1,6 @@
 import React from "react";
 
-import AuthForm from "./AuthForm";
+import AuthForm from "./components/AuthForm";
 
 const Auth = ({ location }) => {
   const path = location.pathname.split("/")[1];

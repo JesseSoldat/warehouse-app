@@ -3,6 +3,7 @@ const createMeasurmentsArray = (productMeasurments, packagingMeasurments) => {
 
   if (!productMeasurments || !packagingMeasurments) {
   } else {
+    // from api raw obj to single values
     prodHeight = productMeasurments.prodHeight;
     prodLength = productMeasurments.prodLength;
     prodWidth = productMeasurments.prodWidth;
@@ -12,6 +13,7 @@ const createMeasurmentsArray = (productMeasurments, packagingMeasurments) => {
   }
 
   return [
+    // create data for the components api to loop over
     {
       label: "Product Measurments",
       data: [

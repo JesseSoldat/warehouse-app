@@ -1,25 +1,27 @@
 import React from "react";
 
-// components
-import SingleField from "./SingleField";
+// common components
+import SingleField from "../../../../components/SingleField";
 
-const MeasurmentCard = ({ array }) => {
+const ClientsCard = ({ array }) => {
   return (
     <div className="card card-body mb-3">
       <div className="row">
         <div className="col-12">
           <div className="text-center">
             <h4 className="pb-3">
-              <strong>{array.label}</strong>
+              <strong>{array[0].label}</strong>
             </h4>
           </div>
           <div>
             <div className="row">
               <div className="col-12 mr-ml-auto">
                 <ul className="list-group list-group-flush">
-                  {array.data.map(({ label, value }, index) => (
-                    <SingleField field={label} value={value} key={index} />
-                  ))}
+                  {array.map(obj =>
+                    obj.data.map(({ label, value }, index) => (
+                      <SingleField label={label} value={value} key={index} />
+                    ))
+                  )}
                 </ul>
               </div>
             </div>
@@ -30,4 +32,4 @@ const MeasurmentCard = ({ array }) => {
   );
 };
 
-export default MeasurmentCard;
+export default ClientsCard;

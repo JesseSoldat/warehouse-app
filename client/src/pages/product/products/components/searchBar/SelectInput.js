@@ -3,7 +3,7 @@ import React from "react";
 // helpers
 import searchBarFields from "../../helpers/searchBarFields";
 
-const SearchBarSelect = ({ searchOption, info, onChangeSearchOption }) => {
+const SelectInput = ({ searchOption, info, onChangeSearchOption }) => {
   const options = searchBarFields.map(field => (
     <option key={field.value} value={field.value}>
       {field.name}
@@ -42,4 +42,4 @@ const SearchBarSelect = ({ searchOption, info, onChangeSearchOption }) => {
   );
 };
 
-export default SearchBarSelect;
+export default SelectInput;

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-// components
+// common components
 import Spinner from "../../../components/Spinner";
 import Message from "../../../components/Message";
 import Heading from "../../../components/Heading";
@@ -16,16 +16,20 @@ import { serverMsg } from "../../../actions/ui";
 import { startGetProducers } from "../../../actions/producer";
 
 class Producers extends Component {
+  // lifecycle --------------------------------------
   componentDidMount() {
     this.getProducers();
   }
 
   componentWillUnmount() {
     const { msg, options, serverMsg, changeRoute } = this.props;
+    // check to see if the UiMsg should be cleared
     clearUiMsg(msg, options, serverMsg);
+    // update this page to be the FROM route
     changeRoute("/producers");
   }
 
+  // api calls --------------------------------------
   getProducers = () => {
     this.props.startGetProducers();
   };
@@ -36,6 +40,7 @@ class Producers extends Component {
 
     if (loading) {
       content = <Spinner />;
+    } else if (!producers || !producers.length) {
     } else {
       content = <CardList data={producerCardData(producers)} />;
     }

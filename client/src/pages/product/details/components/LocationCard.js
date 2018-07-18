@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-// components
-import SingleField from "./SingleField";
+// common components
+import SingleField from "../../../../components/SingleField";
 
 const LocationCard = ({
   productLocationObj,
@@ -11,14 +11,13 @@ const LocationCard = ({
   history,
   width = "12"
 }) => {
-  // console.log("Product Location", productLocationObj);
-
+  // haveLocation true | false
   const { haveLocation, data } = productLocationObj;
+  const divWidth = `col-xs-12 col-md-${width}`;
 
   let content;
 
-  const divWidth = `col-xs-12 col-md-${width}`;
-
+  // events ---------------------------------------------
   const onLink = productId => {
     history.push(`/barcode/scan?id=${productId}&type=product`);
   };
@@ -28,6 +27,7 @@ const LocationCard = ({
     unlinkCb(obj);
   };
 
+  // render html ----------------------------------------------
   const onLinkBtn = (
     <button
       className="btn btn-primary float-right"
@@ -73,7 +73,7 @@ const LocationCard = ({
             <div>
               <ul className="list-group list-group-flush">
                 {data.map(({ label, value }, index) => (
-                  <SingleField field={label} value={value} key={index} />
+                  <SingleField label={label} value={value} key={index} />
                 ))}
               </ul>
             </div>
@@ -86,6 +86,7 @@ const LocationCard = ({
   else {
     const { kind, breadcrumb } = productLocationObj;
 
+    // render html -----------------------------------
     const onUnLinkBtn = (
       <span>
         <button
@@ -106,6 +107,7 @@ const LocationCard = ({
 
     const { spotId, type, storageId, rackId, shelfId } = breadcrumb;
 
+    // set the content
     content = (
       <div>
         <div className="row">
@@ -121,7 +123,7 @@ const LocationCard = ({
             <div>
               <ul className="list-group list-group-flush">
                 {data.map(({ label, value }, index) => (
-                  <SingleField field={label} value={value} key={index} />
+                  <SingleField label={label} value={value} key={index} />
                 ))}
                 <div>
                   <strong className="pr-3 pl-4 d-inline-block">

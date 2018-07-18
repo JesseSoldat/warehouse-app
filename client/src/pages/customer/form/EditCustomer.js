@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-// components
+// common components
 import Heading from "../../../components/Heading";
 import Message from "../../../components/Message";
 import Spinner from "../../../components/Spinner";
 import TopRowBtns from "../../../components/TopRowBtns";
-import CustomerForm from "./CustomerForm";
+// custom components
+import CustomerForm from "./components/CustomerForm";
 // utils
 import clearUiMsg from "../../../utils/clearUiMsg";
 // actions
@@ -16,23 +17,29 @@ import { serverMsg } from "../../../actions/ui";
 import { startGetCustomer, startEditCustomer } from "../../../actions/customer";
 
 class EditCustomer extends Component {
+  // lifecycle --------------------------------------
   componentDidMount() {
     this.getCustomer();
   }
 
   componentWillUnmount() {
     const { msg, options, serverMsg, changeRoute } = this.props;
+    // check to see if the UiMsg should be cleared
     clearUiMsg(msg, options, serverMsg);
+    // update this page to be the FROM route
     changeRoute("/customers/edit/:customerId");
   }
 
+  // api calls ----------------------------------
   getCustomer = () => {
     const { customerId } = this.props.match.params;
     this.props.startGetCustomer(customerId);
   };
 
+  // events ------------------------------------
   handleSubmit = formData => {
     const { customerId } = this.props.match.params;
+    // api call
     this.props.startEditCustomer(customerId, formData, this.props.history);
   };
 
@@ -40,6 +47,7 @@ class EditCustomer extends Component {
     const { from, history, match } = this.props;
     const { customerId } = match.params;
 
+    // use the route reducer FROM to navigate back
     switch (from) {
       case "/customers":
         history.push("/customers");

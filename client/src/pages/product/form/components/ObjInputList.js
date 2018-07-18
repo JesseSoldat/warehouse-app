@@ -1,9 +1,9 @@
 import React from "react";
 
 // compenents
-import TextInput from "../../../components/inputs/TextInput";
+import TextInput from "../../../../components/inputs/TextInput";
 // helpers
-import objInputFields from "./helpers/objInputFields";
+import objInputFields from "../helpers/objInputFields";
 
 const ObjInputList = ({ state, cb }) => {
   const renderObjects = (parentObj, i) => {

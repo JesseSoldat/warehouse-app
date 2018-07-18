@@ -11,12 +11,13 @@ const formatFormValues = state => {
     manufacturingDate,
     dateCheckbox,
     amountOfPieces,
-    productPictures,
-    packagingPictures,
     comments,
     productMaterial,
     selectedProducer,
     selectedCustomers
+    // ------- Don't update these --------
+    // productPictures,
+    // packagingPictures,
   } = state;
 
   const formattedValues = {
@@ -27,8 +28,6 @@ const formatFormValues = state => {
     amountOfPieces: amountOfPieces || 0,
     weight: weight || 0,
 
-    productPictures: splitStrToArray(productPictures, ",") || [],
-    packagingPictures: splitStrToArray(packagingPictures, ",") || [],
     productMaterial: splitStrToArray(productMaterial, ",") || [],
     comments: splitStrToArray(comments, ",") || [],
 

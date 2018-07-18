@@ -1,6 +1,6 @@
 import React from "react";
 
-const SearchBarBtn = ({ onSearchProduct, onResetFilter }) => {
+const BtnGroup = ({ onSearchProduct, onResetFilter }) => {
   return (
     <div className="col-xs-12 col-md-3 d-inline-block py-0 my-0">
       <span>
@@ -26,4 +26,4 @@ const SearchBarBtn = ({ onSearchProduct, onResetFilter }) => {
   );
 };
 
-export default SearchBarBtn;
+export default BtnGroup;

@@ -2,11 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-// components
+// common components
 import Spinner from "../../../components/Spinner";
 import Message from "../../../components/Message";
 import Heading from "../../../components/Heading";
-import ProducerForm from "./ProducerForm";
+// custom components
+import ProducerForm from "./components/ProducerForm";
 // utils
 import clearUiMsg from "../../../utils/clearUiMsg";
 // actions
@@ -15,12 +16,16 @@ import { serverMsg } from "../../../actions/ui";
 import { startCreateProducer } from "../../../actions/producer";
 
 class CreateProducer extends Component {
+  // lifecycle ----------------------------------------------
   componentWillUnmount() {
     const { msg, options, serverMsg, changeRoute } = this.props;
+    // check to see if the UiMsg should be cleared
     clearUiMsg(msg, options, serverMsg);
+    // update this page to be the FROM route
     changeRoute("/producers/create");
   }
 
+  // events -----------------------------------------------
   handleSubmit = formData => {
     const { history, startCreateProducer } = this.props;
     startCreateProducer(formData, history);
@@ -28,7 +33,7 @@ class CreateProducer extends Component {
 
   render() {
     const { loading } = this.props;
-
+    // default producer data to use in child component state
     const data = {
       producerName: "",
       producerContact: "",

@@ -1,7 +1,8 @@
 import React from "react";
 
-// components
-import SingleField from "./SingleField";
+// common components
+import Carousel from "../../../../components/Carousel";
+import SingleField from "../../../../components/SingleField";
 
 const InfoCard = ({
   pageName,
@@ -12,74 +13,20 @@ const InfoCard = ({
   deleteCb,
   history
 }) => {
-  const renderCarousel = picturesArray => {
-    const carouselItem = picturesArray.map((item, i) => {
-      const text = `${i} slide of ${picturesArray.length}`;
-      const active = i === 0 ? "carousel-item active" : "carousel-item";
-
-      return (
-        <div className={active} key={i}>
-          <img
-            className="d-block w-100"
-            style={{
-              height: "350px",
-              backgroundColor: "lightgrey",
-              backgroundBlendMode: "multiply"
-            }}
-            src={item}
-            alt={text}
-          />
-          <div className="carousel-caption d-none d-md-block">
-            <p className="">Image {i + 1}</p>
-          </div>
-        </div>
-      );
-    });
-
-    const carouselInner = <div className="carousel-inner">{carouselItem}</div>;
-
-    return (
-      <div
-        id="carouselExampleControls"
-        className="carousel slide"
-        data-ride="carousel"
-      >
-        {carouselInner}
-        <a
-          className="carousel-control-prev"
-          href="#carouselExampleControls"
-          role="button"
-          data-slide="prev"
-        >
-          <span className="carousel-control-prev-icon" aria-hidden="true" />
-          <span className="sr-only">Previous</span>
-        </a>
-        <a
-          className="carousel-control-next"
-          href="#carouselExampleControls"
-          role="button"
-          data-slide="next"
-        >
-          <span className="carousel-control-next-icon" aria-hidden="true" />
-          <span className="sr-only">Next</span>
-        </a>
-      </div>
-    );
-  };
-
+  // render ui -----------------------------
   const renderImage = (productPictures, packagingPictures) => {
     let picturesArray = [];
     if (Array.isArray(productPictures)) {
-      picturesArray = [...productPictures];
+      picturesArray = [...picturesArray, ...productPictures];
     }
     if (Array.isArray(packagingPictures)) {
-      picturesArray = [...packagingPictures];
+      picturesArray = [...picturesArray, ...packagingPictures];
     }
 
     const placeholderImg = "http://via.placeholder.com/250x250?text=No Image";
 
     return picturesArray.length >= 1 ? (
-      renderCarousel(picturesArray)
+      <Carousel picturesArray={picturesArray} />
     ) : (
       <img
         className="mx-auto d-block pt-5"
@@ -89,6 +36,7 @@ const InfoCard = ({
     );
   };
 
+  // events --------------------------------
   const onCreateBarCode = productId => {
     history.push(`/barcode/create?id=${productId}&type=product`);
   };
@@ -123,7 +71,7 @@ const InfoCard = ({
             <div className="col-sm-12 col-md-6 ml-mr-auto">
               <ul className="list-group list-group-flush">
                 {productDetails.map(({ label, value }, i) => (
-                  <SingleField field={label} value={value} key={i} />
+                  <SingleField label={label} value={value} key={i} />
                 ))}
               </ul>
             </div>

@@ -3,7 +3,7 @@ import isEmpty from "../../../../utils/isEmpty.js";
 const createProducerArray = producer => {
   let producerArray = [];
 
-  // producer was not passed in create defaults
+  // producer was not passed in create defaults -----------
   if (isEmpty(producer)) {
     producerArray = [
       {
@@ -15,7 +15,7 @@ const createProducerArray = producer => {
         ]
       }
     ];
-    // use producer values
+    // use producer values --------------------------------
   } else {
     const { producerName, producerAddress, producerContact } = producer;
     producerArray = [
@@ -30,7 +30,7 @@ const createProducerArray = producer => {
     ];
   }
 
-  return [producerArray];
+  return producerArray;
 };
 
 export default createProducerArray;

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-// components
+// common components
 import Spinner from "../../../components/Spinner";
 import Message from "../../../components/Message";
 import Heading from "../../../components/Heading";
@@ -31,24 +31,29 @@ class Customer extends Component {
 
   componentWillUnmount() {
     const { msg, options, serverMsg, changeRoute } = this.props;
+    // check to see if the UiMsg should be cleared
     clearUiMsg(msg, options, serverMsg);
+    // update this page to be the FROM route
     changeRoute("/customers/:customerId");
   }
 
-  goBack = () => {
-    this.props.history.push("/customers");
-  };
-  // api call
+  // api calls ----------------------------
   getCustomer = () => {
     const { customerId } = this.props.match.params;
     this.props.startGetCustomer(customerId);
   };
 
-  // events
+  // events -------------------------------
+  goBack = () => {
+    this.props.history.push("/customers");
+  };
+
   onDeleteCustomer = () => {
+    // don't let the user click more than once
     this.setState({ bt1Disable: true });
     const { startDeleteCustomer, match, history } = this.props;
     const { customerId } = match.params;
+    // api call
     startDeleteCustomer(customerId, history);
   };
 
@@ -67,8 +72,7 @@ class Customer extends Component {
 
     if (loading) {
       content = <Spinner />;
-    } else if (!customer) {
-      // dispatch a msg that no customer was found
+    } else if (!customer || !customer.length) {
     } else {
       content = <SingleFieldList data={customerListData(customer)} />;
     }

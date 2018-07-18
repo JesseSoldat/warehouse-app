@@ -2,11 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-// components
+// common components
 import Spinner from "../../../components/Spinner";
 import Message from "../../../components/Message";
 import Heading from "../../../components/Heading";
-import CustomerForm from "./CustomerForm";
+// custom components
+import CustomerForm from "./components/CustomerForm";
 // utils
 import clearUiMsg from "../../../utils/clearUiMsg";
 // actions
@@ -17,16 +18,21 @@ import { startCreateCustomer } from "../../../actions/customer";
 class CreateCustomer extends Component {
   componentWillUnmount() {
     const { msg, options, serverMsg, changeRoute } = this.props;
+    // check to see if the UiMsg should be cleared
     clearUiMsg(msg, options, serverMsg);
+    // update this page to be the FROM route
     changeRoute("/customers/create");
   }
 
+  // events ---------------------------------
   handleSubmit = formData => {
     const { history, startCreateCustomer } = this.props;
+    // api call
     startCreateCustomer(formData, history);
   };
 
   render() {
+    // create default state data for child component
     const data = {
       customerName: "",
       customerContact: "",

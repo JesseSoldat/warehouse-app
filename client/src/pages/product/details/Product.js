@@ -2,15 +2,16 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-// Components
+// common components
 import Spinner from "../../../components/Spinner";
 import Message from "../../../components/Message";
 import Heading from "../../../components/Heading";
-import InfoCard from "./InfoCard";
-import LocationCard from "./LocationCard";
-import ToggleListCard from "./ToggleListCard";
-import MeasurmentCard from "./MeasurmentCard";
-import ClientsCard from "./ClientsCard";
+// custom components
+import InfoCard from "./components/InfoCard";
+import LocationCard from "./components/LocationCard";
+import ToggleListCard from "./components/ToggleListCard";
+import MeasurmentCard from "./components/MeasurmentCard";
+import ClientsCard from "./components/ClientsCard";
 // helpers
 import createDetailsArray from "./helpers/createDetailsArray";
 import createLocationObj from "./helpers/createLocationObj";
@@ -30,13 +31,16 @@ import {
 } from "../../../actions/product";
 
 class Product extends Component {
+  // lifecycle -------------------------------------
   componentDidMount() {
     this.getProduct();
   }
 
   componentWillUnmount() {
     const { msg, options, serverMsg, changeRoute } = this.props;
+    // check to see if the UiMsg should be cleared
     clearUiMsg(msg, options, serverMsg);
+    // update this page to be the FROM route
     changeRoute("/products/:productId");
   }
 
@@ -46,13 +50,15 @@ class Product extends Component {
     const { productId } = match.params;
     // clear old data
     getProductDetails(null);
-    // fetch new data
+    // fetch new data from api
     startGetProductDetails(productId);
   };
 
+  // events -----------------------------------------
   onDeleteProduct = () => {
     const { deleteProduct, match, history } = this.props;
     const { productId } = match.params;
+    // api call
     deleteProduct(productId, history);
   };
 
@@ -62,7 +68,9 @@ class Product extends Component {
     const { product, loading } = this.props;
     let content;
 
-    if (loading || !product) {
+    if (loading) {
+      content = <Spinner />;
+    } else if (!product) {
       content = <Spinner />;
     } else {
       const { match, history } = this.props;
@@ -133,9 +141,7 @@ class Product extends Component {
             <MeasurmentCard array={array} key={i} />
           ))}
 
-          {producerDetails.map((array, i) => (
-            <ClientsCard array={array} key={i} />
-          ))}
+          <ClientsCard array={producerDetails} />
 
           {customersDetails.map((array, i) => (
             <ClientsCard array={array} key={i} />

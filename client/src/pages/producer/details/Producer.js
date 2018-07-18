@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-// components
+// common components
 import Spinner from "../../../components/Spinner";
 import Message from "../../../components/Message";
 import Heading from "../../../components/Heading";
@@ -25,31 +25,35 @@ class Producer extends Component {
     bt2Disable: false
   };
 
+  // lifecycle --------------------------------------
   componentDidMount() {
     this.getProducer();
   }
 
   componentWillUnmount() {
     const { msg, options, serverMsg, changeRoute } = this.props;
+    // check to see if the UiMsg should be cleared
     clearUiMsg(msg, options, serverMsg);
+    // update this page to be the FROM route
     changeRoute("/producers/:producerId");
   }
 
-  goBack = () => {
-    this.props.history.push("/producers");
-  };
-
-  // api call
+  // api calls ----------------------------------------
   getProducer = () => {
     const { producerId } = this.props.match.params;
     this.props.startGetProducer(producerId);
   };
 
-  // events
+  // events -----------------------------------------
+  goBack = () => {
+    this.props.history.push("/producers");
+  };
+
   onDeleteProduct = () => {
     this.setState({ bt1Disable: true });
     const { startDeleteProducer, match, history } = this.props;
     const { producerId } = match.params;
+    // api call
     startDeleteProducer(producerId, history);
   };
 
@@ -69,7 +73,6 @@ class Producer extends Component {
     if (loading) {
       content = <Spinner />;
     } else if (!producer) {
-      // dispatch a msg that no producer was found
     } else {
       content = <SingleFieldList data={producerListData(producer)} />;
     }

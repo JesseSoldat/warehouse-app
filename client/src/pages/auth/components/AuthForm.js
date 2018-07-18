@@ -3,22 +3,22 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { parse } from "qs";
 
-// components
-import TextInput from "../../components/inputs/TextInput";
-import Spinner from "../../components/Spinner";
-import Message from "../../components/Message";
-import Heading from "../../components/Heading";
+// common components
+import TextInput from "../../../components/inputs/TextInput";
+import Spinner from "../../../components/Spinner";
+import Message from "../../../components/Message";
+import Heading from "../../../components/Heading";
 // helpers
-import formIsValid from "./helpers/formIsValid";
-import isEmail from "../../utils/isEmail";
+import formIsValid from "../helpers/formIsValid";
+import isEmail from "../../../utils/isEmail";
 // actions
 import {
   startRegister,
   startLogin,
   startResendVerification
-} from "../../actions/auth";
-import { changeRoute } from "../../actions/router";
-import { serverMsg } from "../../actions/ui";
+} from "../../../actions/auth";
+import { changeRoute } from "../../../actions/router";
+import { serverMsg } from "../../../actions/ui";
 
 class AuthForm extends Component {
   state = {

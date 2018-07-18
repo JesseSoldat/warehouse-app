@@ -1,19 +1,19 @@
 import React, { Component } from "react";
 
-// components
-import TextInputList from "../../../components/inputs/TextInputList";
+// common components
+import TextInputList from "../../../../components/inputs/TextInputList";
 // helpers
-import producerFieldData from "./helpers/producerFieldData";
+import customerFieldData from "../helpers/customerFieldData";
 // utils
-import validateOnChange from "../../../utils/validation/validateOnChange";
-import validateOnSubmit from "../../../utils/validation/validateOnSubmit";
+import validateOnChange from "../../../../utils/validation/validateOnChange";
+import validateOnSubmit from "../../../../utils/validation/validateOnSubmit";
 
-class ProducerForm extends Component {
+class CustomerForm extends Component {
   state = {
-    producerNameErr: "",
-    producerName: this.props.data.producerName,
-    producerContact: this.props.data.producerContact,
-    producerAddress: this.props.data.producerAddress
+    customerNameErr: "",
+    customerName: this.props.data.customerName,
+    customerContact: this.props.data.customerContact,
+    customerAddress: this.props.data.customerAddress
   };
 
   // events ------------------------
@@ -21,7 +21,8 @@ class ProducerForm extends Component {
     e.preventDefault();
     this.refs.submitBtn.setAttribute("disabled", "disabled");
 
-    const { isValid, errObj } = validateOnSubmit(producerFieldData, this.state);
+    // check if any of the required fields are empty
+    const { isValid, errObj } = validateOnSubmit(customerFieldData, this.state);
 
     if (!isValid) {
       this.setState({ ...errObj });
@@ -29,17 +30,18 @@ class ProducerForm extends Component {
       return;
     }
 
+    // send form data to parent with CB
     this.props.handleSubmit({
-      producerName: this.state.producerName,
-      producerContact: this.state.producerContact,
-      producerAddress: this.state.producerAddress
+      customerName: this.state.customerName,
+      customerContact: this.state.customerContact,
+      customerAddress: this.state.customerAddress
     });
   };
 
   onChange = e => {
     const { name, value } = e.target;
     // newErrorState will be null || obj with errors
-    const newErrorState = validateOnChange(producerFieldData, { name, value });
+    const newErrorState = validateOnChange(customerFieldData, { name, value });
 
     if (newErrorState) {
       this.setState({ [name]: value, ...newErrorState });
@@ -52,7 +54,7 @@ class ProducerForm extends Component {
     return (
       <form onSubmit={this.onSubmit}>
         <TextInputList
-          data={producerFieldData}
+          data={customerFieldData}
           state={this.state}
           cb={this.onChange}
         />
@@ -67,4 +69,4 @@ class ProducerForm extends Component {
   }
 }
 
-export default ProducerForm;
+export default CustomerForm;

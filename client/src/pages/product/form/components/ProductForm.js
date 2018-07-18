@@ -1,16 +1,18 @@
 import React, { Component } from "react";
 
-// components
+// common components
+import SelectInput from "../../../../components/inputs/SelectInput";
+import MultiSelectInput from "../../../../components/inputs/MultiSelectInput";
+import DatePickerInput from "../../../../components/inputs/DatePickerInput";
+// custom components
 import TextInputList from "./TextInputList";
 import ObjInputList from "./ObjInputList";
-import SelectInput from "../../../components/inputs/SelectInput";
-import MultiSelectInput from "../../../components/inputs/MultiSelectInput";
-import DatePickerInput from "../../../components/inputs/DatePickerInput";
+
 // helpers
-import resetRequiredFieldsErr from "./helpers/resetRequiredFieldsErr";
-import formatClientSelectOptions from "./helpers/formatClientSelectOptions";
-import validateOnSubmit from "./helpers/validateOnSubmit";
-import formatFormValues from "./helpers/formatFormValues";
+import resetRequiredFieldsErr from "../helpers/resetRequiredFieldsErr";
+import formatClientSelectOptions from "../helpers/formatClientSelectOptions";
+import validateOnSubmit from "../helpers/validateOnSubmit";
+import formatFormValues from "../helpers/formatFormValues";
 
 class ProductForm extends Component {
   state = {
