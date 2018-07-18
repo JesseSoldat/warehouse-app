@@ -31,6 +31,8 @@ class Products extends Component {
 
   componentDidMount() {
     const { query } = this.props;
+    // fetch the products using inital  query params
+    // stored in product reducer
     this.getProducts(query);
   }
 
@@ -44,6 +46,7 @@ class Products extends Component {
 
   // api calls ----------------------------------
   getProducts = query => {
+    // query changes based on where it is called from
     const { startGetProducts } = this.props;
     const {
       value,
@@ -53,6 +56,7 @@ class Products extends Component {
       searchType
     } = this.state;
 
+    // UPDATE QUERY with values from STATE -----------
     // get the current select key
     query["keyName"] = searchOption;
     // string || number || date
@@ -66,7 +70,8 @@ class Products extends Component {
     startGetProducts(query);
   };
 
-  // SearchBar CB ------------------------------
+  // UI Events--------------------------------------------
+  // SearchBar CB --------------------------------------
   onChangeSearchOption = e => {
     // searchOption value
     const { value } = e.target;
@@ -128,7 +133,7 @@ class Products extends Component {
     this.setState({ value2: e.target.value });
   };
 
-  // Should use the second input for the query? ----------
+  // Check Box CB - should use second input? ----------
   handleUseValue2 = e => {
     const { disableValue2 } = this.state;
     this.setState({ disableValue2: !disableValue2 });
