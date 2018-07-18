@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import moment from "moment";
 
 // components
 import Heading from "../../../components/Heading";
@@ -8,9 +7,11 @@ import Message from "../../../components/Message";
 import Spinner from "../../../components/Spinner";
 import CardList from "../../../components/CardList";
 import Paginator from "./components/Paginator";
-import SearchBar from "./components/SearchBar";
+import SearchBar from "./components/searchBar/SearchBar";
 // helpers
 import productCardData from "./helpers/productCardData";
+import createGetProductsQuery from "./helpers/createGetProductsQuery";
+import onSelectBuildNewState from "./helpers/onSelectBuildNewState";
 // utils
 import clearUiMsg from "../../../utils/clearUiMsg";
 // actions
@@ -48,79 +49,24 @@ class Products extends Component {
   getProducts = query => {
     // query changes based on where it is called from
     const { startGetProducts } = this.props;
-    const {
-      value,
-      value2,
-      disableValue2,
-      searchOption,
-      searchType
-    } = this.state;
 
-    // UPDATE QUERY with values from STATE -----------
-    // get the current select key
-    query["keyName"] = searchOption;
-    // string || number || date
-    query["searchType"] = searchType;
-    // value of the first input
-    query["value"] = value;
+    // take current query and update if with state values
+    const updatedQuery = createGetProductsQuery(query, this.state);
 
-    // only use value2 if the user checks to enable the second input
-    disableValue2 ? (query["value2"] = "") : (query["value2"] = value2);
-
-    startGetProducts(query);
+    // send query to the server
+    startGetProducts(updatedQuery);
   };
 
   // UI Events--------------------------------------------
   // SearchBar CB --------------------------------------
   onChangeSearchOption = e => {
-    // searchOption value
-    const { value } = e.target;
-    let searchType;
-    // value of first and second input
-    let defaultValue = "";
-    let defaultValue2 = "";
-    // orphanSearch (products without a location)
-    let orphanSearch = false;
-
-    switch (value) {
-      case "productName":
-      case "brandName":
-      case "comments":
-        searchType = "string";
-        break;
-
-      case "price":
-      case "productLabel":
-        searchType = "number";
-        break;
-
-      case "manufacturingDate":
-        searchType = "date";
-        defaultValue = moment();
-        defaultValue2 = moment();
-        break;
-
-      case "orphans":
-        searchType = "orphans";
-        orphanSearch = true;
-        break;
-
-      default:
-        searchType = "string";
-        break;
-    }
+    const newState = onSelectBuildNewState(e.target.value);
 
     // every time we change the select options
     // we reset the intial state using specific
     // values for the UI input type
     this.setState(() => ({
-      searchType,
-      searchOption: value,
-      value: defaultValue,
-      value2: defaultValue2,
-      disableValue2: true,
-      valueErr: "",
-      orphanSearch
+      ...newState
     }));
   };
 

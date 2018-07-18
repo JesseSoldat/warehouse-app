@@ -6,7 +6,7 @@ const Producer = require("../models/producer");
 // middleware
 const isAuth = require("../middleware/isAuth");
 // helpers
-const buildMongoQuery = require("./helpers/buildMongoQuery");
+const buildProductsQuery = require("./helpers/buildProductsQuery");
 // utils
 const { msgObj, serverRes } = require("../utils/serverRes");
 const serverMsg = require("../utils/serverMsg");
@@ -18,7 +18,7 @@ module.exports = app => {
   app.get("/api/products", isAuth, async (req, res) => {
     const shouldBeIntegers = ["skip", "limit", "page"];
     const query = stringParamsToIntegers(req.query, shouldBeIntegers);
-    const mongoQuery = buildMongoQuery(query);
+    const mongoQuery = buildProductsQuery(query);
 
     try {
       const [products, count, totalCount] = await Promise.all([

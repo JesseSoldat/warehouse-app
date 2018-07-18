@@ -1,7 +1,7 @@
 import React from "react";
 
 // helpers
-import searchBarFields from "../helpers/searchBarFields";
+import searchBarFields from "../../helpers/searchBarFields";
 
 const SearchBarSelect = ({ searchOption, info, onChangeSearchOption }) => {
   const options = searchBarFields.map(field => (
