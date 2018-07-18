@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import moment from "moment";
 
 // components
 import Heading from "../../../components/Heading";
@@ -48,12 +49,17 @@ class Products extends Component {
 
   // SearchBar CB ------------------------------
   onChangeSearchOption = e => {
+    // searchOption value
     const { value } = e.target;
     let searchType;
+    // value of first and second input
+    let defaultValue = "";
+    let defaultValue2 = "";
 
     switch (value) {
       case "productName":
       case "brandName":
+      case "comments":
         searchType = "string";
         break;
 
@@ -64,6 +70,12 @@ class Products extends Component {
 
       case "manufacturingDate":
         searchType = "date";
+        defaultValue = moment();
+        defaultValue2 = moment();
+        break;
+
+      case "orphans":
+        searchType = "orphans";
         break;
 
       default:
@@ -74,8 +86,8 @@ class Products extends Component {
     this.setState(() => ({
       searchType,
       searchOption: value,
-      value: "",
-      value2: "",
+      value: defaultValue,
+      value2: defaultValue2,
       valueErr: ""
     }));
   };
@@ -89,7 +101,16 @@ class Products extends Component {
     this.setState({ value2: e.target.value });
   };
 
-  // SearchBtn CB ------------------------------
+  // Date Changed CB -------------------------------------
+  handleDateChange = e => {
+    this.setState({ value: e.startOf("day"), valueErr: "" });
+  };
+
+  handleDateChange2 = e => {
+    this.setState({ value2: e.endOf("day") });
+  };
+
+  // SearchBtn CB ----------------------------------------
   onSearchProduct = e => {
     const { value } = this.state;
     if (!value) {
@@ -142,6 +163,8 @@ class Products extends Component {
           onChangeSearchOption={this.onChangeSearchOption}
           onChangeSearchValue={this.onChangeSearchValue}
           onChangeSearchValue2={this.onChangeSearchValue2}
+          handleDateChange={this.handleDateChange}
+          handleDateChange2={this.handleDateChange2}
           onSearchProduct={this.onSearchProduct}
           onResetFilter={this.onResetFilter}
         />

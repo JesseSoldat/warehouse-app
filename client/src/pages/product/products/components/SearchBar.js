@@ -2,9 +2,10 @@ import React from "react";
 
 // components
 import SearchBarSelect from "./SearchBarSelect";
-import SearchBarInput from "./SearchBarInput";
-import SearchBarInputNumber from "./SearchBarInputNumber";
+import FilterTextInput from "./FilterTextInput";
+import NumberRangeInput from "./NumberRangeInput";
 import SearchBarBtn from "./SearchBarBtn";
+import DateRangeInput from "./DateRangeInput";
 
 const SearchBar = ({
   // option
@@ -18,6 +19,8 @@ const SearchBar = ({
   // value CB
   onChangeSearchValue,
   onChangeSearchValue2,
+  handleDateChange,
+  handleDateChange2,
   // type
   searchType,
   // btn CB
@@ -34,7 +37,7 @@ const SearchBar = ({
         />
 
         {searchType === "string" && (
-          <SearchBarInput
+          <FilterTextInput
             value={value}
             valueErr={valueErr}
             info="Enter the text you want to filter by."
@@ -43,17 +46,26 @@ const SearchBar = ({
         )}
 
         {searchType === "number" && (
-          <SearchBarInputNumber
+          <NumberRangeInput
             value={value}
             value2={value2}
             valueErr={valueErr}
-            info="Enter a number or a range of two numbers."
+            info="Enter a specific number or a range of two numbers."
             onChangeSearchValue={onChangeSearchValue}
             onChangeSearchValue2={onChangeSearchValue2}
           />
         )}
 
-        {searchType === "date" && null}
+        {searchType === "date" && (
+          <DateRangeInput
+            value={value}
+            value2={value2}
+            valueErr={valueErr}
+            info="Enter a specific date or a range of two dates."
+            handleDateChange={handleDateChange}
+            handleDateChange2={handleDateChange2}
+          />
+        )}
 
         <SearchBarBtn
           onSearchProduct={onSearchProduct}

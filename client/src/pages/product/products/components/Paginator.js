@@ -56,7 +56,7 @@ const Paginator = ({ query, cb1 }) => {
   const rightBtn = renderBtn("right");
 
   return (
-    <div className="row">
+    <div className="row" style={{ marginBottom: "-20px" }}>
       <div className="col-12">
         <small className="form-text text-muted mb-2 ml-4 inline-block mr-2">
           <strong>{count + " "}</strong>

@@ -12,27 +12,32 @@ const SearchBarSelect = ({ searchOption, info, onChangeSearchOption }) => {
 
   return (
     <div className="col-xs-12 col-md-4 d-inline-block py-0 my-0">
-      <div className="input-group">
-        <div className="input-group-prepend">
-          <label className="input-group-text" htmlFor="productSelect">
-            Options
-          </label>
+      <span>
+        <label className="p-0 m-0">
+          <small />
+        </label>
+        <div className="input-group">
+          <div className="input-group-prepend">
+            <label className="input-group-text" htmlFor="productSelect">
+              Options
+            </label>
+          </div>
+          <select
+            className="custom-select"
+            id="productSelect"
+            value={searchOption}
+            style={{ height: "37.61px" }}
+            onChange={onChangeSearchOption}
+          >
+            {options}
+          </select>
         </div>
-        <select
-          className="custom-select"
-          id="productSelect"
-          value={searchOption}
-          style={{ height: "37.61px" }}
-          onChange={onChangeSearchOption}
-        >
-          {options}
-        </select>
-      </div>
-      <div>
-        <small className="form-text text-muted py-0 my-0 pl-2 pt-1 ">
-          {info}
-        </small>
-      </div>
+        <div>
+          <small className="form-text text-muted py-0 my-0 pl-2 pt-1 ">
+            {info}
+          </small>
+        </div>
+      </span>
     </div>
   );
 };
