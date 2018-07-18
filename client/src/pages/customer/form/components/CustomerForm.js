@@ -5,8 +5,8 @@ import TextInputList from "../../../../components/inputs/TextInputList";
 // helpers
 import customerFieldData from "../helpers/customerFieldData";
 // utils
-import validateOnChange from "../../../../utils/validation/validateOnChange";
-import validateOnSubmit from "../../../../utils/validation/validateOnSubmit";
+import resetRequiredFieldsErr from "../../../../utils/validation/resetRequiredFieldsErr";
+import validateRequiredFieldsOnSubmit from "../../../../utils/validation/validateRequiredFieldsOnSubmit";
 
 class CustomerForm extends Component {
   state = {
@@ -22,7 +22,10 @@ class CustomerForm extends Component {
     this.refs.submitBtn.setAttribute("disabled", "disabled");
 
     // check if any of the required fields are empty
-    const { isValid, errObj } = validateOnSubmit(customerFieldData, this.state);
+    const { isValid, errObj } = validateRequiredFieldsOnSubmit(
+      customerFieldData,
+      this.state
+    );
 
     if (!isValid) {
       this.setState({ ...errObj });
@@ -41,7 +44,10 @@ class CustomerForm extends Component {
   onChange = e => {
     const { name, value } = e.target;
     // newErrorState will be null || obj with errors
-    const newErrorState = validateOnChange(customerFieldData, { name, value });
+    const newErrorState = resetRequiredFieldsErr(customerFieldData, {
+      name,
+      value
+    });
 
     if (newErrorState) {
       this.setState({ [name]: value, ...newErrorState });

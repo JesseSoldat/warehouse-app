@@ -3,10 +3,10 @@ import React from "react";
 // common components
 import TextInput from "../../../../components/inputs/TextInput";
 // helpers
-import textInputFields from "../helpers/textInputFields";
+import productFieldData from "../helpers/productFieldData";
 
 const TextInputList = ({ state, cb }) => {
-  return textInputFields.map((obj, i) => {
+  return productFieldData.map((obj, i) => {
     const textInput = (
       <TextInput
         placeholder={obj.placeholder}

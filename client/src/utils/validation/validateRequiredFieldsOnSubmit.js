@@ -7,7 +7,7 @@
 // }];
 // state = current component state
 
-const validateOnSubmit = (fieldData, state) => {
+const validateRequiredFieldsOnSubmit = (fieldData, state) => {
   const errObj = {};
   let isValid = true;
 
@@ -35,4 +35,4 @@ const validateOnSubmit = (fieldData, state) => {
   return { isValid, errObj };
 };
 
-export default validateOnSubmit;
+export default validateRequiredFieldsOnSubmit;

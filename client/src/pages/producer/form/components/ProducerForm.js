@@ -5,8 +5,8 @@ import TextInputList from "../../../../components/inputs/TextInputList";
 // helpers
 import producerFieldData from "../helpers/producerFieldData";
 // utils
-import validateOnChange from "../../../../utils/validation/validateOnChange";
-import validateOnSubmit from "../../../../utils/validation/validateOnSubmit";
+import resetRequiredFieldsErr from "../../../../utils/validation/resetRequiredFieldsErr";
+import validateRequiredFieldsOnSubmit from "../../../../utils/validation/validateRequiredFieldsOnSubmit";
 
 class ProducerForm extends Component {
   state = {
@@ -22,7 +22,10 @@ class ProducerForm extends Component {
     this.refs.submitBtn.setAttribute("disabled", "disabled");
 
     // check if any of the required fields are empty
-    const { isValid, errObj } = validateOnSubmit(producerFieldData, this.state);
+    const { isValid, errObj } = validateRequiredFieldsOnSubmit(
+      producerFieldData,
+      this.state
+    );
 
     if (!isValid) {
       this.setState({ ...errObj });
@@ -40,8 +43,12 @@ class ProducerForm extends Component {
 
   onChange = e => {
     const { name, value } = e.target;
+
     // newErrorState will be null || obj with errors
-    const newErrorState = validateOnChange(producerFieldData, { name, value });
+    const newErrorState = resetRequiredFieldsErr(producerFieldData, {
+      name,
+      value
+    });
 
     if (newErrorState) {
       this.setState({ [name]: value, ...newErrorState });

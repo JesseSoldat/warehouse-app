@@ -7,12 +7,13 @@ import DatePickerInput from "../../../../components/inputs/DatePickerInput";
 // custom components
 import TextInputList from "./TextInputList";
 import ObjInputList from "./ObjInputList";
-
 // helpers
-import resetRequiredFieldsErr from "../helpers/resetRequiredFieldsErr";
 import formatClientSelectOptions from "../helpers/formatClientSelectOptions";
-import validateOnSubmit from "../helpers/validateOnSubmit";
 import formatFormValues from "../helpers/formatFormValues";
+import productFieldData from "../helpers/productFieldData";
+// utils
+import resetRequiredFieldsErr from "../../../../utils/validation/resetRequiredFieldsErr";
+import validateRequiredFieldsOnSubmit from "../../../../utils/validation/validateRequiredFieldsOnSubmit";
 
 class ProductForm extends Component {
   state = {
@@ -57,7 +58,11 @@ class ProductForm extends Component {
     // clear any messages from the server
     handleSendMsg(null);
 
-    const { isValid, errObj } = validateOnSubmit(this.state);
+    // check if any of the required fields are empty
+    const { isValid, errObj } = validateRequiredFieldsOnSubmit(
+      productFieldData,
+      this.state
+    );
 
     if (!isValid) {
       // allow user to submit form again
@@ -76,10 +81,15 @@ class ProductForm extends Component {
 
   onChange = e => {
     const { name, value } = e.target;
-    const requiredField = resetRequiredFieldsErr(name);
 
-    if (requiredField) {
-      return this.setState(() => ({ [name]: value, [requiredField]: "" }));
+    // newErrorState will be null || obj with errors
+    const newErrorState = resetRequiredFieldsErr(productFieldData, {
+      name,
+      value
+    });
+
+    if (newErrorState) {
+      return this.setState(() => ({ [name]: value, ...newErrorState }));
     }
     this.setState(() => ({ [name]: value }));
   };
