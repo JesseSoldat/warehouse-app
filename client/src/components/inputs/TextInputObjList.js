@@ -1,11 +1,9 @@
 import React from "react";
 
-// compenents
-import TextInput from "../../../../components/inputs/TextInput";
-// helpers
-import objInputFields from "../helpers/objInputFields";
+// common compenents
+import TextInput from "./TextInput";
 
-const ObjInputList = ({ state, cb }) => {
+const ObjInputList = ({ inputFields, state, cb }) => {
   const renderObjects = (parentObj, i) => {
     const fields = parentObj.fields.map((obj, fieldIndex) => {
       return (
@@ -36,7 +34,7 @@ const ObjInputList = ({ state, cb }) => {
     );
   };
 
-  return <div>{objInputFields.map((obj, i) => renderObjects(obj, i))}</div>;
+  return <div>{inputFields.map((obj, i) => renderObjects(obj, i))}</div>;
 };
 
 export default ObjInputList;

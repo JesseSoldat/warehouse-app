@@ -5,12 +5,12 @@ import SelectInput from "../../../../components/inputs/SelectInput";
 import MultiSelectInput from "../../../../components/inputs/MultiSelectInput";
 import DatePickerInput from "../../../../components/inputs/DatePickerInput";
 import TextInputList from "../../../../components/inputs/TextInputList";
-// custom components
-import ObjInputList from "./ObjInputList";
+import TextInputObjList from "../../../../components/inputs/TextInputObjList";
 // helpers
 import formatClientSelectOptions from "../helpers/formatClientSelectOptions";
 import formatFormValues from "../helpers/formatFormValues";
 import productFieldData from "../helpers/productFieldData";
+import objInputFields from "../helpers/objInputFields";
 // utils
 import resetRequiredFieldsErr from "../../../../utils/validation/resetRequiredFieldsErr";
 import validateRequiredFieldsOnSubmit from "../../../../utils/validation/validateRequiredFieldsOnSubmit";
@@ -169,7 +169,11 @@ class ProductForm extends Component {
           cb={this.onMultiSelect}
         />
 
-        <ObjInputList state={this.state} cb={this.onChange} />
+        <TextInputObjList
+          inputFields={objInputFields}
+          state={this.state}
+          cb={this.onChange}
+        />
 
         <input
           type="submit"
