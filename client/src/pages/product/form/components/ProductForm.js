@@ -4,8 +4,8 @@ import React, { Component } from "react";
 import SelectInput from "../../../../components/inputs/SelectInput";
 import MultiSelectInput from "../../../../components/inputs/MultiSelectInput";
 import DatePickerInput from "../../../../components/inputs/DatePickerInput";
+import TextInputList from "../../../../components/inputs/TextInputList";
 // custom components
-import TextInputList from "./TextInputList";
 import ObjInputList from "./ObjInputList";
 // helpers
 import formatClientSelectOptions from "../helpers/formatClientSelectOptions";
@@ -141,7 +141,11 @@ class ProductForm extends Component {
 
     return (
       <form onSubmit={this.onSubmit}>
-        <TextInputList state={this.state} cb={this.onChange} />
+        <TextInputList
+          data={productFieldData}
+          state={this.state}
+          cb={this.onChange}
+        />
         <DatePickerInput
           dateLabel="Manufacturing Date"
           checkLabel="Use this date"
