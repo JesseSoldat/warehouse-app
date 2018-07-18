@@ -4,6 +4,7 @@ const faker = require("faker");
 const Product = require("../../models/product");
 // Utils
 const randomMinMaxNum = require("./utils/randomMinMaxNum");
+const randomDate = require("./utils/randomDates");
 const dropCollection = require("./utils/dropCollection");
 const generateArray = require("./utils/generateArray");
 
@@ -20,6 +21,8 @@ const createProducts = labelNumber => ({
   weight: randomMinMaxNum(1, 65),
   quantity: randomMinMaxNum(1, 65),
   amountOfPieces: randomMinMaxNum(1, 30),
+  // date
+  manufacturingDate: randomDate(new Date(2017, 0, 1), new Date()),
   // array of strings
   productMaterial: generateArray(randomMinMaxNum(1, 11), "productMaterial"),
   comments: generateArray(randomMinMaxNum(1, 11), "productAdjective"),

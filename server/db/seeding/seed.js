@@ -9,5 +9,4 @@ const seedDb = async () => {
 };
 
 // Uncomment to seed db
-
 // seedDb();

@@ -6,9 +6,11 @@ import moment from "moment";
 import Heading from "../../../components/Heading";
 import Message from "../../../components/Message";
 import Spinner from "../../../components/Spinner";
+import CardList from "../../../components/CardList";
 import Paginator from "./components/Paginator";
 import SearchBar from "./components/SearchBar";
-import CardList from "./components/CardList";
+// helpers
+import productCardData from "./helpers/productCardData";
 // utils
 import clearUiMsg from "../../../utils/clearUiMsg";
 // actions
@@ -141,8 +143,9 @@ class Products extends Component {
 
     if (loading) {
       content = <Spinner />;
+    } else if (!products || !products.length) {
     } else {
-      content = <CardList products={products} />;
+      content = <CardList data={productCardData(products)} />;
     }
 
     return (
