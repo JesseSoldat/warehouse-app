@@ -3,10 +3,12 @@ import React from "react";
 const NumberRangeInput = ({
   value,
   value2,
+  disableValue2,
   valueErr,
   info,
   onChangeSearchValue,
-  onChangeSearchValue2
+  onChangeSearchValue2,
+  handleUseValue2
 }) => {
   return (
     <div className="col-xs-12 col-md-5 d-inline-block py-0 my-0">
@@ -26,10 +28,17 @@ const NumberRangeInput = ({
         </span>
 
         <span>
-          <label className="p-0 m-0">
+          <label style={{ position: "relative" }} className="col-12 p-0 m-0">
             <small>Ending</small>
+            <input
+              style={{ position: "absolute", right: 0 }}
+              checked={!disableValue2}
+              type="checkbox"
+              onChange={handleUseValue2}
+            />
           </label>
           <input
+            disabled={disableValue2}
             style={{ width: "200px" }}
             type="number"
             className="form-control"

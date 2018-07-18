@@ -10,7 +10,7 @@ import { getCustomers } from "./customer";
 // types
 export const PRODUCTS_FETCH_ALL = "PRODUCTS_FETCH_ALL";
 export const PRODUCTS_FETCH_ONE = "PRODUCTS_FETCH_ONE";
-export const PRODUCTS_FETCH_QUERY = "PRODUCTS_FETCH_QUERY";
+export const PRODUCTS_RESET = "PRODUCTS_RESET";
 
 const getProductsQueryUrl = query => {
   const { skip, limit, page, keyName, value, value2, searchType } = query;
@@ -20,7 +20,12 @@ const getProductsQueryUrl = query => {
   return `${baseUrl}${params}`;
 };
 
-// All Products ---------------------------------------------
+// Reset Filter -------------------------------------------------------------
+export const resetProducts = () => ({
+  type: PRODUCTS_RESET
+});
+
+// All Products or a subset based on the query ------------------------------
 export const getProducts = ({ products, query }) => ({
   type: PRODUCTS_FETCH_ALL,
   products,
@@ -43,7 +48,7 @@ export const startGetProducts = query => async dispatch => {
   }
 };
 
-// Product Details ---------------------------------------------
+// Product Details ----------------------------------------------------------
 export const getProductDetails = product => ({
   type: PRODUCTS_FETCH_ONE,
   product
@@ -63,7 +68,7 @@ export const startGetProductDetails = productId => async dispatch => {
   }
 };
 
-// Product ( Customers & Producers) ----------------------------
+// Product ( Customers & Producers) -----------------------------------------
 export const startGetClients = () => async dispatch => {
   dispatch(loading(true));
   try {
@@ -148,5 +153,3 @@ export const deleteProduct = (productId, history) => async dispatch => {
     axiosResponseErrorHandling(err, dispatch, "delete", "product");
   }
 };
-
-// Reset Filter -------------------------------------------------

@@ -16,11 +16,13 @@ const SearchBar = ({
   value,
   valueErr,
   value2,
+  disableValue2,
   // value CB
   onChangeSearchValue,
   onChangeSearchValue2,
   handleDateChange,
   handleDateChange2,
+  handleUseValue2,
   // type
   searchType,
   // btn CB
@@ -49,10 +51,12 @@ const SearchBar = ({
           <NumberRangeInput
             value={value}
             value2={value2}
+            disableValue2={disableValue2}
             valueErr={valueErr}
             info="Enter a specific number or a range of two numbers."
             onChangeSearchValue={onChangeSearchValue}
             onChangeSearchValue2={onChangeSearchValue2}
+            handleUseValue2={handleUseValue2}
           />
         )}
 
@@ -61,9 +65,11 @@ const SearchBar = ({
             value={value}
             value2={value2}
             valueErr={valueErr}
+            disableValue2={disableValue2}
             info="Enter a specific date or a range of two dates."
             handleDateChange={handleDateChange}
             handleDateChange2={handleDateChange2}
+            handleUseValue2={handleUseValue2}
           />
         )}
 

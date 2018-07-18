@@ -10,13 +10,21 @@ const { msgObj, serverRes } = require("../utils/serverRes");
 const serverMsg = require("../utils/serverMsg");
 const mergeObjFields = require("../utils/mergeObjFields");
 
+const formatNumbers = query => {
+  query.skip = parseInt(query.skip, 10);
+  query.limit = parseInt(query.limit, 10);
+  query.page = parseInt(query.page, 10);
+
+  return query;
+};
 const buildMongoQuery = query => {
   let { searchType, value, value2, keyName } = query;
+
   let mongoQuery = {};
 
   // console.log("keyName:", keyName);
-  // console.log("value:", value);
-  // console.log("value2:", value2);
+  console.log("value:", value);
+  console.log("value2:", value2);
 
   switch (searchType) {
     case "number":
@@ -32,6 +40,9 @@ const buildMongoQuery = query => {
       mongoQuery[keyName] = { $regex: new RegExp(value), $options: "i" };
       break;
 
+    case "orphans":
+      mongoQuery["productLocation"] = null;
+
     default:
       break;
   }
@@ -40,13 +51,9 @@ const buildMongoQuery = query => {
 };
 
 module.exports = app => {
-  // Get All Products
+  // Get All Products ------------------------------------------
   app.get("/api/products", isAuth, async (req, res) => {
-    const { query } = req;
-    query.skip = parseInt(query.skip, 10);
-    query.limit = parseInt(query.limit, 10);
-    query.page = parseInt(query.page, 10);
-
+    const query = formatNumbers(req.query);
     const mongoQuery = buildMongoQuery(query);
 
     try {
@@ -63,7 +70,7 @@ module.exports = app => {
 
       serverRes(res, 200, null, { products, query });
     } catch (err) {
-      // console.log("ERR: GET/api/products", err);
+      console.log("ERR: GET/api/products", err);
 
       const msg = serverMsg("error", "fetch", "products");
       serverRes(res, 400, msg, null);
@@ -108,7 +115,7 @@ module.exports = app => {
     }
   );
 
-  // Get a Single Product
+  // Get a Single Product ----------------------------------------
   app.get("/api/products/:productId", isAuth, async (req, res) => {
     const { productId } = req.params;
     try {
@@ -125,7 +132,7 @@ module.exports = app => {
     }
   });
 
-  // Post a Product
+  // Post a Product ---------------------------------------------
   app.post("/api/products", isAuth, async (req, res) => {
     const { producerId, customerIds } = req.body;
     const product = new Product(req.body);
@@ -152,7 +159,7 @@ module.exports = app => {
     }
   });
 
-  // Update a Product
+  // Update a Product --------------------------------------------
   app.patch("/api/products/:productId", isAuth, async (req, res) => {
     const { productId } = req.params;
     const { producerId, customerIds } = req.body;
@@ -183,7 +190,7 @@ module.exports = app => {
     }
   });
 
-  // Delete a Product
+  // Delete a Product -----------------------------------------------
   app.delete("/api/products/:productId", isAuth, async (req, res) => {
     const { productId } = req.params;
 

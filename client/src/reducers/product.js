@@ -1,4 +1,8 @@
-import { PRODUCTS_FETCH_ALL, PRODUCTS_FETCH_ONE } from "../actions/product";
+import {
+  PRODUCTS_FETCH_ALL,
+  PRODUCTS_FETCH_ONE,
+  PRODUCTS_RESET
+} from "../actions/product";
 
 const initialState = {
   products: [],
@@ -26,6 +30,9 @@ export default (state = initialState, action) => {
     case PRODUCTS_FETCH_ONE:
       // console.log("PRODUCTS_FETCH_ONE", product);
       return { ...state, product };
+
+    case PRODUCTS_RESET:
+      return { ...initialState };
 
     default:
       return { ...state };

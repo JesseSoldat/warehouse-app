@@ -1,14 +1,17 @@
 import React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { relative } from "path";
 
 const DateRangeInput = ({
   value,
   value2,
   valueErr,
   info,
+  disableValue2,
   handleDateChange,
-  handleDateChange2
+  handleDateChange2,
+  handleUseValue2
 }) => {
   return (
     <div className="col-xs-12 col-md-5 d-inline-block py-0 my-0">
@@ -25,10 +28,17 @@ const DateRangeInput = ({
         </span>
 
         <span>
-          <label className="p-0 m-0">
+          <label style={{ position: "relative" }} className="col-12 p-0 m-0">
             <small>Ending Date</small>
+            <input
+              style={{ position: "absolute", right: 0 }}
+              checked={!disableValue2}
+              type="checkbox"
+              onChange={handleUseValue2}
+            />
           </label>
           <DatePicker
+            disabled={disableValue2}
             className="form-control"
             selected={value2}
             onChange={handleDateChange2}
