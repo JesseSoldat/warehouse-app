@@ -2,6 +2,7 @@ const crypto = require("crypto");
 
 // models
 const User = require("../models/user");
+const AuthToken = require("../models/tokens/authToken");
 const VerificationToken = require("../models/tokens/verificationToken");
 // middleware
 const isAuth = require("../middleware/isAuth");
@@ -70,7 +71,7 @@ module.exports = app => {
   });
 
   // login a user and create an auth token
-  app.post("/api/login", async (req, res, next) => {
+  app.post("/api/login", async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -110,18 +111,24 @@ module.exports = app => {
   });
 
   // logout and remove the auth token
-  app.delete("/api/logout", isAuth, async (req, res, next) => {
+  app.delete("/api/logout", isAuth, async (req, res) => {
     // isAuth middleware provides token and user
-    const { token, user } = req;
+    const { token } = req;
 
     try {
-      user.tokens = user.tokens.filter(tokenObj => tokenObj.token !== token);
-      await user.save();
+      await AuthToken.findOneAndUpdate(
+        { tokens: token },
+        { $pull: { tokens: token } },
+        { new: true }
+      );
 
       const msg = msgObj("You were successfully logged out.", "blue");
+
       serverRes(res, 200, msg, null);
     } catch (err) {
-      const msg = serverMsg("error", "logout", "user");
+      console.log("Err: DELETE/api/logout", err);
+
+      const msg = serverMsg("error", "logout", "user", "logoutErr");
       return serverRes(res, 400, msg, null);
     }
   });
@@ -241,7 +248,7 @@ module.exports = app => {
       const msg = msgObj("The token was deleted.", "blue");
       serverRes(res, 200, msg, null);
     } catch (err) {
-      const msg = serverMsg("error", "delete", "token");
+      const msg = serverMsg("error", "delete", "token", "token error");
       return serverRes(res, 400, msg, null);
     }
   });
