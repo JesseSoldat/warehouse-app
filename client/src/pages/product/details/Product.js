@@ -6,6 +6,7 @@ import { withRouter } from "react-router-dom";
 import Spinner from "../../../components/Spinner";
 import Message from "../../../components/Message";
 import Heading from "../../../components/Heading";
+import TopRowBtns from "../../../components/TopRowBtns";
 // custom components
 import InfoCard from "./components/InfoCard";
 import LocationCard from "./components/LocationCard";
@@ -31,6 +32,10 @@ import {
 } from "../../../actions/product";
 
 class Product extends Component {
+  state = {
+    bt1Disable: false,
+    bt2Disable: false
+  };
   // lifecycle -------------------------------------
   componentDidMount() {
     this.getProduct();
@@ -55,11 +60,24 @@ class Product extends Component {
   };
 
   // events -----------------------------------------
+
+  goBack = () => {
+    this.props.history.push("/products");
+  };
+
   onDeleteProduct = () => {
+    // don't let the user click more than once
+    this.setState({ bt1Disable: true });
     const { deleteProduct, match, history } = this.props;
     const { productId } = match.params;
     // api call
     deleteProduct(productId, history);
+  };
+
+  onEditProduct = () => {
+    const { match, history } = this.props;
+    const { productId } = match.params;
+    history.push(`/products/edit/${productId}`);
   };
 
   onUnlinkProduct = () => {};
@@ -115,13 +133,10 @@ class Product extends Component {
       content = (
         <div>
           <InfoCard
-            pageName="Product"
             productId={productId}
             productDetails={productDetails}
             productPictures={defaultedObj.productPictures}
             packagingPictures={defaultedObj.packagingPictures}
-            // cb
-            deleteCb={this.onDeleteProduct}
             // router
             history={history}
           />
@@ -153,6 +168,16 @@ class Product extends Component {
     return (
       <div className="container">
         <Message cb={this.getProduct} />
+        {product && (
+          <TopRowBtns
+            bt1Disable={this.state.bt1Disable}
+            bt2Disable={this.state.bt2Disable}
+            btn0Cb={this.goBack}
+            btn1Cb={this.onDeleteProduct}
+            btn2Cb={this.onEditProduct}
+            showRightBtns={true}
+          />
+        )}
         <Heading title="Product Details" />
         {content}
       </div>

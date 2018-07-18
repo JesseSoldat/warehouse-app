@@ -5,12 +5,10 @@ import Carousel from "../../../../components/Carousel";
 import SingleField from "../../../../components/SingleField";
 
 const InfoCard = ({
-  pageName,
   productId,
   productDetails,
   productPictures,
   packagingPictures,
-  deleteCb,
   history
 }) => {
   // render ui -----------------------------
@@ -41,11 +39,6 @@ const InfoCard = ({
     history.push(`/barcode/create?id=${productId}&type=product`);
   };
 
-  const onDelete = productId => {
-    document.getElementById("deleteBtn").disabled = true;
-    deleteCb(productId);
-  };
-
   return (
     <div className="row">
       <div className="col-12">
@@ -57,13 +50,6 @@ const InfoCard = ({
                 onClick={() => onCreateBarCode(productId)}
               >
                 Create Bar Code
-              </button>
-              <button
-                id="deleteBtn"
-                className="btn btn-danger float-right mr-1"
-                onClick={() => onDelete(productId)}
-              >
-                Delete {pageName}
               </button>
             </div>
           </div>

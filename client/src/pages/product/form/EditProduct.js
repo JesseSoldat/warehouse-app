@@ -6,6 +6,8 @@ import { withRouter } from "react-router-dom";
 import Heading from "../../../components/Heading";
 import Message from "../../../components/Message";
 import Spinner from "../../../components/Spinner";
+import TopRowBtns from "../../../components/TopRowBtns";
+
 // custom components
 import ProductForm from "./components/ProductForm";
 // helpers
@@ -55,6 +57,26 @@ class EditProduct extends Component {
     this.props.serverMsg(msg);
   };
 
+  goBack = () => {
+    const { from, history, match } = this.props;
+    const { productId } = match.params;
+
+    // use the route reducer FROM to navigate back
+    switch (from) {
+      case "/products":
+        history.push("/products");
+        return;
+
+      case "/products/:productId":
+        history.push(`/products/${productId}`);
+        return;
+
+      default:
+        history.push("/products");
+        break;
+    }
+  };
+
   render() {
     const { msg, product, loading, producers, customers } = this.props;
 
@@ -87,6 +109,7 @@ class EditProduct extends Component {
     return (
       <div className="container">
         <Message cb={this.getFormData} />
+        <TopRowBtns btn0Cb={this.goBack} />
         <Heading title="Edit Product" />
         <div className="row">
           <div className="col-xs-12 col-md-8 mx-auto">{content}</div>
@@ -96,12 +119,13 @@ class EditProduct extends Component {
   }
 }
 
-const mapStateToProps = ({ ui, product, producer, customer }) => {
+const mapStateToProps = ({ ui, router, product, producer, customer }) => {
   return {
     product: product.product,
     loading: ui.loading,
     options: ui.options,
     msg: ui.msg,
+    from: router.from,
     producers: producer.producers,
     customers: customer.customers
   };

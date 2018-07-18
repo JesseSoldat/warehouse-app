@@ -148,7 +148,7 @@ export const deleteProduct = (productId, history) => async dispatch => {
 
     checkForMsg(msg, dispatch, options);
 
-    history.push("/products/search");
+    history.push("/products");
   } catch (err) {
     axiosResponseErrorHandling(err, dispatch, "delete", "product");
   }
