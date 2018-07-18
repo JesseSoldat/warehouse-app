@@ -1,5 +1,8 @@
 import React from "react";
 
+// common components
+import Heading from "./Heading";
+
 const TopRowBtns = ({
   bt1Disable = false,
   btn2Disable = false,
@@ -9,13 +12,14 @@ const TopRowBtns = ({
   showRightBtns = false
 }) => {
   return (
-    <div className="row">
+    <div className="row" style={{ marginTop: "-25px", marginBottom: 0 }}>
       <div className="col-12">
         <div className="float-left">
           <button className="btn btn-primary mr-1" onClick={btn0Cb}>
             Go Back
           </button>
         </div>
+
         {showRightBtns && (
           <div className="float-right">
             <button

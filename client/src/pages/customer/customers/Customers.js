@@ -46,6 +46,7 @@ class Customers extends Component {
       <div className="container">
         <Message cb={this.getCustomers} />
         <Heading title="Customers" />
+        <div style={{ height: "30px" }} />
         {content}
       </div>
     );

@@ -41,6 +41,15 @@ class Product extends Component {
     this.getProduct();
   }
 
+  componentDidUpdate(nextProps) {
+    const { msg } = nextProps;
+    // if there is an error while trying to delete a product
+    // enable the delete btn after the msg is closed
+    if (msg && msg.code === "delete err") {
+      this.setState({ bt1Disable: false });
+    }
+  }
+
   componentWillUnmount() {
     const { msg, options, serverMsg, changeRoute } = this.props;
     // check to see if the UiMsg should be cleared
@@ -83,7 +92,7 @@ class Product extends Component {
   onUnlinkProduct = () => {};
 
   render() {
-    const { product, loading } = this.props;
+    const { msg, product, loading } = this.props;
     let content;
 
     if (loading) {
@@ -176,6 +185,7 @@ class Product extends Component {
             btn1Cb={this.onDeleteProduct}
             btn2Cb={this.onEditProduct}
             showRightBtns={true}
+            headingTitle="Product Details"
           />
         )}
         <Heading title="Product Details" />

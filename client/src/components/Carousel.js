@@ -29,7 +29,7 @@ const Carousel = ({ picturesArray }) => {
   return (
     <div
       id="carouselExampleControls"
-      className="carousel slide"
+      className="carousel slide mt-2"
       data-ride="carousel"
     >
       {carouselInner}

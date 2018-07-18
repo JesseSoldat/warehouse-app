@@ -113,8 +113,7 @@ module.exports = app => {
       product["productLabel"] = await Counter.createProductLabel();
       await product.save();
 
-      const msg = msgObj("The product was saved.", "green", "create");
-      serverRes(res, 200, msg, product);
+      serverRes(res, 200, null, product);
     } catch (err) {
       console.log("ERR: POST/api/products", err);
 
@@ -144,8 +143,7 @@ module.exports = app => {
         { new: true }
       );
 
-      const msg = msgObj("The product was updated.", "green", "update");
-      serverRes(res, 200, msg, updatedProduct);
+      serverRes(res, 200, null, updatedProduct);
     } catch (err) {
       console.log("ERR: PATCH/api/products/:productId", err);
 
@@ -188,7 +186,7 @@ module.exports = app => {
 
       await product.remove();
 
-      const msg = msgObj("The product was deleted.", "green", "delete");
+      const msg = msgObj("The product was deleted.", "blue", "delete");
 
       serverRes(res, 200, msg, null);
     } catch (err) {

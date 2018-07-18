@@ -41,8 +41,7 @@ module.exports = app => {
     try {
       await customer.save();
 
-      const msg = msgObj("The customer was saved.", "green", "create");
-      serverRes(res, 200, msg, customer);
+      serverRes(res, 200, null, customer);
     } catch (err) {
       console.log("Err: POST/api/customers,", err);
 
@@ -61,8 +60,7 @@ module.exports = app => {
         { new: true }
       );
 
-      const msg = msgObj("The customer was updated.", "green", "update");
-      serverRes(res, 200, msg, customer);
+      serverRes(res, 200, null, customer);
     } catch (err) {
       console.log("Err: PATCH/api/customers/:customerId,", err);
 
@@ -76,7 +74,7 @@ module.exports = app => {
     try {
       const customer = await Customer.findByIdAndRemove(customerId);
 
-      const msg = msgObj("The customer was deleted.", "green", "delete");
+      const msg = msgObj("The customer was deleted.", "blue", "delete");
 
       serverRes(res, 200, msg, customer);
     } catch (err) {

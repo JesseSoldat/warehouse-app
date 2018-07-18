@@ -22,8 +22,8 @@ class Dashboard extends Component {
     return (
       <div className="container">
         <Message />
+        <Heading title="Dashboard" />
         <div className="row">
-          <Heading title="Dashboard" />
           <div className="col-12 d-flex flex-wrap justify-content-between my-4">
             <div
               className="card mr-1 ml-1 mb-3 col-xs-12 col-md-5 col-lg-3"

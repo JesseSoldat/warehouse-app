@@ -72,7 +72,8 @@ class Customer extends Component {
 
     if (loading) {
       content = <Spinner />;
-    } else if (!customer || !customer.length) {
+    } else if (!customer) {
+      content = <Spinner />;
     } else {
       content = <SingleFieldList data={customerListData(customer)} />;
     }
