@@ -5,55 +5,19 @@ const Customer = require("../models/customer");
 const Producer = require("../models/producer");
 // middleware
 const isAuth = require("../middleware/isAuth");
+// helpers
+const buildMongoQuery = require("./helpers/buildMongoQuery");
 // utils
 const { msgObj, serverRes } = require("../utils/serverRes");
 const serverMsg = require("../utils/serverMsg");
 const mergeObjFields = require("../utils/mergeObjFields");
-
-const formatNumbers = query => {
-  query.skip = parseInt(query.skip, 10);
-  query.limit = parseInt(query.limit, 10);
-  query.page = parseInt(query.page, 10);
-
-  return query;
-};
-const buildMongoQuery = query => {
-  let { searchType, value, value2, keyName } = query;
-
-  let mongoQuery = {};
-
-  // console.log("keyName:", keyName);
-  console.log("value:", value);
-  console.log("value2:", value2);
-
-  switch (searchType) {
-    case "number":
-    case "date":
-      if (!value2) {
-        mongoQuery[keyName] = value;
-      } else {
-        mongoQuery = { $and: [{ [keyName]: { $gte: value, $lte: value2 } }] };
-      }
-      break;
-
-    case "string":
-      mongoQuery[keyName] = { $regex: new RegExp(value), $options: "i" };
-      break;
-
-    case "orphans":
-      mongoQuery["productLocation"] = null;
-
-    default:
-      break;
-  }
-
-  return mongoQuery;
-};
+const stringParamsToIntegers = require("../utils/stringParamsToIntegers");
 
 module.exports = app => {
   // Get All Products ------------------------------------------
   app.get("/api/products", isAuth, async (req, res) => {
-    const query = formatNumbers(req.query);
+    const shouldBeIntegers = ["skip", "limit", "page"];
+    const query = stringParamsToIntegers(req.query, shouldBeIntegers);
     const mongoQuery = buildMongoQuery(query);
 
     try {

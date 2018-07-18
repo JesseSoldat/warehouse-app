@@ -52,12 +52,17 @@ class Products extends Component {
       searchOption,
       searchType
     } = this.state;
+
+    // get the current select key
     query["keyName"] = searchOption;
+    // string || number || date
     query["searchType"] = searchType;
+    // value of the first input
     query["value"] = value;
 
-    // only use value to if the user checks to enable the second input
+    // only use value2 if the user checks to enable the second input
     disableValue2 ? (query["value2"] = "") : (query["value2"] = value2);
+
     startGetProducts(query);
   };
 
