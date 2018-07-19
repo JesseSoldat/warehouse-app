@@ -40,7 +40,7 @@ class Products extends Component {
   componentWillUnmount() {
     const { msg, options, serverMsg, changeRoute, resetProducts } = this.props;
     clearUiMsg(msg, options, serverMsg);
-    changeRoute("/products");
+    changeRoute("/products/search");
     // clear reducer query state
     resetProducts();
   }

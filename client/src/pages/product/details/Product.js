@@ -69,11 +69,6 @@ class Product extends Component {
   };
 
   // events -----------------------------------------
-
-  goBack = () => {
-    this.props.history.push("/products");
-  };
-
   onDeleteProduct = () => {
     // don't let the user click more than once
     this.setState({ bt1Disable: true });
@@ -181,7 +176,6 @@ class Product extends Component {
           <TopRowBtns
             bt1Disable={this.state.bt1Disable}
             bt2Disable={this.state.bt2Disable}
-            btn0Cb={this.goBack}
             btn1Cb={this.onDeleteProduct}
             btn2Cb={this.onEditProduct}
             showRightBtns={true}

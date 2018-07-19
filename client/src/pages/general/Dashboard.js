@@ -34,7 +34,7 @@ class Dashboard extends Component {
                   Search & Edit Products
                 </h5>
                 <p className="card-text">Search and edit products here</p>
-                <Link to="/products">Go!</Link>
+                <Link to="/products/search">Go!</Link>
               </div>
             </div>
           </div>

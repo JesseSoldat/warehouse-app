@@ -1,5 +1,7 @@
-import splitStrToArray from "../../../../utils/splitStrToArray";
+// helpers
 import formatMeasurementValues from "./formatMeasurementValues";
+// utils
+import splitStrToArray from "../../../../utils/stringManipulation/splitStrToArray";
 
 const formatFormValues = state => {
   const {

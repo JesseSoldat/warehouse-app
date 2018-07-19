@@ -1,6 +1,7 @@
 import moment from "moment";
+
 // helper
-import isEmpty from "../../../../utils/isEmpty";
+import isEmpty from "../../../../utils/validation/isEmpty";
 
 const getEditStateObj = product => {
   const dateCheckbox = isEmpty(product.manufacturingDate) ? false : true;

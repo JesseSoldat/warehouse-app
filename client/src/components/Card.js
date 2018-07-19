@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import truncateStr from "../utils/truncateStr";
+import truncateStr from "../utils/stringManipulation/truncateStr";
 
 const Card = ({ data }) => {
   const {

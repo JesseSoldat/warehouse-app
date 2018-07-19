@@ -31,6 +31,7 @@ export const startGetProducers = () => async dispatch => {
     axiosResponseErrorHandling(err, dispatch, "fetch", "producers");
   }
 };
+
 // Get one producer ----------------------------------------
 export const getProducer = producer => ({
   type: PRODUCERS_FETCH_ONE,
@@ -95,7 +96,7 @@ export const startDeleteProducer = (producerId, history) => async dispatch => {
 
     checkForMsg(msg, dispatch, options);
 
-    history.push("/producers");
+    history.push("/producers/search");
   } catch (err) {
     axiosResponseErrorHandling(err, dispatch, "delete", "producer");
   }

@@ -10,7 +10,8 @@ import Message from "../../../components/Message";
 import Heading from "../../../components/Heading";
 // helpers
 import formIsValid from "../helpers/formIsValid";
-import isEmail from "../../../utils/isEmail";
+// utils
+import isEmail from "../../../utils/validation/isEmail";
 // actions
 import {
   startRegister,

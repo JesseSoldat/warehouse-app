@@ -3,7 +3,7 @@ const Customer = require("../models/customer");
 // middleware
 const isAuth = require("../middleware/isAuth");
 // utils
-const { serverRes, msgObj, errMsg } = require("../utils/serverRes");
+const { serverRes, msgObj } = require("../utils/serverRes");
 const serverMsg = require("../utils/serverMsg");
 const mergeObjFields = require("../utils/mergeObjFields");
 

@@ -42,13 +42,13 @@ const NavBar = ({ isAuth, startLogout, history }) => {
           Search
         </Link>
         <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-          <Link className="dropdown-item" to="/products">
+          <Link className="dropdown-item" to="/products/search">
             Products
           </Link>
-          <Link className="dropdown-item" to="/producers">
+          <Link className="dropdown-item" to="/producers/search">
             Producers
           </Link>
-          <Link className="dropdown-item" to="/customers">
+          <Link className="dropdown-item" to="/customers/search">
             Customers
           </Link>
         </div>

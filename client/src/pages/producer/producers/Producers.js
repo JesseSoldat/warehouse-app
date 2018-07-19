@@ -26,7 +26,7 @@ class Producers extends Component {
     // check to see if the UiMsg should be cleared
     clearUiMsg(msg, options, serverMsg);
     // update this page to be the FROM route
-    changeRoute("/producers");
+    changeRoute("/producers/search");
   }
 
   // api calls --------------------------------------

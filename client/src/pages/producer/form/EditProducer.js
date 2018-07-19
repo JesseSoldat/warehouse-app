@@ -6,7 +6,6 @@ import { withRouter } from "react-router-dom";
 import Heading from "../../../components/Heading";
 import Message from "../../../components/Message";
 import Spinner from "../../../components/Spinner";
-import TopRowBtns from "../../../components/TopRowBtns";
 // custom components
 import ProducerForm from "./components/ProducerForm";
 // utils
@@ -78,7 +77,6 @@ class EditProducer extends Component {
     return (
       <div className="container">
         <Message cb={this.getProducer} />
-        <TopRowBtns btn0Cb={this.goBack} />
         <Heading title="Edit Producer" />
         <div className="row">
           <div className="col-xs-12 col-md-8 mx-auto">{content}</div>

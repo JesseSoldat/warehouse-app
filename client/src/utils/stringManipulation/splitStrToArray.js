@@ -1,4 +1,4 @@
-import isEmpty from "./isEmpty";
+import isEmpty from "../validation/isEmpty";
 
 // pass in the string to split and what to split it by
 // if nothing is passed split by empty space

@@ -1,7 +1,7 @@
 import React from "react";
 
 // utils
-import capitalizeEachWordOfString from "../utils/capitalizeEachWordOfString";
+import capitalizeEachWordOfString from "../utils/stringManipulation/capitalizeEachWordOfString";
 
 const Heading = ({ title }) => {
   return (

@@ -93,7 +93,7 @@ export const startDeleteCustomer = (customerId, history) => async dispatch => {
 
     checkForMsg(msg, dispatch, options);
 
-    history.push("/customers");
+    history.push("/customers/search");
   } catch (err) {
     axiosResponseErrorHandling(err, dispatch, "delete", "customer");
   }

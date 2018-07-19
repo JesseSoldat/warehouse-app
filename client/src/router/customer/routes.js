@@ -9,8 +9,8 @@ import EditCustomer from "../../pages/customer/form/EditCustomer";
 
 const ProducerRoutes = [
   <PrivateRoute
-    key="customers"
-    path="/customers"
+    key="customers/search"
+    path="/customers/search"
     component={Customers}
     exact
   />,

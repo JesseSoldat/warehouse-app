@@ -1,4 +1,4 @@
-import isEmpty from "../../../../utils/isEmpty.js";
+import isEmpty from "../../../../utils/validation/isEmpty";
 
 const createProducerArray = producer => {
   let producerArray = [];

@@ -1,5 +1,5 @@
 // utils
-import capitalizeFirstLetter from "../../../../utils/capitalizeFirstLetter";
+import capitalizeFirstLetter from "../../../../utils/stringManipulation/capitalizeFirstLetter";
 
 const createLocationObj = (productLocation, productId) => {
   let productLocationObj;

@@ -4,6 +4,9 @@ import { Route, Redirect } from "react-router-dom";
 
 import RouteListener from "../components/RouteListener";
 import NavBar from "../components/NavBar";
+import BreadCrumb from "../components/BreadCrumb";
+
+const idTypesArray = [":customerId", ":producerId", ":productId", ":id"];
 
 const PrivateRoute = ({ isAuth, component: Component, ...restOfProps }) => {
   return (
@@ -14,6 +17,7 @@ const PrivateRoute = ({ isAuth, component: Component, ...restOfProps }) => {
           <div>
             <RouteListener />
             <NavBar />
+            <BreadCrumb idTypesArray={idTypesArray} />
             <div className="my-3">
               <Component {...props} />
             </div>

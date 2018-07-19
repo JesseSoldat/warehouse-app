@@ -25,7 +25,7 @@ class Customers extends Component {
     // check to see if the UiMsg should be cleared
     clearUiMsg(msg, options, serverMsg);
     // update this page to be the FROM route
-    changeRoute("/customers");
+    changeRoute("/customers/search");
   }
 
   // api calls ----------------------------

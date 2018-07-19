@@ -125,7 +125,6 @@ export const createProduct = (newProduct, history) => async dispatch => {
 
 // Edit Product -----------------------------------------------
 export const editProduct = (productId, update, history) => async dispatch => {
-  dispatch(loading(true));
   try {
     const res = await axios.patch(`/api/products/${productId}`, update);
 
@@ -148,7 +147,7 @@ export const deleteProduct = (productId, history) => async dispatch => {
 
     checkForMsg(msg, dispatch, options);
 
-    history.push("/products");
+    history.push("/products/search");
   } catch (err) {
     axiosResponseErrorHandling(err, dispatch, "delete", "product");
   }

@@ -1,7 +1,7 @@
 import React from "react";
 
 // helpers
-import isEmpty from "../utils/isEmpty";
+import isEmpty from "../utils/validation/isEmpty";
 
 // field = used for label & the name in the case it is not set
 // value = if the field has been save the data to show

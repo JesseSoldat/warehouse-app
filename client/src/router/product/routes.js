@@ -8,7 +8,12 @@ import EditProduct from "../../pages/product/form/EditProduct";
 import Product from "../../pages/product/details/Product";
 
 const ProductRoutes = [
-  <PrivateRoute key="products" path="/products" component={Products} exact />,
+  <PrivateRoute
+    key="products/search"
+    path="/products/search"
+    component={Products}
+    exact
+  />,
   <PrivateRoute
     key="create-product"
     path="/products/create"

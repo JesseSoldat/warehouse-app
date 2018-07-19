@@ -1,5 +1,7 @@
+// helpers
 import { registerErrMsg, loginErrMsg } from "./authErrMsg";
-import isEmail from "../../../utils/isEmail";
+// utils
+import isEmail from "../../../utils/validation/isEmail";
 
 const formIsValid = (form, parent) => {
   const { username, email, password, confirmPassword } = form;

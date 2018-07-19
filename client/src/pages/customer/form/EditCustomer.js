@@ -6,7 +6,6 @@ import { withRouter } from "react-router-dom";
 import Heading from "../../../components/Heading";
 import Message from "../../../components/Message";
 import Spinner from "../../../components/Spinner";
-import TopRowBtns from "../../../components/TopRowBtns";
 // custom components
 import CustomerForm from "./components/CustomerForm";
 // utils
@@ -43,26 +42,6 @@ class EditCustomer extends Component {
     this.props.startEditCustomer(customerId, formData, this.props.history);
   };
 
-  goBack = () => {
-    const { from, history, match } = this.props;
-    const { customerId } = match.params;
-
-    // use the route reducer FROM to navigate back
-    switch (from) {
-      case "/customers":
-        history.push("/customers");
-        return;
-
-      case "/customers/:customerId":
-        history.push(`/customers/${customerId}`);
-        return;
-
-      default:
-        history.push("/customers");
-        break;
-    }
-  };
-
   render() {
     const { loading, customer } = this.props;
     let content;
@@ -79,7 +58,6 @@ class EditCustomer extends Component {
     return (
       <div className="container">
         <Message cb={this.getCustomer} />
-        <TopRowBtns btn0Cb={this.goBack} />
         <Heading title="Edit Customer" />
         <div className="row">
           <div className="col-xs-12 col-md-8 mx-auto">{content}</div>

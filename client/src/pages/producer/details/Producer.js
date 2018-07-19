@@ -45,10 +45,6 @@ class Producer extends Component {
   };
 
   // events -----------------------------------------
-  goBack = () => {
-    this.props.history.push("/producers");
-  };
-
   onDeleteProduct = () => {
     this.setState({ bt1Disable: true });
     const { startDeleteProducer, match, history } = this.props;
@@ -84,7 +80,6 @@ class Producer extends Component {
           <TopRowBtns
             bt1Disable={bt1Disable}
             bt2Disable={bt2Disable}
-            btn0Cb={this.goBack}
             btn1Cb={this.onDeleteProduct}
             btn2Cb={this.onEdit}
             showRightBtns={true}
