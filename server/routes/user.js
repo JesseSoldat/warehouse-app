@@ -61,11 +61,12 @@ module.exports = app => {
 
       const msg = msgObj(
         `A verification email has been sent to ${user.email}.`,
-        "blue"
+        "blue",
+        "register"
       );
       serverRes(res, 200, msg, null);
     } catch (err) {
-      const msg = serverMsg("error", "register", "user");
+      const msg = serverMsg("error", "register", "user", "registerErr");
       serverRes(res, 400, msg, null);
     }
   });
@@ -95,17 +96,22 @@ module.exports = app => {
       if (!user.isVerified) {
         const msg = msgObj(
           "Please confirm your email first by following the link in the email.",
-          "blue"
+          "blue",
+          "loginErr"
         );
         return serverRes(res, 400, msg, null);
       }
 
       const { token, expires } = await user.generateAuthToken();
 
-      const msg = msgObj(`${user.email} has logged in successfully.`, "green");
+      const msg = msgObj(
+        `${user.email} has logged in successfully.`,
+        "green",
+        "login"
+      );
       serverRes(res, 200, msg, { _id: user._id, token, expires });
     } catch (err) {
-      const msg = serverMsg("error", "login", "user");
+      const msg = serverMsg("error", "login", "user", "loginErr");
       serverRes(res, 400, msg, null);
     }
   });
@@ -122,7 +128,7 @@ module.exports = app => {
         { new: true }
       );
 
-      const msg = msgObj("You were successfully logged out.", "blue");
+      const msg = msgObj("You were successfully logged out.", "blue", "logout");
 
       serverRes(res, 200, msg, null);
     } catch (err) {

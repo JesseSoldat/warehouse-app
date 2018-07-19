@@ -12,9 +12,12 @@ import { changeRoute } from "../../actions/router";
 import { serverMsg } from "../../actions/ui";
 
 class Dashboard extends Component {
+  // lifecycle
   componentWillUnmount() {
     const { msg, options, serverMsg, changeRoute } = this.props;
-    clearUiMsg(msg, options, serverMsg);
+    // check to see if the UiMsg should be cleared
+    clearUiMsg(msg, options, serverMsg, true);
+    // update this page to be the FROM route
     changeRoute("/dashboard");
   }
 

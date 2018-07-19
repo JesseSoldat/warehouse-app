@@ -1,5 +1,8 @@
-const clearUiMsg = (msg, options, serverMsg) => {
+const clearUiMsg = (msg, options, serverMsg,  shouldRemove = null) => {
   if (msg === null) return;
+
+  // component specifies that the msg should be removed
+  if (shouldRemove) return serverMsg(null);
 
   const colors = ["success", "info"];
   if (msg && colors.includes(msg.color)) {
