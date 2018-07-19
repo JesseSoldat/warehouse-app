@@ -1,6 +1,10 @@
 const dropCollection = async collection => {
+  await collection.remove();
+};
+
+const dropCollections = collections => {
   try {
-    await collection.remove();
+    collections.forEach(collection => dropCollection(collection));
   } catch (err) {
     console.log(
       `Error: could not drop the ${collection} collection while seeding the database.`
@@ -8,4 +12,4 @@ const dropCollection = async collection => {
   }
 };
 
-module.exports = dropCollection;
+module.exports = dropCollections;

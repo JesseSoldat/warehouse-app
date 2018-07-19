@@ -5,6 +5,7 @@ import SelectInput from "./searchBar/SelectInput";
 import FilterTextInput from "./searchBar/FilterTextInput";
 import NumberRangeInput from "./searchBar/NumberRangeInput";
 import DateRangeInput from "./searchBar/DateRangeInput";
+import BlankInput from "./searchBar/BlankInput";
 import BtnGroup from "./searchBar/BtnGroup";
 
 const SearchBar = ({
@@ -70,6 +71,13 @@ const SearchBar = ({
             handleDateChange={handleDateChange}
             handleDateChange2={handleDateChange2}
             handleUseValue2={handleUseValue2}
+          />
+        )}
+
+        {searchType === "orphans" && (
+          <BlankInput
+            info="Click the search button to find products without a location."
+            placeholder="No Location"
           />
         )}
 

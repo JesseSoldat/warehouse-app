@@ -10,7 +10,7 @@ const connectToDb = () =>
     )
     .then(() => {
       // console.log("DB connected");
-      require("./seeding/seed");
+      require("./seed");
     })
     .catch(err => console.log("DB error: ", err));
 

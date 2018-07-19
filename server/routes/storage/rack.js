@@ -1,12 +1,12 @@
 // models
-const Storage = require("../models/storage");
-const Rack = require("../models/rack");
+const Storage = require("../../models/storage/storage");
+const Rack = require("../../models/storage/rack");
 // middleware
-const isAuth = require("../middleware/isAuth");
+const isAuth = require("../../middleware/isAuth");
 // utils
-const { msgObj, serverRes } = require("../utils/serverRes");
-const { serverMsg } = require("../utils/serverMsg");
-const mergeObjFields = require("../utils/mergeObjFields");
+const { msgObj, serverRes } = require("../../utils/serverRes");
+const { serverMsg } = require("../../utils/serverMsg");
+const mergeObjFields = require("../../utils/mergeObjFields");
 
 module.exports = app => {
   // Get all of the racks

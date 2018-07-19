@@ -4,7 +4,7 @@ const BtnGroup = ({ onSearchProduct, onResetFilter }) => {
   return (
     <div className="col-xs-12 col-md-3 d-inline-block py-0 my-0">
       <span>
-        <label className="pt-4 mt-3">
+        <label className="mt-3" style={{ paddingTop: "22px" }}>
           <small />
         </label>
         <button

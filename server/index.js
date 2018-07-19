@@ -13,10 +13,10 @@ require("./routes/user")(app);
 require("./routes/product")(app);
 require("./routes/customer")(app);
 require("./routes/producer")(app);
-require("./routes/storage")(app);
-require("./routes/rack")(app);
-require("./routes/shelf")(app);
-require("./routes/shelfSpot")(app);
+require("./routes/storage/storage")(app);
+require("./routes/storage/rack")(app);
+require("./routes/storage/shelf")(app);
+require("./routes/storage/shelfSpot")(app);
 
 app.use((err, req, res, next) => {
   const { msg = null, payload = null } = err;

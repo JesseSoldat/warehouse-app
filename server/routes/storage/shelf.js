@@ -1,11 +1,10 @@
 // models
-const Storage = require("../models/storage");
-const Rack = require("../models/rack");
-const Shelf = require("../models/shelf");
+const Rack = require("../../models/storage/rack");
+const Shelf = require("../../models/storage/shelf");
 // utils
-const { serverRes, msgObj } = require("../utils/serverRes");
-const { serverMsg } = require("../utils/serverMsg");
-const mergeObjFields = require("../utils/mergeObjFields");
+const { serverRes, msgObj } = require("../../utils/serverRes");
+const { serverMsg } = require("../../utils/serverMsg");
+const mergeObjFields = require("../../utils/mergeObjFields");
 
 module.exports = app => {
   // Get all shelves

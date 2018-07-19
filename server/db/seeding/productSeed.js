@@ -1,12 +1,12 @@
 const faker = require("faker");
 
-// Models
+// models
 const Product = require("../../models/product");
-// Utils
-const randomMinMaxNum = require("./utils/randomMinMaxNum");
-const randomDate = require("./utils/randomDates");
-const dropCollection = require("./utils/dropCollection");
-const generateArray = require("./utils/generateArray");
+// helpers
+const randomMinMaxNum = require("./helpers/randomMinMaxNum");
+const randomDate = require("./helpers/randomDates");
+const dropCollections = require("./helpers/dropCollections");
+const generateArray = require("./helpers/generateArray");
 
 const PRODUCTS_TO_ADD = 22;
 
@@ -45,7 +45,7 @@ module.exports = seedProducts = async () => {
   try {
     // times will be the label
     let times = 0;
-    await dropCollection(Product);
+    await dropCollections([Product]);
 
     while (times < PRODUCTS_TO_ADD) {
       ++times;
