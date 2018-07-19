@@ -15,6 +15,7 @@ const TopRowBtns = ({
         {showLeftBtns && (
           <div className="float-left">
             <button className="btn btn-primary mr-1" onClick={btn0Cb}>
+              <i className="far fa-chevron-left mr-2" />
               Go Back
             </button>
           </div>
@@ -27,6 +28,7 @@ const TopRowBtns = ({
               className="btn btn-danger mr-1"
               onClick={btn1Cb}
             >
+              <i className="far fa-trash-alt mr-2" />
               Delete
             </button>
             <button
@@ -34,6 +36,7 @@ const TopRowBtns = ({
               className="btn btn-primary"
               onClick={btn2Cb}
             >
+              <i className="fas fa-edit mr-2" />
               Edit
             </button>
           </div>

@@ -33,6 +33,7 @@ const LocationCard = ({
       className="btn btn-primary float-right"
       onClick={() => onLink(productId)}
     >
+      <i className="fas fa-archive mr-2" />
       Store Product
     </button>
   );
@@ -93,6 +94,7 @@ const LocationCard = ({
           className="btn btn-primary float-right mr-1"
           onClick={() => onUnLink(productId, kind)}
         >
+          <i className="fas fa-hand-paper mr-2 " />
           Retrieve Product
         </button>
 
@@ -100,6 +102,7 @@ const LocationCard = ({
           className="btn btn-secondary float-right mr-1"
           onClick={() => onLink(productId)}
         >
+          <i className="fas fa-archive mr-2" />
           Restore Product
         </button>
       </span>

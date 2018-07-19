@@ -32,6 +32,7 @@ class ToggleListCard extends Component {
       <div className="row">
         <div className="col-12">
           <button className="btn btn-primary float-right" onClick={this.hide}>
+            <i className="fas fa-eye-slash mr-2 " />
             Hide {label}
           </button>
         </div>
@@ -43,7 +44,8 @@ class ToggleListCard extends Component {
             className="btn btn-primary float-right"
             onClick={this.viewAll}
           >
-            View All {label}
+            <i className="fas fa-eye mr-2 " />
+            All {label}
           </button>
         </div>
       </div>

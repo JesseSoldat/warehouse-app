@@ -12,6 +12,7 @@ const BtnGroup = ({ onSearchProduct, onResetFilter }) => {
           className="btn btn-primary mr-1"
           type="button"
         >
+          <i className="fas fa-search mr-2 " />
           Search
         </button>
         <button
@@ -19,6 +20,7 @@ const BtnGroup = ({ onSearchProduct, onResetFilter }) => {
           className="btn btn-danger"
           type="button"
         >
+          <i className="fas fa-sync-alt mr-2 " />
           Reset Filter
         </button>
       </span>

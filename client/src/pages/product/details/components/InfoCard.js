@@ -49,6 +49,7 @@ const InfoCard = ({
                 className="btn btn-primary float-right"
                 onClick={() => onCreateBarCode(productId)}
               >
+                <i className="fas fa-barcode mr-2" />
                 Create Barcode
               </button>
             </div>
