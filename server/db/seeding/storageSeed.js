@@ -12,71 +12,98 @@ const ShelfSpot = require("../../models/storage/shelfSpot");
 const randomMinMaxNum = require("./helpers/randomMinMaxNum");
 const dropCollections = require("./helpers/dropCollections");
 
-const STORAGES_TO_ADD = randomMinMaxNum(1, 3);
-const RACKS_TO_ADD = randomMinMaxNum(1, 3);
-const SHELVES_TO_ADD = randomMinMaxNum(1, 3);
-const SHELFSPOTS_TO_ADD = randomMinMaxNum(1, 3);
+const STORAGES_TO_ADD = 1;
+const RACKS_TO_ADD = 3;
+const SHELVES_TO_ADD = 3;
+const SHELFSPOTS_TO_ADD = 3;
 
 // create ------------------------------
 const createShelfSpots = async shelfId => {
-  const shelfSpotsId = mongoose.Types.ObjectId();
-  const shelfSpot = new ShelfSpot({
-    _id: shelfSpotsId,
-    spotLabel: randomMinMaxNum(1, 1000),
-    shelf: shelfId
-  });
+  const shelfSpotsIds = [];
+  let times = 0;
 
-  try {
-    await shelfSpot.save();
+  while (times < SHELFSPOTS_TO_ADD) {
+    ++times;
 
-    return shelfSpotsId;
-  } catch (err) {
-    console.log("ERR: createShelfSpots");
+    const shelfSpotsId = mongoose.Types.ObjectId();
+
+    shelfSpotsIds.push(shelfSpotsId);
+
+    const shelfSpot = new ShelfSpot({
+      _id: shelfSpotsId,
+      spotLabel: randomMinMaxNum(1, 1000),
+      shelf: shelfId
+    });
+
+    try {
+      await shelfSpot.save();
+      // console.log("saves shelfSpot: ", times);
+    } catch (err) {
+      console.log("ERR: createShelfSpots");
+    }
   }
+  return shelfSpotsIds;
 };
 
 const createShelves = async rackId => {
-  const shelfId = mongoose.Types.ObjectId();
-  const shelf = new Shelf({
-    _id: shelfId,
-    shelfLabel: randomMinMaxNum(1, 1000),
-    rack: rackId,
-    shelfSpots: []
-  });
+  const shelfIds = [];
+  let times = 0;
 
-  try {
-    const shelfSpotId = await createShelfSpots(shelfId);
+  while (times < SHELVES_TO_ADD) {
+    ++times;
+    const shelfId = mongoose.Types.ObjectId();
 
-    shelf.shelfSpots.push(shelfSpotId);
+    shelfIds.push(shelfId);
 
-    await shelf.save();
+    const shelf = new Shelf({
+      _id: shelfId,
+      shelfLabel: randomMinMaxNum(1, 1000),
+      rack: rackId,
+      shelfSpots: []
+    });
+    try {
+      const shelfSpotsIds = await createShelfSpots(shelfId);
 
-    return shelfId;
-  } catch (err) {
-    console.log("ERR: createShelves");
+      shelfSpotsIds.forEach(shelfSpotId => shelf.shelfSpots.push(shelfSpotId));
+
+      await shelf.save();
+    } catch (err) {
+      console.log("ERR: createShelves");
+    }
   }
+  return shelfIds;
 };
 
 const createRacks = async storageId => {
-  const rackId = mongoose.Types.ObjectId();
-  const rack = new Rack({
-    _id: rackId,
-    storage: storageId,
-    rackLabel: randomMinMaxNum(1, 1000),
-    shelves: []
-  });
+  const rackIds = [];
+  let times = 0;
 
-  try {
-    const shelfId = await createShelves(rackId);
+  while (times < RACKS_TO_ADD) {
+    ++times;
 
-    rack.shelves.push(shelfId);
+    const rackId = mongoose.Types.ObjectId();
 
-    await rack.save();
+    rackIds.push(rackId);
 
-    return rackId;
-  } catch (err) {
-    console.log("ERR: createRacks");
+    const rack = new Rack({
+      _id: rackId,
+      storage: storageId,
+      rackLabel: randomMinMaxNum(1, 1000),
+      shelves: []
+    });
+
+    try {
+      const shelfIds = await createShelves(rackId);
+
+      shelfIds.forEach(shelfId => rack.shelves.push(shelfId));
+
+      await rack.save();
+    } catch (err) {
+      console.log("ERR: createRacks");
+    }
   }
+
+  return rackIds;
 };
 
 const createStorages = async () => {
@@ -90,9 +117,9 @@ const createStorages = async () => {
   });
 
   try {
-    const rackId = await createRacks(storageId);
+    const rackIds = await createRacks(storageId);
 
-    storage.racks.push(rackId);
+    rackIds.forEach(rackId => storage.racks.push(rackId));
 
     await storage.save();
   } catch (err) {
