@@ -35,9 +35,7 @@ class Storage extends Component {
     if (loading) {
       content = <Spinner />;
     } else if (!storage) {
-      console.log("no storage");
     } else {
-      console.log("storage", storage);
       content = storage && (
         <Fragment>
           <TableContainer storage={storage} storageType={storageType} />
