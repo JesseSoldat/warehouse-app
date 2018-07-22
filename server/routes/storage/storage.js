@@ -1,25 +1,31 @@
 // models
 const Storage = require("../../models/storage/storage");
 // utils
-const { succRes, errRes, errMsg } = require("../../utils/serverRes");
+const { serverRes, msgObj } = require("../../utils/serverRes");
+const serverMsg = require("../../utils/serverMsg");
 const mergeObjFields = require("../../utils/mergeObjFields");
 
 module.exports = app => {
   // Get all storages
-  app.get("/api/storage", async (req, res, next) => {
+  app.get("/api/storages", async (req, res) => {
     try {
       const storages = await Storage.find({}).populate({
         path: "racks",
         populate: { path: "shelves" }
       });
-      succRes(res, storages);
+
+      serverRes(res, 200, null, storages);
     } catch (err) {
-      next(errRes(errMsg("fetch", "storages")));
+      console.log("ERR: GET/api/storages", err);
+
+      const msg = serverMsg("error", "fetch", "storages");
+      serverRes(res, 400, msg, null);
     }
   });
   // Get a single storage by storageId
-  app.get("/api/storage/:storageId", async (req, res, next) => {
+  app.get("/api/storages/:storageId", async (req, res) => {
     const { storageId } = req.params;
+
     try {
       const storage = await Storage.findById(storageId).populate({
         path: "racks",
@@ -30,9 +36,13 @@ module.exports = app => {
           }
         }
       });
-      succRes(res, storage);
+
+      serverRes(res, 200, null, storage);
     } catch (err) {
-      next(errRes(errMsg("fetch", "storage")));
+      console.log("ERR: GET/api/storage/:storageId", err);
+
+      const msg = serverMsg("error", "fetch", "storage");
+      serverRes(res, 400, msg, null);
     }
   });
   // Create new warehouse storage
@@ -40,9 +50,13 @@ module.exports = app => {
     const storage = new Storage(req.body);
     try {
       await storage.save();
-      succRes(res, storage);
+
+      serverRes(res, 200, null, storage);
     } catch (err) {
-      next(errRes(errMsg("save", "storage")));
+      console.log("ERR: POST/api/storage", err);
+
+      const msg = serverMsg("error", "save", "storage");
+      serverRes(res, 400, msg, null);
     }
   });
   // Update a storage
@@ -54,9 +68,13 @@ module.exports = app => {
         mergeObjFields("", req.body),
         { new: true }
       );
-      succRes(res, storage);
+
+      serverRes(res, 200, null, storage);
     } catch (err) {
-      next(errRes(errMsg("update", "storage")));
+      console.log("ERR: PATCH/api/storage/:storageId", err);
+
+      const msg = serverMsg("error", "update", "storage");
+      serverRes(res, 400, msg, null);
     }
   });
   // Delete storage

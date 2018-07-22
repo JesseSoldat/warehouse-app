@@ -86,6 +86,25 @@ const NavBar = ({ isAuth, startLogout, history }) => {
           data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
+          to="/maintenance"
+        >
+          <i className="fas fa-wrench mr-2" />
+          Maintenance
+        </Link>
+        <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+          <Link className="dropdown-item" to="/storages">
+            Storage Places
+          </Link>
+        </div>
+      </li>
+
+      <li className="nav-item dropdown mr-3 pb-sm-3 pb-md-0">
+        <Link
+          className="dropdown-toggle"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
           to="/admin"
         >
           <i className="fas fa-unlock-alt mr-2" />

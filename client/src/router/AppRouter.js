@@ -8,6 +8,7 @@ import GeneralRoutes from "./general/routes";
 import ProductRoutes from "./product/routes";
 import ProducerRoutes from "./producer/routes";
 import CustomerRoutes from "./customer/routes";
+import StorageRoutes from "./storage/routes";
 // used to test concepts
 import PlayGroundRoutes from "./playground/routes";
 
@@ -22,6 +23,7 @@ const AppRouter = () => (
       {ProductRoutes}
       {ProducerRoutes}
       {CustomerRoutes}
+      {StorageRoutes}
       {PlayGroundRoutes}
     </Switch>
   </Router>
