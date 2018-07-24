@@ -42,6 +42,7 @@ export const startGetStorage = (id, storageType) => async dispatch => {
   dispatch(loading(true));
 
   const apiUrl = `${storageApiUrl(storageType)}/${id}`;
+
   try {
     const res = await axios.get(apiUrl);
 
@@ -52,5 +53,29 @@ export const startGetStorage = (id, storageType) => async dispatch => {
     checkForMsg(msg, dispatch, options);
   } catch (err) {
     axiosResponseErrorHandling(err, dispatch, "get", `${storageType}`);
+  }
+};
+
+// New Storage -------------------------------------
+export const startCreateStorage = (
+  storage,
+  type,
+  id,
+  history
+) => async dispatch => {
+  const apiUrl = `${storageApiUrl(type)}`;
+
+  try {
+    const res = await axios.post(apiUrl, storage);
+
+    const { msg, payload, options } = res.data;
+
+    checkForMsg(msg, dispatch, options);
+
+    let newItemId = "";
+
+    history.push(`/storages/${newItemId}?type=${type}`);
+  } catch (err) {
+    axiosResponseErrorHandling(err, dispatch, "post", "storages");
   }
 };

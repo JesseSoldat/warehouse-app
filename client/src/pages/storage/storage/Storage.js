@@ -15,6 +15,7 @@ import { startGetStorage } from "../../../actions/storage";
 
 class Storage extends Component {
   componentDidMount() {
+    // each time the route changes this will be called with a different TYPE
     this.getStorage();
   }
 
@@ -46,7 +47,7 @@ class Storage extends Component {
     return (
       <div className="container">
         <Message cb={this.getStorage} />
-        <Heading title={`View ${capitalizeFirstLetter(storageType)}`} />
+        <Heading title={`${capitalizeFirstLetter(storageType)} Details`} />
         {content}
       </div>
     );

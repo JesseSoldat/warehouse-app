@@ -40,6 +40,34 @@ class Dashboard extends Component {
                 <Link to="/products/search">Go!</Link>
               </div>
             </div>
+
+            <div
+              className="card mr-1 ml-1 mb-3 col-xs-12 col-md-5 col-lg-3"
+              style={{ minHeight: "11rem" }}
+            >
+              <div className="card-body d-flex flex-column align-items-center">
+                <h5 className="card-title text-center pt-2">Create Product</h5>
+                <p className="card-text">
+                  Get starting by adding some products
+                </p>
+                <Link className="card-link" to="/products/create">
+                  <button className="btn btn-default">Create Product!</button>
+                </Link>
+              </div>
+            </div>
+
+            <div
+              className="card mr-1 ml-1 mb-3 col-xs-12 col-md-5 col-lg-3"
+              style={{ minHeight: "11rem" }}
+            >
+              <div className="card-body d-flex flex-column align-items-center">
+                <h5 className="card-title text-center pt-2">Maintenance</h5>
+                <p className="card-text">Create and edit Storage places here</p>
+                <Link className="card-link" to="/storages">
+                  <button className="btn btn-default">Go!</button>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>

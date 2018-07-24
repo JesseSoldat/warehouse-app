@@ -10,8 +10,8 @@ const TableHead = ({ id = "", maxShelves = 0 }) => {
           <th scope="col">No shelves yet - select a rack to create one</th>
         ) : (
           [...Array(maxShelves).keys()].map(key => (
-            <th key={`shelf-header-${key}`} scope="col">
-              Shelf {key}
+            <th key={`shelf-header-${key + 1}`} scope="col">
+              Shelf {key + 1}
             </th>
           ))
         )}

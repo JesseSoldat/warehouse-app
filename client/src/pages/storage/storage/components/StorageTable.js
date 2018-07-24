@@ -29,8 +29,8 @@ const StorageTable = ({ storage = null, storageType = null }) => {
           </th>
         ) : (
           [...Array(maxShelves).keys()].map(key => (
-            <th key={`shelf-head-${key}`} scope="col">
-              Shelf {key}
+            <th key={`shelf-head-${key + 1}`} scope="col">
+              Shelf {key + 1}
             </th>
           ))
         )}
@@ -79,7 +79,7 @@ const StorageTable = ({ storage = null, storageType = null }) => {
       </div>
       <p className="ml-3">{description}</p>
 
-      <table className="table table-responsive table-striped mb-5">
+      <table className="table table-striped mb-5">
         {tableHead()}
         {tableBody()}
       </table>

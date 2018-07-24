@@ -2,6 +2,8 @@ import React from "react";
 
 // custom components
 import StorageTable from "./StorageTable";
+import RackTable from "./RackTable";
+import ShelfTable from "./ShelfTable";
 
 const TableContainer = ({ storage = null, storageType = null }) => {
   if (!storage || !storageType) return null;
@@ -11,6 +13,14 @@ const TableContainer = ({ storage = null, storageType = null }) => {
   switch (storageType) {
     case "storage":
       content = <StorageTable storage={storage} storageType={storageType} />;
+      break;
+
+    case "rack":
+      content = <RackTable storage={storage} storageType={storageType} />;
+      break;
+
+    case "shelf":
+      content = <ShelfTable storage={storage} storageType={storageType} />;
       break;
 
     default:

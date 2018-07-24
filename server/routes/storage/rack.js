@@ -10,7 +10,7 @@ const mergeObjFields = require("../../utils/mergeObjFields");
 
 module.exports = app => {
   // Get all of the racks
-  app.get("/api/rack", isAuth, async (req, res, next) => {
+  app.get("/api/racks", isAuth, async (req, res, next) => {
     try {
       const racks = await Rack.find({}).populate("shelves");
 
@@ -23,7 +23,7 @@ module.exports = app => {
     }
   });
   // Get a single rack
-  app.get("/api/rack/:rackId", isAuth, async (req, res, next) => {
+  app.get("/api/racks/:rackId", isAuth, async (req, res, next) => {
     const { rackId } = req.params;
     try {
       const rack = await Rack.findById(rackId)
@@ -42,7 +42,7 @@ module.exports = app => {
     }
   });
   // Create new rack inside storage and link the rack to storage
-  app.post("/api/rack/:storageId", async (req, res, next) => {
+  app.post("/api/racks/:storageId", async (req, res, next) => {
     const { storageId } = req.params;
     const rack = new Rack();
     rack["storage"] = storageId;
@@ -70,7 +70,7 @@ module.exports = app => {
     }
   });
   // Update a rack
-  app.patch("/api/rack/:rackId", async (req, res, next) => {
+  app.patch("/api/racks/:rackId", async (req, res, next) => {
     const { rackId } = req.params;
     try {
       const rack = await Rack.findByIdAndUpdate(
